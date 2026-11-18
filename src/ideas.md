@@ -1,21 +1,24 @@
 +++
 layout = "page.html"
-title = "The ideas behind Kursal"
-eyebrow = "The design, in plain language"
-intro = "A guided look at ownership, permission, and the path from source code to a native program."
-description = "Understand the ideas behind Kursal: linear ownership, lending by place, capabilities, brands, and its checked core language."
-permalink = "/ideas/"
+title = "Design model"
+eyebrow = "Language design"
+intro = "How Kursal accounts for values, storage, and authority."
+description = "The design of Kursal's linear values, place lending, brands, capabilities, representation boundaries, and checked core language."
+permalink = "/design/"
 +++
 
-Kursal is built for programs that work directly with memory, files, and other resources. In that setting, two questions matter: **who owns a value, and who is allowed to act on it?** Kursal gives those questions visible answers in source code, then checks them during compilation.
+Kursal separates three concerns that are often bundled together in systems code. A **value** is what can be copied or moved. A **place** is storage holding a value. A **capability** is permission to access a resource. A brand ties a capability and the data it governs to the same type-level domain. These distinctions are visible in function signatures and checked through control flow.
 
-This page is a mental model, not a syntax reference. You can read it before you install the compiler.
+| Concept | What the type checker tracks |
+| --- | --- |
+| Copy or linear value | Whether a value may be duplicated or discarded. |
+| Place | Whether storage is available, empty, or temporarily lent. |
+| Brand | Whether data and authority belong to the same domain. |
+| Capability | Which operation a caller may perform on that domain. |
 
-<div class="idea-map" role="group" aria-label="Three parts of Kursal's mental model"><div><span>01 / VALUE</span><strong>What do I own?</strong><p>A value may be freely copied, or it may be linear and have one path through the program.</p></div><div><span>02 / PLACE</span><strong>Where does it live?</strong><p>A place names storage. A call can borrow that place and work with the value there.</p></div><div><span>03 / CAPABILITY</span><strong>What may I access?</strong><p>A capability grants permission to work with a resource or storage domain.</p></div></div>
+<h2 id="copy-and-linear-values">Copy and linear values</h2>
 
-<h2 id="one-value-one-path">One value, one path</h2>
-
-Most everyday values can be copied. A number can be read twice without a question. A resource handle is different: copying it or forgetting it may lose track of who must finish using it. Kursal lets a type declare that difference with a `!` in its name.
+A `Copy` value may be used more than once. A linear value must be consumed exactly once on every path through a function. The trailing `!` is part of a declared linear type's name, not an annotation added at a use site:
 
 ```kursal
 exposed struct Handle! {
@@ -28,36 +31,49 @@ fn consume_handle(h: Handle!) -> u64 {
 }
 ```
 
-`Handle!` is *linear*: each value must be consumed exactly once. The check applies through `if` branches and loops, so both paths through a branch must account for it, and a loop that consumes one must replace it before the next turn. That makes the fate of a resource part of the program's structure. The [linear example](https://github.com/kursionlabs/kursal/blob/main/examples/linear/lib.kur) and its rejected counterparts show the rule in action.
+The compiler rejects a second use of `h`, an unconsumed `h` at return, or a branch that leaves it behind. A loop carrying a linear value must have a value in that place at the next iteration. A generic `T` may itself be linear; a function that needs to copy it states `where Copy[T]`. Structural containers such as `Option[T]` inherit linearity from their payload when instantiated with a linear type. See [`examples/linear`](https://github.com/kursionlabs/kursal/blob/main/examples/linear/lib.kur) and the corresponding rejected programs under `examples/bad/`.
 
-<h2 id="work-with-a-place">Work with a place</h2>
+<h2 id="places-and-lending">Places and lending</h2>
 
-Moving a value is not always what a function needs. Sometimes it needs temporary access to the caller's storage. Kursal expresses that as a **place parameter**, written with `&`, and a call lends the place with the same notation. The function can work with that storage while the caller keeps the place after the call.
+Passing a value transfers it to the callee. A place parameter instead lends access to the caller's storage. The `&` is a parameter and call mode, not a pointer type:
 
-This distinction helps explain why Kursal speaks about *values* and *places*. A value is the thing being moved or copied; a place is where it is held. The [compiler's worked example](https://github.com/kursionlabs/kursal/blob/main/reference-compiler/README.md#a-worked-example-counter) follows a counter through a place-lending call, its checked core form, and the generated C.
+```kursal
+exposed struct Counter { value: u32 }
 
-<h2 id="permission-is-explicit">Permission is explicit</h2>
+fn bump(&counter: Counter) -> u32 {
+    counter.value = counter.value + 1u32;
+    counter.value
+}
+```
 
-For shared structures such as an arena, Kursal can carry permission in an explicit **capability**. Code that needs to read, write, or allocate in a domain receives the appropriate context instead of reaching into hidden global state. A **brand** connects values from that domain to the capability that grants access to it.
+The caller invokes this function as `bump(&counter)`. This example comes from the [counter walkthrough](https://github.com/kursionlabs/kursal/blob/main/reference-compiler/README.md#a-worked-example-counter), which follows that lent place through source, KURS, and C. The [compiler's arena code](https://github.com/kursionlabs/kursal/blob/main/compiler/README.md#storage) uses the same mechanism with a linear context named `&cx`. A callee may update a lent place, including moving a value out and putting a valid replacement back before return. Place flow also checks branches, loops, and overlapping lends.
 
-The compiler uses this design itself. It keeps different groups of compilation phases in different arenas, each with its own brand, and lends the arena context to the code working in that phase. That is a concrete example of the idea: data has a domain, and access to that domain has a visible path. The [storage chapter](https://github.com/kursionlabs/kursal/blob/main/compiler/README.md#storage) explains the implementation; the [graph example](https://github.com/kursionlabs/kursal/tree/main/examples/graph) builds cyclic data in an arena without `unsafe`.
+<h2 id="brands-and-capabilities">Brands and capabilities</h2>
 
-<div class="idea-callout"><span>THE CONNECTION</span><p>Linear values answer <strong>who owns this?</strong> Places answer <strong>where is it?</strong> Capabilities answer <strong>who may touch it?</strong> Kursal checks those answers through the program's control flow.</p></div>
+A brand such as `'k` is a type-level identity. It is not the allocation itself and does not grant access by itself. A capability carries the authority; the matching brand lets an API require that the authority and data refer to the same domain.
 
-<h2 id="unsafe-has-a-boundary">Unsafe has a boundary</h2>
+The compiler's own storage uses a context containing one arena and its exclusive capability:
 
-Systems programs sometimes need raw pointers, atomics, or calls to external code. Kursal marks the particular operation that needs an `unsafe` promise, such as an unsafe call or a pointer read. A safe function may contain such an operation, so its author must uphold that operation's contract. This keeps the point where the program takes responsibility visible to a reader.
+```kursal
+forall 'k.
+exposed struct Domain! {
+    tag: Exclusive!['k],
+    arena: Arena!['k],
+}
+```
 
-The [standard library's pointer contracts](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md) record these obligations for functions with raw pointers. The [atomics example](https://github.com/kursionlabs/kursal/tree/main/examples/atomics) shows the same approach for low-level memory operations.
+The context is lent as `&cx` to code that reads or allocates in that arena. A `Ref[T, 'k]` can be copied as a description of a location, but reading or writing through it requires the matching capability. This separation lets [`examples/graph`](https://github.com/kursionlabs/kursal/tree/main/examples/graph) hold cycles in an arena: nodes can refer to each other while a capability controls access. The [capability implementation](https://github.com/kursionlabs/kursal/blob/main/lib/core/cap.kur) also shows how exclusive access can become a tree of shared readers.
 
-<h2 id="a-small-core-to-check">A small core to check</h2>
+A constructor can return a fresh brand hidden in an `exists` package. The compiler opens a new domain for each group of phases with code shaped like `let exists 'f. front = Domain!::new();`. The identity `'f` is then available inside that scope, so values from one arena cannot be passed to a capability for another merely because their runtime representation looks alike. This is type-level identity, not a runtime tag or a claim that arbitrary raw pointers are valid.
 
-Kursal source has familiar conveniences: modules, functions, traits, closures, and pattern matching. The compiler resolves and infers that surface language, then lowers it to **KURS**, a core language where operations on values and places are explicit. A separate checker validates the core program before the backend emits C.
+<h2 id="representation-and-unsafe">Representation and unsafe</h2>
 
-<div class="idea-pipeline" role="group" aria-label="Kursal compilation pipeline"><span>Source <small>.kur</small></span><b aria-hidden="true">→</b><span>Lowered core <small>KURS</small></span><b aria-hidden="true">→</b><span>Checked program</span><b aria-hidden="true">→</b><span>C output</span></div>
+Aggregate representations are restricted to their declaring module unless the type is `exposed`. This matters for capabilities: callers cannot construct an `Exclusive!` token by filling in its fields. The module defining a resource is responsible for making its safe operations uphold the resource's invariants.
 
-The C output is then compiled into an executable by a C compiler. Kursal's compiler is itself written in Kursal: a Python reference implementation builds it first, and the resulting compiler builds itself. The [compiler overview](https://github.com/kursionlabs/kursal/blob/main/compiler/README.md) maps the phases, while the [reference compiler overview](https://github.com/kursionlabs/kursal/blob/main/reference-compiler/README.md#pipeline) describes the same route from another angle.
+Low-level operations remain available. Kursal marks an individual raw-pointer read, cast, atomic operation, or unsafe call with `unsafe`. The marker identifies an obligation; it does not prove that a pointer is valid or that a foreign function obeys a contract. A safe function can contain unsafe operations when its implementation establishes the necessary conditions. The standard library records those conditions in its [pointer contracts](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md).
 
-<h2 id="see-it-in-a-program">See it in a program</h2>
+<h2 id="the-core-check">The core check</h2>
 
-The best next step is to read a small example with one concept in view. Start with [`hello`](https://github.com/kursionlabs/kursal/tree/main/examples/hello), then [`greet`](https://github.com/kursionlabs/kursal/tree/main/examples/greet) for owned input, and [`linear`](https://github.com/kursionlabs/kursal/tree/main/examples/linear) for a resource with one path. When the ideas feel familiar, [The language](/language/) shows their syntax and [Get started](/start/) shows how to build a program.
+Source syntax is lowered to **KURS**, a core language with explicit values, places, block arguments, and control-flow edges. A separate checker validates the lowered program before the backend emits C. This makes the checker's input a concrete artifact that can be printed, read back, and tested independently of the frontend.
+
+The core check is one part of the compiler's correctness story: a successful check says the program obeys KURS rules, while unsafe operations still depend on their stated contracts. The [compiler architecture](/compiler/) describes the stages and the comparison between the Python reference compiler and the self-hosted compiler.

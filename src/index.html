@@ -1,41 +1,45 @@
 +++
 layout = "base.html"
 permalink = "/"
-description = "Kursal is a systems programming language that compiles to C. Meet its linear types, explicit capabilities, and self-hosted compiler."
+description = "Kursal is a systems programming language with linear values, place lending, capability-based access, a checked core language, and a C backend."
 +++
-<section class="hero">
-  <div class="shell hero-grid">
-    <div class="hero-copy">
-      <div class="status"><span class="status-light"></span> A language for systems work</div>
-      <h1>Build close<br>to the <em>metal.</em></h1>
-      <p class="hero-lede">Kursal is a systems programming language that compiles to C. It brings linear types, explicit capabilities, and a compiler written in Kursal to the work of building real programs.</p>
-      <div class="hero-actions"><a class="button button-primary" href="/start/">Get started <span aria-hidden="true">↗</span></a><a class="button button-secondary" href="/ideas/">Understand the ideas <span aria-hidden="true">→</span></a></div>
-      <div class="hero-meta"><span>Source files <strong>.kur</strong></span><span>Packages <strong>kur.toml</strong></span><span>Output <strong>C</strong></span></div>
+<section class="overview-hero">
+  <div class="shell overview-hero-grid">
+    <div>
+      <p class="eyebrow">Language overview</p>
+      <h1>Kursal</h1>
+      <p class="overview-lede">A systems programming language with linear values, explicit lending of storage, and capabilities for access to resources. The compiler lowers source to the checked KURS core language, then emits C.</p>
+      <div class="overview-links"><a href="/design/">Read the design</a><a href="/start/">Build a program</a><a href="{{ site.sourceUrl }}">Browse the source ↗</a></div>
     </div>
-    <div class="hero-visual" aria-label="Kursal hello world example">
-      <div class="visual-orbit orbit-one"></div><div class="visual-orbit orbit-two"></div>
-      <div class="code-window">
-        <div class="code-titlebar"><span class="window-controls"><i></i><i></i><i></i></span><span>examples/hello/lib.kur</span><span class="code-type">KUR</span></div>
-        <pre><code><span class="line-no">01</span> <span class="code-kw">use</span> std::io::print;
-<span class="line-no">02</span>
-<span class="line-no">03</span> <span class="code-kw">fn</span> <span class="code-fn">main</span>() {
-<span class="line-no">04</span>     print(<span class="code-str">"Hello, world!\n"</span>);
-<span class="line-no">05</span> }</code></pre>
-        <div class="code-output"><span>$</span> bin/kursal build examples/hello -o /tmp/hello<br><span>↳</span> Hello, world!</div>
-      </div>
-      <div class="visual-caption">Readable source. Native output.</div>
-    </div>
-  </div>
-</section>
-<section class="fact-strip" aria-label="Kursal at a glance"><div class="shell fact-grid"><div><span>01 / Build</span><strong>Compiles to C</strong></div><div><span>02 / Control</span><strong>Linear values &amp; capabilities</strong></div><div><span>03 / Foundation</span><strong>Self-hosted compiler</strong></div></div></section>
-<section class="section section-intro"><div class="shell section-heading"><div><p class="eyebrow">A different set of tools</p><h2>Make the important things <em>visible.</em></h2></div><p>Kursal makes ownership and access part of the program you write. Its compiler checks those rules before producing C.</p></div><div class="shell feature-grid"><article class="feature-card"><span class="feature-number">01 / OWNERSHIP</span><div class="feature-symbol">!</div><h3>Values with one owner</h3><p>A type ending in <code>!</code> is linear. The language checks that each such value is consumed exactly once across branches and loops.</p><a href="/ideas/#one-value-one-path">Understand ownership <span aria-hidden="true">↗</span></a></article><article class="feature-card"><span class="feature-number">02 / ACCESS</span><div class="feature-symbol">&amp;</div><h3>Permission in the type</h3><p>Capabilities describe who can access a resource. Place lending passes access through a call without hiding it in global state.</p><a href="/ideas/#permission-is-explicit">Explore capabilities <span aria-hidden="true">↗</span></a></article><article class="feature-card"><span class="feature-number">03 / OUTPUT</span><div class="feature-symbol">{ }</div><h3>A narrow path to C</h3><p>Source is lowered to KURS, checked, and emitted as C. The compiler itself is written in Kursal and builds itself.</p><a href="/ideas/#a-small-core-to-check">Follow the pipeline <span aria-hidden="true">↗</span></a></article></div></section>
-<section class="showcase"><div class="shell showcase-grid"><div class="showcase-copy"><p class="eyebrow">In practice</p><h2>Small syntax.<br><em>Explicit intent.</em></h2><p>Linear types are spelled at the declaration. A function that receives one must use it, and a loop that consumes one must replace it before the next iteration.</p><a class="text-link" href="{{ site.sourceUrl }}/blob/main/examples/linear/lib.kur">Read the complete example <span aria-hidden="true">↗</span></a></div><div class="example-panel"><div class="example-label"><span>examples/linear/lib.kur</span><span>FROM THE REPOSITORY</span></div><pre><code><span class="code-kw">exposed struct</span> <span class="code-fn">Handle!</span> {
+    <div class="overview-code">
+      <div class="overview-code-head"><span>examples/linear/lib.kur</span><span>LINEAR VALUE</span></div>
+      <pre><code><span class="code-kw">exposed struct</span> Handle! {
     id: u64,
 }
 
 <span class="code-kw">fn</span> consume_handle(h: Handle!) -&gt; u64 {
     <span class="code-kw">let</span> { id } = h;
     id
-}</code></pre><div class="example-foot">A value that cannot be silently duplicated or dropped.</div></div></div></section>
-<section class="section path-section"><div class="shell"><div class="path-heading"><div><p class="eyebrow">Start building</p><h2>From source to a running program.</h2></div><a class="button button-dark" href="/start/">Read the quickstart <span aria-hidden="true">↗</span></a></div><div class="steps"><div><span class="step-no">01</span><h3>Bootstrap</h3><p>Build the self-hosted compiler from the reference implementation.</p><code>scripts/bootstrap.sh</code></div><div><span class="step-no">02</span><h3>Compile</h3><p>Turn a package and its dependencies into a native executable.</p><code>bin/kursal build examples/hello -o /tmp/hello</code></div><div><span class="step-no">03</span><h3>Run</h3><p>See the result, then explore the programs in the examples directory.</p><code>/tmp/hello</code></div></div></div></section>
-<section class="closing"><div class="shell closing-inner"><div><p class="eyebrow">Take a closer look</p><h2>See what Kursal<br>can express.</h2></div><div><p>Start with a hello world, then follow examples of ownership, threads, arenas, traits, and command-line programs.</p><a class="button button-primary" href="/resources/">Browse resources <span aria-hidden="true">↗</span></a></div></div></section>
+}</code></pre>
+      <p>Every <code>Handle!</code> value has to be accounted for exactly once.</p>
+    </div>
+  </div>
+</section>
+
+<div class="overview-strip"><div class="shell"><span><strong>Source</strong> .kur</span><span><strong>Packages</strong> kur.toml</span><span><strong>Core IR</strong> KURS</span><span><strong>Output</strong> GNU C</span></div></div>
+
+<section class="overview-section shell">
+  <div class="overview-heading"><p class="eyebrow">The programming model</p><h2>Values, places, and authority</h2><p>The three ideas appear together in real programs. They give the checker a concrete account of what can be copied, what can move, and who may access storage.</p></div>
+  <div class="overview-rows">
+    <article><span>01</span><div><h3>Copy and linear values</h3><p>Copy values may be duplicated or discarded; linear values must be consumed once on every path. Named linear types carry a trailing <code>!</code>, and containers can become linear through their contents. Generic code can require <code>Copy[T]</code>.</p></div><a href="/design/#copy-and-linear-values">Read about values →</a></article>
+    <article><span>02</span><div><h3>Places and lending</h3><p>A place names storage. A parameter such as <code>&amp;cx</code> lends the caller's place to a function; the callee may work with it and must return the place in a valid state.</p></div><a href="/design/#places-and-lending">Read about places →</a></article>
+    <article><span>03</span><div><h3>Brands and capabilities</h3><p>Brands identify a storage domain at the type level. A reference can describe a location in that domain; a capability supplies permission to read or change it.</p></div><a href="/design/#brands-and-capabilities">Read about access →</a></article>
+    <article><span>04</span><div><h3>Representation and unsafe operations</h3><p>Types are representation-restricted unless exposed. Raw pointer operations and external calls are explicitly marked <code>unsafe</code>, with obligations carried by the code that uses them.</p></div><a href="/design/#representation-and-unsafe">Read about boundaries →</a></article>
+  </div>
+</section>
+
+<section class="overview-section overview-compiler"><div class="shell overview-compiler-grid"><div><p class="eyebrow">Compilation</p><h2>From source to executable</h2><p>Packages are resolved from <code>kur.toml</code>; the frontend infers and lowers the program to KURS. A separate checker validates that core program before the C backend runs. The self-hosted compiler is written in Kursal and is bootstrapped by a Python reference compiler.</p><a class="overview-text-link" href="/compiler/">Compiler architecture →</a></div><div><div class="overview-flow"><span>Parse and resolve</span><span>Infer and lower</span><span>Check KURS</span><span>Emit C</span><span>Compile with C compiler</span></div><pre><code>scripts/bootstrap.sh
+bin/kursal build examples/hello -o /tmp/hello
+/tmp/hello</code></pre></div></div></section>
+
+<section class="overview-section shell"><div class="overview-heading"><p class="eyebrow">Read real programs</p><h2>Examples by question</h2><p>Each link opens source in the language repository. The examples guide explains how to build and run them.</p></div><div class="overview-example-grid"><a href="{{ site.sourceUrl }}/tree/main/examples/linear"><strong>How is a resource consumed?</strong><span><code>linear</code> follows a handle through branches and a loop.</span></a><a href="{{ site.sourceUrl }}/tree/main/examples/graph"><strong>How can cyclic data be safe?</strong><span><code>graph</code> builds an arena graph with references and capabilities.</span></a><a href="{{ site.sourceUrl }}/tree/main/examples/thread_sum"><strong>What moves into a thread?</strong><span><code>thread_sum</code> transfers owned buffers into closures.</span></a><a href="{{ site.sourceUrl }}/tree/main/examples/traits"><strong>How does generic dispatch work?</strong><span><code>traits</code> shows bounds and statically resolved instances.</span></a></div><p class="overview-more"><a href="/language/">Language tour</a> · <a href="/resources/">Source map and further reading</a> · <a href="{{ site.sourceUrl }}/blob/main/examples/README.md">All examples ↗</a></p></section>

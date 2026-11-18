@@ -26,5 +26,12 @@ render leaves the previous `dist/` intact.
 - `src/_data/site.toml` — shared site metadata
 - `src/assets/` — CSS, JavaScript, and favicon
 
+`src/assets/theme.css` defines the shared Kursion colors and the dark/light
+palette. Dark is the default; the visitor's choice is saved in the browser.
+Krayon supplies syntax token classes for fenced `kursal` code, which the theme
+styles in the same fixed dark code palette in both modes.
+The site uses Inter, JetBrains Mono, and Noto Sans Arabic, all available under
+the SIL Open Font License via Google Fonts.
+
 Language installation and syntax details are based on `../kursal` at the time
 this site was created. Update them when the compiler changes.

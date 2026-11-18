@@ -3,35 +3,42 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#101512">
+    <meta name="theme-color" content="#1B1D2E">
     <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
     <meta property="og:type" content="website">
     <meta property="og:title" content="{% if page.title %}{{ page.title }} | Kursal{% else %}{{ site.title }}{% endif %}">
     <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
     <title>{% if page.title %}{{ page.title }} · {% endif %}Kursal</title>
+    <script>try{if(localStorage.getItem('kursal-theme')==='light')document.documentElement.dataset.theme='light'}catch(e){}</script>
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/assets/site.css">
+    <link rel="stylesheet" href="/assets/theme.css">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="shell header-inner">
-        <a class="brand" href="/" aria-label="Kursal home"><span class="brand-mark" aria-hidden="true">K<span class="brand-dot">.</span></span><span>kursal</span></a>
+        <a class="brand" href="/" aria-label="Kursal home"><span class="brand-mark" aria-hidden="true">K</span><span>kursal</span><span class="brand-ecosystem">by Kursion</span></a>
         <nav class="site-nav" aria-label="Main navigation">
-          <a href="/start/" {% if page.url == '/start/' %}aria-current="page"{% endif %}>Get started</a>
-          <a href="/ideas/" {% if page.url == '/ideas/' %}aria-current="page"{% endif %}>Ideas</a>
-          <a href="/language/" {% if page.url == '/language/' %}aria-current="page"{% endif %}>The language</a>
-          <a href="/resources/" {% if page.url == '/resources/' %}aria-current="page"{% endif %}>Resources</a>
+          <a href="/start/" {% if page.url == '/start/' %}aria-current="page"{% endif %}>Build</a>
+          <a href="/design/" {% if page.url == '/design/' %}aria-current="page"{% endif %}>Design</a>
+          <a href="/language/" {% if page.url == '/language/' %}aria-current="page"{% endif %}>Language</a>
+          <a href="/compiler/" {% if page.url == '/compiler/' %}aria-current="page"{% endif %}>Compiler</a>
+          <a href="/resources/" {% if page.url == '/resources/' %}aria-current="page"{% endif %}>Source map</a>
           <a class="nav-source" href="{{ site.sourceUrl }}">Source <span aria-hidden="true">↗</span></a>
         </nav>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="false" title="Switch to light mode">
+          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path></svg>
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.1A8.7 8.7 0 0 1 9.9 3.5 8.8 8.8 0 1 0 20.5 14.1Z"></path></svg>
+        </button>
       </div>
     </header>
     <main id="main">{{ content | safe }}</main>
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <div><a class="footer-brand" href="/">kursal<span>.</span></a><p>Systems programming, close to the metal.</p></div>
-        <div class="footer-links"><a href="/start/">Get started</a><a href="/ideas/">Ideas</a><a href="/language/">Language</a><a href="/resources/">Resources</a><a href="{{ site.sourceUrl }}">GitHub ↗</a></div>
-        <p class="footer-note">Built from Markdown and open templates.</p>
+        <div><a class="footer-brand" href="/">kursal<span>.</span></a><p>Language, libraries, and compiler source.</p></div>
+        <div class="footer-links"><a href="/start/">Build</a><a href="/design/">Design</a><a href="/language/">Language</a><a href="/compiler/">Compiler</a><a href="/resources/">Source map</a><a href="{{ site.sourceUrl }}">Repository ↗</a></div>
+        <p class="footer-note">This site is generated with <a href="https://github.com/kursionlabs/krayon">Krayon</a>, the Kursion static-site generator.</p>
       </div>
     </footer>
     <script src="/assets/site.js" defer></script>
