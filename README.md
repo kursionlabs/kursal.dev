@@ -13,8 +13,9 @@ cd ../krayon && mkdir -p bin && ../kursal/bin/kursal build krayon -o bin/krayon
 cd ../kursal.dev && ../krayon/bin/krayon build .
 ```
 
-Deploy the contents of `dist/` to any static host. Use a fresh `dist/` for a
-release build, since Krayon does not clear older generated files.
+Deploy the contents of `dist/` to any static host. Krayon builds into a
+staging directory, then replaces `dist/` only after a successful build. A failed
+render leaves the previous `dist/` intact.
 
 ## Structure
 
