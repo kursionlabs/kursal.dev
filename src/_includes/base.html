@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101512">
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{% if page.title %}{{ page.title }} | Kursal{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <title>{% if page.title %}{{ page.title }} · {% endif %}Kursal</title>
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/assets/site.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="Kursal home"><span class="brand-mark" aria-hidden="true">K<span class="brand-dot">.</span></span><span>kursal</span></a>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="/start/" {% if page.url == '/start/' %}aria-current="page"{% endif %}>Get started</a>
+          <a href="/ideas/" {% if page.url == '/ideas/' %}aria-current="page"{% endif %}>Ideas</a>
+          <a href="/language/" {% if page.url == '/language/' %}aria-current="page"{% endif %}>The language</a>
+          <a href="/resources/" {% if page.url == '/resources/' %}aria-current="page"{% endif %}>Resources</a>
+          <a class="nav-source" href="{{ site.sourceUrl }}">Source <span aria-hidden="true">↗</span></a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">{{ content | safe }}</main>
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <div><a class="footer-brand" href="/">kursal<span>.</span></a><p>Systems programming, close to the metal.</p></div>
+        <div class="footer-links"><a href="/start/">Get started</a><a href="/ideas/">Ideas</a><a href="/language/">Language</a><a href="/resources/">Resources</a><a href="{{ site.sourceUrl }}">GitHub ↗</a></div>
+        <p class="footer-note">Built from Markdown and open templates.</p>
+      </div>
+    </footer>
+    <script src="/assets/site.js" defer></script>
+  </body>
+</html>

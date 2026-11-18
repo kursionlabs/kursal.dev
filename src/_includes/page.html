@@ -1,0 +1,20 @@
++++
+layout = "base.html"
++++
+<div class="page-hero">
+  <div class="shell">
+    <p class="eyebrow">{{ page.eyebrow or 'Explore Kursal' }}</p>
+    <h1>{{ page.title }}</h1>
+    {% if page.intro %}<p class="page-intro">{{ page.intro }}</p>{% endif %}
+  </div>
+</div>
+<div class="shell content-grid">
+  <aside class="page-sidebar" aria-label="Section navigation">
+    <span class="sidebar-label">On this site</span>
+    <a href="/start/" {% if page.url == '/start/' %}aria-current="page"{% endif %}>Get started</a>
+    <a href="/ideas/" {% if page.url == '/ideas/' %}aria-current="page"{% endif %}>Ideas</a>
+    <a href="/language/" {% if page.url == '/language/' %}aria-current="page"{% endif %}>The language</a>
+    <a href="/resources/" {% if page.url == '/resources/' %}aria-current="page"{% endif %}>Resources</a>
+  </aside>
+  <article class="prose">{{ content | safe }}</article>
+</div>
