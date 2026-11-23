@@ -6,11 +6,11 @@
   --surface-raised: #27272A;
   --text: #FAFAFA;
   --muted-text: #A1A1AA;
-  --accent: #A78BFA;
-  --link: #A78BFA;
-  --krayon: #C4B5FD;
+  --accent: #9FA0DC;
+  --link: #9FA0DC;
+  --krayon: #B7B8E8;
   --border: #27272A;
-  --accent-hover: #C4B5FD;
+  --accent-hover: #B7B8E8;
   --code-bg: #09090B;
   --code-ink: #A1A1AA;
   --inline-bg: #27272A;
@@ -35,13 +35,13 @@
   --surface-raised: #EFEFF1;
   --text: #09090B;
   --muted-text: #52525B;
-  --accent: #6D28D9;
-  --accent-hover: #5B21B6;
-  --link: #6D28D9;
-  --krayon: #7C3AED;
+  --accent: #585AA6;
+  --accent-hover: #44468A;
+  --link: #585AA6;
+  --krayon: #6A6CB8;
   --border: #E4E4E7;
   --inline-bg: #F1F1F3;
-  --hover: #6D28D914;
+  --hover: #585AA614;
 }
 
 :lang(ar) { font-family: 'Noto Sans Arabic', 'Inter', sans-serif; }
@@ -88,10 +88,10 @@ body { background: var(--canvas); color: var(--text); }
 .code-type { color: var(--muted-text); }
 .line-no { color: #A1A1AA; }
 .code-window pre, .example-panel pre { background: var(--code-bg); color: var(--code-ink); font-size: 16px; }
-.code-kw, .code-fn { color: #A78BFA; }
-.code-str { color: #C4B5FD; }
+.code-kw, .code-fn { color: #9FA0DC; }
+.code-str { color: #B7B8E8; }
 .code-output { background: var(--code-bg); border-color: var(--border); color: #A1A1AA; }
-.code-output span { color: #A78BFA; }
+.code-output span { color: #9FA0DC; }
 .fact-strip { background: var(--surface); color: var(--text); }
 .fact-grid > div { border-color: var(--border); }
 .fact-grid span { color: var(--muted-text); }
@@ -139,8 +139,8 @@ body { background: var(--canvas); color: var(--text); }
 .prose th { background: var(--surface); color: var(--muted-text); }
 
 /* Krayon emits these classes for fenced Kursal code. Code stays dark in both modes. */
-.tok-keyword, .tok-type { color: #A78BFA; }
-.tok-string, .tok-number { color: #C4B5FD; }
+.tok-keyword, .tok-type { color: #9FA0DC; }
+.tok-string, .tok-number { color: #B7B8E8; }
 .tok-comment { color: #A1A1AA; }
 
 /* Concept diagrams and footer */
@@ -168,7 +168,7 @@ body { background: var(--canvas); color: var(--text); }
 .overview-links a, .overview-text-link, .overview-more a { color: var(--link); font-size: 14px; font-weight: 700; text-underline-offset: 4px; }
 .overview-code { min-width: 0; border: 1px solid var(--border); background: var(--code-bg); color: #A1A1AA; }
 .overview-code-head { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--border); padding: 12px 16px; color: #A1A1AA; font: 11px var(--mono); }
-.overview-code-head span:last-child { color: #C4B5FD; }
+.overview-code-head span:last-child { color: #B7B8E8; }
 .overview-code pre { overflow-x: auto; margin: 0; padding: 23px 20px; color: #A1A1AA; font: 15px/1.8 var(--mono); }
 .overview-code > p { margin: 0; border-top: 1px solid var(--border); padding: 12px 16px; color: #A1A1AA; font-size: 12px; }
 .overview-code > p code { font-family: var(--mono); }
@@ -265,21 +265,21 @@ body { background: var(--canvas); color: var(--text); }
 /* Aligned with the Kursal docs theme (kursal/docs/theme): the masthead stays dark in both modes,
    with an inset accent rule and the logo glyph in a cyan tile. */
 body { font-family: var(--body); }
-.site-header { background: #09090B; border-bottom: 1px solid #27272A; box-shadow: inset 0 -2px 0 #A78BFA; color: #FAFAFA; }
+.site-header { background: #09090B; border-bottom: 1px solid #27272A; box-shadow: inset 0 -2px 0 #9FA0DC; color: #FAFAFA; }
 .brand { gap: .55rem; color: #FAFAFA; font-size: 1.2rem; font-weight: 700; letter-spacing: 0; }
-.brand-mark { width: 2rem; height: 2rem; border: 0; border-radius: .55rem; background: #A78BFA; }
+.brand-mark { width: 2rem; height: 2rem; border: 0; border-radius: .55rem; background: #9FA0DC; }
 .brand-glyph { display: block; width: 1.45rem; height: 1.45rem; background: #09090B; -webkit-mask: url("/assets/logo.svg") center / contain no-repeat; mask: url("/assets/logo.svg") center / contain no-repeat; }
 .brand-ecosystem { color: #A1A1AA; }
 .site-nav a { color: #A1A1AA; }
-.site-nav a:hover, .site-nav a[aria-current] { color: #A78BFA; }
+.site-nav a:hover, .site-nav a[aria-current] { color: #9FA0DC; }
 .site-nav .nav-source { border-color: #27272A; color: #FAFAFA; }
 .theme-toggle { border-color: #27272A; background: transparent; color: #FAFAFA; }
-.theme-toggle:hover { background: #FFFFFF0D; border-color: #A78BFA; color: #A78BFA; }
+.theme-toggle:hover { background: #FFFFFF0D; border-color: #9FA0DC; color: #9FA0DC; }
 .site-footer { background: transparent; border-top: 1px solid var(--border); }
 .page-hero { background: var(--surface); border-bottom: 1px solid var(--border); }
-.page-hero h1::after, .h-head h2::after { content: ''; display: block; width: 3.5rem; height: 4px; margin-top: .8rem; border-radius: 1rem; background: linear-gradient(90deg, #A78BFA, #C4B5FD); }
+.page-hero h1::after, .h-head h2::after { content: ''; display: block; width: 3.5rem; height: 4px; margin-top: .8rem; border-radius: 1rem; background: linear-gradient(90deg, #9FA0DC, #B7B8E8); }
 a:hover { color: var(--accent-hover); }
-.tok-string, .tok-number { color: #C4B5FD; }
+.tok-string, .tok-number { color: #B7B8E8; }
 .tok-keyword { font-weight: 700; }
 .tok-comment { font-style: italic; }
 .page-sidebar .sidebar-label { margin-top: 1.2rem; }
@@ -300,19 +300,19 @@ a:hover { color: var(--accent-hover); }
 /* Catppuccin-flavoured finish: neutral UI, colour lives in the syntax */
 :root { --code-bg: #050507; --code-ink: #FAFAFA; --surface-raised: #18181B; }
 .site-header { background: #111114; box-shadow: none; }
-.tok-keyword { color: #A78BFA; font-weight: 400; }
-.tok-type { color: #E4C98B; }
-.tok-string { color: #9FD8A8; }
-.tok-number { color: #F0A878; }
+.tok-keyword { color: #9FA0DC; font-weight: 400; }
+.tok-type { color: #DCC796; }
+.tok-string { color: #A5CFAB; }
+.tok-number { color: #E3AE8C; }
 .tok-comment { color: #71717A; font-style: italic; }
-.code-kw, .code-fn { color: #A78BFA; }
-.code-str { color: #9FD8A8; }
-.code-output span { color: #A78BFA; }
+.code-kw, .code-fn { color: #9FA0DC; }
+.code-str { color: #A5CFAB; }
+.code-output span { color: #9FA0DC; }
 .line-no, .example-foot { color: #71717A; }
 
 /* Confident finish: crisp contrast, one decisive accent */
-:root { --hover: #A78BFA1A; --inline-bg: #18181B; }
-:root[data-theme="light"] { --hover: #6D28D914; --inline-bg: #F1F1F3; }
+:root { --hover: #9FA0DC1A; --inline-bg: #18181B; }
+:root[data-theme="light"] { --hover: #585AA614; --inline-bg: #F1F1F3; }
 .site-header { background: #09090B; border-bottom: 1px solid #27272A; }
 :root[data-theme="light"] .site-header { background: #09090B; }
 .prose h2, .h-head h2 { font-weight: 700; letter-spacing: -.035em; }
