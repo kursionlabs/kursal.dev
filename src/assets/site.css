@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root{--ink:#172019;--muted:#657067;--paper:#f4f5ef;--cream:#e9ece2;--dark:#101713;--dark-2:#18221b;--lime:#c8ee70;--line:#d9ded3;--mono:'DM Mono',ui-monospace,SFMono-Regular,monospace;--display:'Space Grotesk',Arial,sans-serif;--body:'DM Sans',Arial,sans-serif}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--body)}a{color:inherit}button{font:inherit}.shell{width:min(100% - 64px,1180px);margin-inline:auto}.skip-link{position:absolute;z-index:20;top:-60px;left:16px;background:var(--lime);padding:10px 16px}.skip-link:focus{top:12px}:focus-visible{outline:3px solid #8bc326;outline-offset:4px}::selection{background:var(--lime);color:var(--dark)}

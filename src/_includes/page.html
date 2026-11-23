@@ -10,12 +10,16 @@ layout = "base.html"
 </div>
 <div class="shell content-grid">
   <aside class="page-sidebar" aria-label="Section navigation">
-    <span class="sidebar-label">Read next</span>
-    <a href="/start/" {% if page.url == '/start/' %}aria-current="page"{% endif %}>Build</a>
-    <a href="/design/" {% if page.url == '/design/' %}aria-current="page"{% endif %}>Design model</a>
-    <a href="/language/" {% if page.url == '/language/' %}aria-current="page"{% endif %}>Language tour</a>
-    <a href="/compiler/" {% if page.url == '/compiler/' %}aria-current="page"{% endif %}>Compiler architecture</a>
-    <a href="/resources/" {% if page.url == '/resources/' %}aria-current="page"{% endif %}>Source map</a>
+    <span class="sidebar-label">Learn</span>
+    <a href="/start/" {% if page.url == '/start/' %}aria-current="page"{% endif %}>Get started</a>
+    <a href="/tour/" {% if page.url == '/tour/' %}aria-current="page"{% endif %}>Language tour</a>
+    <a href="/walkthroughs/" {% if page.url == '/walkthroughs/' %}aria-current="page"{% endif %}>Walkthroughs</a>
+    <span class="sidebar-label">Understand</span>
+    <a href="/ideas/" {% if page.url == '/ideas/' %}aria-current="page"{% endif %}>The ideas</a>
+    <a href="/compiler/" {% if page.url == '/compiler/' %}aria-current="page"{% endif %}>The compiler</a>
+    <a href="/story/" {% if page.url == '/story/' %}aria-current="page"{% endif %}>How Kursal came to be</a>
+    <span class="sidebar-label">Reference</span>
+    <a href="/source/" {% if page.url == '/source/' %}aria-current="page"{% endif %}>Source map</a>
   </aside>
   <article class="prose">{{ content | safe }}</article>
 </div>

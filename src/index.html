@@ -1,45 +1,206 @@
 +++
 layout = "base.html"
 permalink = "/"
-description = "Kursal is a systems programming language with linear values, place lending, capability-based access, a checked core language, and a C backend."
+description = "Kursal is a systems language that compiles to C. It grew out of a few ideas about resources: linear types, brands, capabilities, and a checked core."
 +++
-<section class="overview-hero">
-  <div class="shell overview-hero-grid">
-    <div>
-      <p class="eyebrow">Language overview</p>
-      <h1>Kursal</h1>
-      <p class="overview-lede">A systems programming language with linear values, explicit lending of storage, and capabilities for access to resources. The compiler lowers source to the checked KURS core language, then emits C.</p>
-      <div class="overview-links"><a href="/design/">Read the design</a><a href="/start/">Build a program</a><a href="{{ site.sourceUrl }}">Browse the source ↗</a></div>
-    </div>
-    <div class="overview-code">
-      <div class="overview-code-head"><span>examples/linear/lib.kur</span><span>LINEAR VALUE</span></div>
-      <pre><code><span class="code-kw">exposed struct</span> Handle! {
-    id: u64,
-}
+<div class="home">
 
-<span class="code-kw">fn</span> consume_handle(h: Handle!) -&gt; u64 {
-    <span class="code-kw">let</span> { id } = h;
-    id
+<section class="h-hero shell">
+  <div class="h-hero-copy">
+    <p class="h-kicker">An experiment that kept working</p>
+    <h1>A few ideas about resources, <em>grown into a language.</em></h1>
+    <p class="h-lede">Kursal is built around a checker small enough to run in your head: look at a function and tell, easily, whether it will pass. Its core language, KURS, is explicit enough to check by hand. Kursal, the friendlier surface language, grew out of it. The tools are linear types, brands, capabilities, and that small checked core, and together they have grown into a compiler that builds itself.</p>
+    <p class="h-actions"><a class="h-button h-primary" href="#ideas">See the ideas</a><a class="h-button" href="/start/">Build it in two commands</a></p>
+    <p class="h-fine">Kursal compiles to C. It is not “memory safe by default”: it gives libraries the tools to build resource-safe abstractions, and <code>unsafe</code> exists for the layer beneath them.</p>
+  </div>
+  <div class="h-hero-demo">
+    <div class="h-code">
+      <div class="h-code-head"><span>examples/hello/lib.kur</span></div>
+<pre><code><span class="tok-keyword">use</span> std::io::print;
+
+<span class="tok-keyword">fn</span> main() {
+    print(<span class="tok-string">"Hello, world!\n"</span>);
 }</code></pre>
-      <p>Every <code>Handle!</code> value has to be accounted for exactly once.</p>
+      <div class="h-out">Hello, world!</div>
+    </div>
+    <p class="h-caption">That is the whole program. It compiles to C, and the compiler that built it is itself written in Kursal.</p>
+  </div>
+</section>
+
+<section class="h-band">
+  <div class="shell h-band-inner">
+    <p>Everything below is something you can run. Snippets are real files in <a href="https://github.com/kursionlabs/kursal/tree/main/examples">the repository’s examples</a>, and the error messages are copied from the compiler’s output, with long paths shortened.</p>
+  </div>
+</section>
+
+<section class="h-section h-principle shell">
+  <header class="h-head">
+    <p class="h-kicker">The principle</p>
+    <h2>A checker small enough to run in your head</h2>
+    <p>KURS, the core language, is explicit enough that you can look at a function and check it by hand: will it pass, and if not, where does it fail? Kursal is the friendlier surface language that grew out of that core. It is more complicated to simulate than KURS, but every Kursal program lowers to KURS, and the small checker verifies the result.</p>
+  </header>
+  <div class="h-principles">
+    <div><h3>Every block says everything</h3><p>In KURS, each block states its complete place state: what is full, empty, or lent. You never have to infer state from somewhere else, and a block can be checked on its own. That makes parallel checking possible. The checker runs sequentially today.</p></div>
+    <div><h3>Obligations are in the name</h3><p>A <code>!</code> on a type means it must be consumed exactly once. You see which values carry an obligation without looking up a definition. The one exception is a type parameter: a <code>T</code> may be linear, and generic code treats it so unless it asks for <code>Copy[T]</code>.</p></div>
+    <div><h3>Lends are checked per call</h3><p>A call lends a place and the callee gives it back. There are no lifetimes to infer across function boundaries: a call is judged from the call site and the callee’s signature, never the callee’s body.</p></div>
+  </div>
+  <p class="h-caption">Checking is local per function, not per line: whether a line is legal can depend on what the code above it in the same function moved or lent, and on which trait instances exist elsewhere in the program, but never on another function’s body. It is a design test, not a guarantee that every program is easy to read. When a feature would make checking depend on far-away code, that is a reason to cut it. Linearity as a hidden flag became the visible <code>!</code> for this reason. So does the rule that a struct’s shape can only be built or taken apart in its own module unless it is <code>exposed</code>: whether <code>File!.{ fd: 3 }</code> is legal depends on where you are, not on what other code might do.</p>
+</section>
+
+<section id="ideas" class="h-section shell">
+  <header class="h-head">
+    <p class="h-kicker">The ideas</p>
+    <h2>Four ideas that fit together</h2>
+    <p>None of them is exotic alone. Each one is there to keep the checker small and local, and the interesting part is what happens when you commit to all of them and see how far a language gets.</p>
+  </header>
+
+  <article class="h-idea">
+    <div class="h-idea-text">
+      <span class="h-num">01</span>
+      <h3>Linear types you can see</h3>
+      <p>Files, buffers, locks, and threads must be released exactly once. In C that is discipline. In an affine language such as Rust, a value can be silently dropped and a destructor runs implicitly. Kursal makes “must be consumed exactly once” a property of the type, and writes it in the name.</p>
+      <p><code>struct Buffer!</code> declares the type <code>Buffer!</code>. Plain <code>Buffer</code> doesn’t resolve. From any signature you can tell which values carry an obligation, and outside <code>std::io</code>, <code>File!::close</code> is the only method that consumes a <code>File!</code>. The literal can’t be written elsewhere.</p>
+      <p class="h-versus"><b>Compared with:</b> Linear Haskell puts linearity on function arrows, and ATS pairs linear types with a proof language. Kursal puts it on the type and makes it visible syntax, which is a little ceremonial on purpose.</p>
+    </div>
+    <div class="h-idea-code">
+      <div class="h-code"><div class="h-code-head"><span>examples/bad/leaked_handle.kur (trimmed)</span></div>
+<pre><code><span class="tok-keyword">struct</span> Handle! { id: <span class="tok-type">u64</span> }
+
+<span class="tok-keyword">fn</span> leaks_a_handle(id: <span class="tok-type">u64</span>) -&gt; <span class="tok-type">u32</span> {
+    <span class="tok-keyword">let</span> h = make_handle(id);
+    <span class="tok-number">5u32</span>
+}</code></pre></div>
+      <div class="h-err"><pre><code><b>error:</b> …/examples/bad/leaked_handle.kur:14:5: leaked_handle::leaks_a_handle:
+       linear value 'h' is not consumed before return</code></pre></div>
+      <p class="h-caption">Forgetting a linear value is a compile error, not a leak.</p>
+      <div class="h-code h-gap"><div class="h-code-head"><span>examples/linear/lib.kur</span></div>
+<pre><code><span class="tok-keyword">var</span> h = make_handle(<span class="tok-number">0</span>);
+<span class="tok-keyword">while</span> i &lt; n {
+    <span class="tok-keyword">let</span> old = consume_handle(h);
+    h = make_handle(old + <span class="tok-number">1</span>);
+    i = i + <span class="tok-number">1</span>;
+}
+consume_handle(h)</code></pre></div>
+      <div class="h-err"><pre><code><b>error:</b> value 'h' has been moved or is only
+       partially available</code></pre></div>
+      <p class="h-caption">The loop consumes <code>h</code> and puts a new one back every time around. Call <code>consume_handle(h)</code> twice and you get the error above.</p>
+    </div>
+  </article>
+
+  <article class="h-idea">
+    <div class="h-idea-text">
+      <span class="h-num">02</span>
+      <h3>Brands name the memory. Capabilities allow the access.</h3>
+      <p>Aliasing and use-after-free come from conflating two questions: <em>which memory is this?</em> and <em>may I touch it right now?</em> Kursal separates them.</p>
+      <p>A <b>brand</b> like <code>'k</code> is a type-level identity carried by <code>Ref[T, 'k]</code>. A <code>Ref</code> can be copied freely and grants nothing. Reading or writing needs a <b>capability</b> for the same brand, such as the linear <code>Exclusive!['k]</code>. Fresh brands come from <code>exists</code> packages, so two allocations can never be confused.</p>
+      <p>When a container frees or moves memory, it hands itself back under a <em>new</em> brand. Every old view stops type-checking.</p>
+      <p class="h-versus"><b>Compared with:</b> there are no lifetimes and no <code>Rc&lt;RefCell&gt;</code>. Region calculi and GhostCell-style branding are the closest relatives. Kursal makes that technique the everyday API, not a library trick.</p>
+    </div>
+    <div class="h-idea-code">
+      <div class="h-code"><div class="h-code-head"><span>examples/graph/lib.kur</span><span>a cyclic graph, no unsafe</span></div>
+<pre><code><span class="tok-keyword">forall</span> 'k.
+<span class="tok-keyword">exposed struct</span> Node {
+    id: <span class="tok-type">usize</span>,
+    edges: Option[Ref[Edge['k], 'k]],
+}
+<span class="tok-keyword">forall</span> 'k.
+<span class="tok-keyword">exposed struct</span> Edge {
+    to: Ref[Node['k], 'k],
+    next: Option[Ref[Edge['k], 'k]],
+}</code></pre></div>
+      <p class="h-caption">Who frees a graph that points back at itself? Whoever owns the arena, once. Edges are plain <code>Ref</code>s.</p>
+      <div class="h-code h-gap"><div class="h-code-head"><span>examples/bad/ref_after_remove_in.kur (trimmed)</span></div>
+<pre><code><span class="tok-keyword">let exists</span> 'a. (tag, map, old) = map.insert_in(tag, &amp;cx, <span class="tok-number">1u32</span>, <span class="tok-number">10u32</span>);
+<span class="tok-keyword">let</span> found = &amp;map.get_in(&amp;tag, &amp;cx, <span class="tok-number">1u32</span>);
+<span class="tok-keyword">let exists</span> 'b. (tag, map, removed) = map.remove_in(tag, &amp;cx, <span class="tok-number">1u32</span>);
+<span class="tok-keyword">match</span> found { Option::Some(r) =&gt; r.copy(&amp;tag), ... }</code></pre></div>
+      <div class="h-err"><pre><code><b>error:</b> brand mismatch: 'b and 'a; 'b was opened at 15:5, 'a at 13:5</code></pre></div>
+      <p class="h-caption">The stale <code>r</code> lives under <code>'a</code>, and the map now lives under <code>'b</code>. The error names both brands and where each was opened.</p>
+    </div>
+  </article>
+
+  <article class="h-idea">
+    <div class="h-idea-text">
+      <span class="h-num">03</span>
+      <h3>Places, not references</h3>
+      <p>Borrowing usually means reference types plus lifetime inference. Kursal has no reference types at all. A parameter marked <code>&amp;x</code> <em>lends</em> a place to the callee, which must hand it back full.</p>
+      <p>That means you can look at a linear value without giving it up. <code>fn len(&amp;self) -&gt; usize</code> on a linear <code>Buffer!</code> is called as <code>&amp;b.len()</code>, and <code>b</code> is still yours afterward. No borrow type appears in the signature.</p>
+      <p class="h-versus"><b>Compared with:</b> Rust’s <code>&amp;mut T</code> is a first-class value with a lifetime. Here a lend is a calling convention on a place, checked per call. One call can’t lend overlapping places: <code>f(&amp;x, &amp;x)</code> is rejected with <code>'x' overlaps another place the same call lends</code>.</p>
+    </div>
+    <div class="h-idea-code">
+      <div class="h-code"><div class="h-code-head"><span>examples/mem_counter/lib.kur</span></div>
+<pre><code><span class="tok-keyword">forall</span> 'r.
+<span class="tok-keyword">fn</span> bump(&amp;reg: Region![<span class="tok-type">u32</span>, 'r], step: <span class="tok-type">u32</span>) -&gt; <span class="tok-type">u32</span> {
+    <span class="tok-keyword">let</span> v = &amp;reg.replace(<span class="tok-number">0</span>);
+    <span class="tok-keyword">let</span> placeholder = &amp;reg.replace(v + step);
+    v
+}</code></pre></div>
+      <p class="h-caption">The callee takes the value out, puts a valid one back, and returns. If it didn’t put one back, it wouldn’t compile.</p>
+    </div>
+  </article>
+
+  <article class="h-idea">
+    <div class="h-idea-text">
+      <span class="h-num">04</span>
+      <h3>A checked core, so the front end can be wrong</h3>
+      <p>Type checkers in front ends are big and full of special cases, and their bugs become soundness bugs. Kursal lowers everything to <b>KURS</b>, a small, explicit core language where every block states its complete place state: what is full, empty, or lent. A separate, small checker re-verifies the KURS before any C is emitted.</p>
+      <p>A front-end bug shows up as “front end accepted, checker rejected” rather than as miscompiled code. Because each block’s contract is complete, blocks can be checked independently, a choice made with parallel checking in mind.</p>
+      <p>We tested this by fuzzing the front end against the checker (21,156 generated and mutated programs, plus about 150 targeted probes). It found 7 distinct gaps where the front end accepted what the checker rejected, including an aliasing hole in <code>f(&amp;x, &amp;x)</code>. All were fixed, and later campaigns found none.</p>
+      <p class="h-versus"><b>Compared with:</b> CompCert-style compilers prove the compiler correct. Kursal re-checks the compiler’s output every time, closer to translation validation. We don’t claim a proof.</p>
+    </div>
+    <div class="h-idea-code">
+      <ol class="h-pipe" aria-label="Compiler pipeline">
+        <li>parse</li><li>resolve</li><li>signatures</li><li>infer</li><li>lower to <b>KURS</b></li><li class="h-pipe-key">check KURS</li><li>emit C</li>
+      </ol>
+      <p class="h-caption">The checker sits between “what the front end believed” and “what gets compiled.” <a href="/ideas/">Read the design model →</a></p>
+    </div>
+  </article>
+</section>
+
+<section id="status" class="h-section shell">
+  <header class="h-head">
+    <p class="h-kicker">Where it stands</p>
+    <h2>What works, and what doesn’t yet</h2>
+    <p>Kursal has not had a 1.0. Expect breaking changes. The <code>!</code> naming was one, and it was recent.</p>
+  </header>
+  <div class="h-status">
+    <div>
+      <h3>Works</h3>
+      <ul>
+        <li>Two compilers, the Python reference and the self-hosted one, kept identical by differential tests.</li>
+        <li>64 test groups pass, including valgrind on the self-build with 0 errors and 0 leaks.</li>
+        <li>A standard library with files, directories, processes, env, time, threads, <code>Vec</code>, <code>HashMap</code>, arena collections, a TOML 1.0 parser, and formatting.</li>
+        <li><code>kursal doc</code>, an API doc generator, and 60+ examples.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Rough</h3>
+      <ul>
+        <li>Linux/POSIX hosted only. Freestanding works if you bring your own runtime.</li>
+        <li>You need a C compiler, and clang dominates build time: about 36 s for the self-hosted compiler’s ~24 MB of C at <code>-O3</code>, against about 4.7 s for the Kursal front end.</li>
+        <li>Diagnostics: name resolution reports up to 20 errors, but later stages stop at the first.</li>
+        <li>No item-level privacy yet, no trait-method <code>forall</code>, no superclass traits, and instances can’t overlap: a generic instance such as <code>forall T. instance Describe[T]</code> rules out every more specific one.</li>
+        <li>No package manager or registry. Packages are directories with a <code>kur.toml</code>.</li>
+        <li>Core output grows roughly quadratically with function size, a price of complete block contracts.</li>
+      </ul>
     </div>
   </div>
 </section>
 
-<div class="overview-strip"><div class="shell"><span><strong>Source</strong> .kur</span><span><strong>Packages</strong> kur.toml</span><span><strong>Core IR</strong> KURS</span><span><strong>Output</strong> GNU C</span></div></div>
-
-<section class="overview-section shell">
-  <div class="overview-heading"><p class="eyebrow">The programming model</p><h2>Values, places, and authority</h2><p>The three ideas appear together in real programs. They give the checker a concrete account of what can be copied, what can move, and who may access storage.</p></div>
-  <div class="overview-rows">
-    <article><span>01</span><div><h3>Copy and linear values</h3><p>Copy values may be duplicated or discarded; linear values must be consumed once on every path. Named linear types carry a trailing <code>!</code>, and containers can become linear through their contents. Generic code can require <code>Copy[T]</code>.</p></div><a href="/design/#copy-and-linear-values">Read about values →</a></article>
-    <article><span>02</span><div><h3>Places and lending</h3><p>A place names storage. A parameter such as <code>&amp;cx</code> lends the caller's place to a function; the callee may work with it and must return the place in a valid state.</p></div><a href="/design/#places-and-lending">Read about places →</a></article>
-    <article><span>03</span><div><h3>Brands and capabilities</h3><p>Brands identify a storage domain at the type level. A reference can describe a location in that domain; a capability supplies permission to read or change it.</p></div><a href="/design/#brands-and-capabilities">Read about access →</a></article>
-    <article><span>04</span><div><h3>Representation and unsafe operations</h3><p>Types are representation-restricted unless exposed. Raw pointer operations and external calls are explicitly marked <code>unsafe</code>, with obligations carried by the code that uses them.</p></div><a href="/design/#representation-and-unsafe">Read about boundaries →</a></article>
+<section class="h-section h-try shell">
+  <header class="h-head">
+    <p class="h-kicker">Try it</p>
+    <h2>Build it from source</h2>
+  </header>
+  <div class="h-try-grid h-try-one">
+    <div class="h-code"><div class="h-code-head"><span>shell</span></div>
+<pre><code>git clone https://github.com/kursionlabs/kursal
+cd kursal
+scripts/bootstrap.sh
+bin/kursal build examples/hello -o /tmp/hello &amp;&amp; /tmp/hello</code></pre></div>
   </div>
+  <p class="h-caption">Needs Linux, <code>uv</code> (the first bootstrap stage runs the Python reference compiler), and clang or <code>$KURSAL_CC</code>. See the <a href="/start/">build guide</a>.</p>
+  <p class="h-actions"><a class="h-button h-primary" href="/start/">Full build guide</a><a class="h-button" href="/tour/">Language tour</a><a class="h-button" href="/compiler/">Compiler architecture</a><a class="h-button" href="https://github.com/kursionlabs/kursal">Source ↗</a></p>
 </section>
 
-<section class="overview-section overview-compiler"><div class="shell overview-compiler-grid"><div><p class="eyebrow">Compilation</p><h2>From source to executable</h2><p>Packages are resolved from <code>kur.toml</code>; the frontend infers and lowers the program to KURS. A separate checker validates that core program before the C backend runs. The self-hosted compiler is written in Kursal and is bootstrapped by a Python reference compiler.</p><a class="overview-text-link" href="/compiler/">Compiler architecture →</a></div><div><div class="overview-flow"><span>Parse and resolve</span><span>Infer and lower</span><span>Check KURS</span><span>Emit C</span><span>Compile with C compiler</span></div><pre><code>scripts/bootstrap.sh
-bin/kursal build examples/hello -o /tmp/hello
-/tmp/hello</code></pre></div></div></section>
-
-<section class="overview-section shell"><div class="overview-heading"><p class="eyebrow">Read real programs</p><h2>Examples by question</h2><p>Each link opens source in the language repository. The examples guide explains how to build and run them.</p></div><div class="overview-example-grid"><a href="{{ site.sourceUrl }}/tree/main/examples/linear"><strong>How is a resource consumed?</strong><span><code>linear</code> follows a handle through branches and a loop.</span></a><a href="{{ site.sourceUrl }}/tree/main/examples/graph"><strong>How can cyclic data be safe?</strong><span><code>graph</code> builds an arena graph with references and capabilities.</span></a><a href="{{ site.sourceUrl }}/tree/main/examples/thread_sum"><strong>What moves into a thread?</strong><span><code>thread_sum</code> transfers owned buffers into closures.</span></a><a href="{{ site.sourceUrl }}/tree/main/examples/traits"><strong>How does generic dispatch work?</strong><span><code>traits</code> shows bounds and statically resolved instances.</span></a></div><p class="overview-more"><a href="/language/">Language tour</a> · <a href="/resources/">Source map and further reading</a> · <a href="{{ site.sourceUrl }}/blob/main/examples/README.md">All examples ↗</a></p></section>
+</div>

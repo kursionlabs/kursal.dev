@@ -9,9 +9,12 @@
   --accent: #0CF2FF;
   --link: #0CF2FF;
   --krayon: #7157FF;
-  --border: #46516A;
+  --border: #3A3F58;
+  --accent-hover: #8AF9FF;
   --code-bg: #1B1D2E;
   --code-ink: #B6CAD9;
+  --inline-bg: #1B1D2E;
+  --hover: #0CF2FF1A;
   --ink: var(--text);
   --muted: var(--muted-text);
   --paper: var(--canvas);
@@ -21,8 +24,8 @@
   --lime: var(--accent);
   --line: var(--border);
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-  --display: 'Inter', Arial, sans-serif;
-  --body: 'Inter', Arial, sans-serif;
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --body: 'Space Grotesk', system-ui, sans-serif;
 }
 
 :root[data-theme="light"] {
@@ -32,10 +35,13 @@
   --surface-raised: #E5EDF4;
   --text: #1B1D2E;
   --muted-text: #526075;
-  --accent: #009EB0;
-  --link: #007889;
-  --krayon: #6246FA;
-  --border: #CAD5E2;
+  --accent: #00707C;
+  --accent-hover: #005761;
+  --link: #00707C;
+  --krayon: #5B3FE6;
+  --border: #D3DEE7;
+  --inline-bg: #DDE6EE;
+  --hover: #00707C1A;
 }
 
 :lang(ar) { font-family: 'Noto Sans Arabic', 'Inter', sans-serif; }
@@ -230,3 +236,61 @@ body { background: var(--canvas); color: var(--text); }
   .overview-example-grid { grid-template-columns: 1fr; }
   .overview-code pre { font-size: 13px; }
 }
+
+.welcome {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, .9fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6rem);
+  padding-block: clamp(3rem, 8vw, 7rem);
+}
+.welcome h1 { margin: 0; font: 700 clamp(3rem, 6vw, 5.8rem)/1.04 var(--display); letter-spacing: -.065em; }
+.welcome h1 em { display: block; font-style: normal; color: var(--accent); }
+.welcome-intro p { max-width: 48ch; margin-block: 1.5rem; font-size: 1.125rem; color: var(--muted-text); }
+.welcome-example { margin: 0; overflow: hidden; border: 1px solid var(--border); border-radius: .6rem; background: var(--code-bg); color: var(--code-ink); }
+.welcome-example figcaption, .welcome-example samp { display: block; padding: .9rem 1.4rem; font: .875rem var(--mono); }
+.welcome-example figcaption { border-bottom: 1px solid #46516a; }
+.welcome-example samp { border-top: 1px solid #46516a; color: #F2F6FA; }
+.welcome-example pre { margin: 0; padding: 1.5rem; overflow: auto; font: 1rem/1.8 var(--mono); }
+.welcome-reading { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: clamp(2rem,6vw,6rem); }
+.welcome-reading, .welcome-projects { border-top: 1px solid var(--border); padding-block: 3rem; }
+.welcome-reading h2, .welcome-projects h2 { margin: 0; font: 650 clamp(1.55rem,3vw,2.3rem)/1.18 var(--display); letter-spacing: -.04em; }
+.welcome-reading p, .welcome-projects p { max-width: 68ch; color: var(--muted-text); }
+.welcome-reading a, .welcome-projects a { color: var(--link); text-underline-offset: .2em; }
+@media (max-width: 760px) {
+  .welcome, .welcome-reading { grid-template-columns: minmax(0,1fr); }
+}
+
+
+/* Aligned with the Kursal docs theme (kursal/docs/theme): the masthead stays dark in both modes,
+   with an inset accent rule and the logo glyph in a cyan tile. */
+body { font-family: var(--body); }
+.site-header { background: #1B1D2E; border-bottom: 1px solid #3A3F58; box-shadow: inset 0 -2px 0 #0CF2FF; color: #F2F6FA; }
+.brand { gap: .55rem; color: #F2F6FA; font-size: 1.2rem; font-weight: 700; letter-spacing: 0; }
+.brand-mark { width: 2rem; height: 2rem; border: 0; border-radius: .55rem; background: #0CF2FF; }
+.brand-glyph { display: block; width: 1.45rem; height: 1.45rem; background: #1B1D2E; -webkit-mask: url("/assets/logo.svg") center / contain no-repeat; mask: url("/assets/logo.svg") center / contain no-repeat; }
+.brand-ecosystem { color: #B6CAD9; }
+.site-nav a { color: #B6CAD9; }
+.site-nav a:hover, .site-nav a[aria-current] { color: #0CF2FF; }
+.site-nav .nav-source { border-color: #3A3F58; color: #F2F6FA; }
+.theme-toggle { border-color: #3A3F58; background: transparent; color: #F2F6FA; }
+.theme-toggle:hover { background: #0CF2FF1A; border-color: #0CF2FF; color: #0CF2FF; }
+.site-footer { background: transparent; border-top: 1px solid var(--border); }
+.page-hero { background: var(--surface); border-bottom: 1px solid var(--border); }
+.page-hero h1::after, .h-head h2::after { content: ''; display: block; width: 3.5rem; height: 4px; margin-top: .8rem; border-radius: 1rem; background: linear-gradient(90deg, #0CF2FF, #7157FF); }
+a:hover { color: var(--accent-hover); }
+.tok-string, .tok-number { color: #C9BFFF; }
+.tok-keyword { font-weight: 700; }
+.tok-comment { font-style: italic; }
+.page-sidebar .sidebar-label { margin-top: 1.2rem; }
+.page-sidebar .sidebar-label:first-child { margin-top: 0; }
+.site-nav { margin-left: auto; margin-right: 1rem; gap: 1.4rem; font-size: 15px; }
+@media (max-width: 1050px) { .site-nav .nav-source { display: inline-block; } }
+@media (max-width: 700px) { .site-nav { margin: 0; } .site-nav .nav-source { display: inline-block; } }
+
+/* Light mode follows the docs tokens exactly: teal accent rule, inline code tint, hover tint. */
+.site-header { box-shadow: inset 0 -2px 0 var(--accent); }
+.prose code:not(pre code) { background: var(--inline-bg); }
+.page-sidebar a:hover, .page-sidebar a[aria-current] { background: var(--hover); }
+:root[data-theme="light"] .h-primary, :root[data-theme="light"] .button-primary { color: #FFFFFF; }
+:root[data-theme="light"] .h-primary:hover { filter: none; background: var(--accent-hover); border-color: var(--accent-hover); }

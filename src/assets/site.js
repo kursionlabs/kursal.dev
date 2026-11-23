@@ -1,5 +1,5 @@
 document.querySelectorAll('pre').forEach((pre) => {
-  if (pre.closest('.hero-visual, .example-panel, .overview-code, .overview-compiler')) return;
+  if (pre.closest('.welcome-example, .hero-visual, .example-panel, .overview-code, .overview-compiler, .home')) return;
   const button = document.createElement('button');
   button.className = 'copy-button';
   button.type = 'button';

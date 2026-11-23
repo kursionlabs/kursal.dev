@@ -1,14 +1,18 @@
 +++
 layout = "page.html"
-title = "Build and run"
-eyebrow = "Toolchain"
-intro = "Bootstrap the compiler, compile a package, and inspect its output."
+title = "Get started"
+eyebrow = "Learn"
+intro = "Build the compiler, run hello world, and look at the C it writes. About ten minutes, most of it waiting for a C compiler."
 permalink = "/start/"
 +++
 
-## Requirements
+Kursal is pre-1.0 and currently builds on **Linux** only. Expect rough edges and breaking changes. If you want to see how the pieces fit before installing anything, the [ideas](/ideas/) and the [walkthroughs](/walkthroughs/) don't need a toolchain.
 
-The current toolchain targets **Linux**. You need [uv](https://docs.astral.sh/uv/) for Python 3.12 and Clang, or another C compiler set through `KURSAL_CC`. Clone the [Kursal source repository](https://github.com/kursionlabs/kursal) and run these commands from its root.
+## What you need
+
+- [uv](https://docs.astral.sh/uv/), which supplies Python 3.12. The first bootstrap stage runs the Python reference compiler.
+- Clang, or another C compiler named in `KURSAL_CC`. Kursal emits C, and your C compiler does the code generation.
+- The [Kursal repository](https://github.com/kursionlabs/kursal). Run everything below from its root.
 
 ## Build the compiler
 
@@ -16,16 +20,14 @@ The current toolchain targets **Linux**. You need [uv](https://docs.astral.sh/uv
 scripts/bootstrap.sh
 ```
 
-This takes a few minutes. The Python reference compiler builds Kursal's compiler; that compiler then builds itself into `bin/kursal`.
+This takes a few minutes. The Python reference compiler builds Kursal's own compiler once, then that compiler builds itself into `bin/kursal`, and clang compiles the generated C each time.
 
-## Compile and run hello world
+## Run hello world
 
 ```sh
 bin/kursal build examples/hello -o /tmp/hello
 /tmp/hello
 ```
-
-You should see:
 
 ```text
 Hello, world!
@@ -41,22 +43,37 @@ fn main() {
 }
 ```
 
-## Inspect what the compiler emits
+## Look at what the compiler wrote
 
-`kursal build` writes a C companion next to the executable: with the command above, it writes `/tmp/hello.c`. To print generated C without compiling a binary, use:
+`kursal build` leaves a C file next to the executable. With the command above that is `/tmp/hello.c`. To print the generated C without building a binary:
 
 ```sh
 bin/kursal build examples/hello --emit-c
 ```
 
-The compiler can also print intermediate stages, including resolved names, inferred types, lowered KURS, and readable KURS. Run `bin/kursal --help` for the current commands. [Compiler architecture](/compiler/) explains what each stage represents.
+The compiler can also print its intermediate stages: resolved names, inferred types, lowered KURS, and readable KURS. Run `bin/kursal --help` for the current commands. The [compiler page](/compiler/) explains what each stage is.
 
-## Package structure
+## Try breaking something
 
-`examples/hello` has a `kur.toml` manifest naming its source root, executable entry, and `std` dependency. Each `.kur` file under the source root is a module; this package's `lib.kur` defines `main`. For packages with more files and an exported facade, see [`examples/modules`](https://github.com/kursionlabs/kursal/tree/main/examples/modules).
+The repository keeps programs the compiler must reject in `examples/bad/`. Build one and read the error:
 
-## What to read next
+```sh
+bin/kursal build examples/bad/leaked_handle.kur
+```
 
-Read `examples/greet` to see input and formatted output, then `examples/linear` for a type that must be consumed. The [examples guide](https://github.com/kursionlabs/kursal/blob/main/examples/README.md) orders the rest by topic and shows how to build each package.
+```text
+…/examples/bad/leaked_handle.kur:14:5: leaked_handle::leaks_a_handle: linear value 'h' is not consumed before return
+  14 |     let h = make_handle(id);
+```
 
-Continue to the [design model](/design/) for value and access rules, or the [language tour](/language/) for syntax seen in the examples.
+The build exits with status 1 and writes no executable. The path is shown shortened here, and the compiler prints a caret under the source line. Errors have the form `FILE:LINE:COL: message`. Each file in `examples/bad/` fails with the message quoted in its own comments. Then open `examples/linear` for the version that gets it right.
+
+## What a package looks like
+
+`examples/hello` has a `kur.toml` naming its source root, its entry function, and its `std` dependency. Every `.kur` file under the source root is a module, and this package's `lib.kur` defines `main`. For several files and an exported facade, see [`examples/modules`](https://github.com/kursionlabs/kursal/tree/main/examples/modules). There is no package manager or registry yet: a package is a directory with a `kur.toml`.
+
+## Where next
+
+- [A tour of the language](/tour/) walks through the syntax you will meet in the examples.
+- [The ideas](/ideas/) explains why the rules are shaped the way they are.
+- [Walkthroughs](/walkthroughs/) follow single programs and show each decision the compiler checks.
