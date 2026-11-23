@@ -6,7 +6,7 @@ intro = "Every feature so far lowers to a small core language. Its checker looks
 permalink = "/guide/kurs/"
 +++
 
-Everything in the last seven steps is surface language. The compiler lowers it to **KURS**, a small core, and a separate checker for that core decides whether the program is accepted. Kursal grew out of KURS, not the other way round.
+Everything in the last seven steps is surface language. The compiler lowers it to **KURS**, a small core, and a separate checker for that core decides whether the program is accepted. KURS came first: it was designed, and programs were written in it by hand, before the surface language existed. Kursal was built on top of it.
 
 Here is a library with no `std`:
 
@@ -98,7 +98,7 @@ Be careful with the word "proven".
 - The fuzzer tests; it does not prove.
 - Blocks can in principle be checked independently, but parallel checking is not implemented. And KURS grows roughly quadratically with the size of a function.
 
-For the surface language, the same idea comes with limits. Place state flows through a function, so checking is per function, not per block. Trait instances are program-wide. And a type parameter hides linearity, as step 2 said. So a surface-language function takes more reading than a KURS block does. The core is what you can run in your head, and the surface is what grew out of it.
+For the surface language, the same idea comes with limits. Place state flows through a function, so checking is per function, not per block. Trait instances are program-wide. And a type parameter hides linearity, as step 2 said. So a surface-language function takes more reading than a KURS block does. The core is what you can run in your head, and the surface is what was built on top of it.
 
 ## Where to go next
 

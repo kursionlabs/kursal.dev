@@ -10,7 +10,7 @@ This guide builds the language's central ideas in the order you would need them.
 
 Every program on these pages was built and run with the Kursal compiler, and the error messages are real ones. Where a snippet is trimmed, it says so. Paths in messages are shortened to `lib.kur:line:col`.
 
-The guide borrows its method from [Austral](https://austral-lang.org/)'s tutorial, which introduces linear types by need, one at a time. Kursal's design owes a lot to it.
+The guide borrows its method from [Austral](https://austral-lang.org/)'s tutorial, which introduces linear types by need, one at a time. Austral was the spark for Kursal: it showed that you don't have to boil the ocean to get safety.
 
 ## The steps
 
