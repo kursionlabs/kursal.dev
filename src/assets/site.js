@@ -14,7 +14,10 @@ document.querySelectorAll('pre').forEach((pre) => {
       button.textContent = 'Select text';
     }
   });
-  pre.append(button);
+  const wrap = document.createElement('div');
+  wrap.className = 'code-wrap';
+  pre.replaceWith(wrap);
+  wrap.append(pre, button);
 });
 
 const themeToggle = document.querySelector('[data-theme-toggle]');

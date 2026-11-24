@@ -200,7 +200,9 @@ h3 + p, h2 + p { margin-top: 0; }
 .prose li { margin-bottom: .45em; padding-left: .2rem; }
 .prose strong { font-weight: 650; }
 .prose code:not(pre code) { padding: .08em .35em; border: 1px solid var(--rule); border-radius: 3px; background: var(--panel); font-size: .84em; }
-.prose pre { position: relative; margin: 1.5rem 0; padding: 1rem 1.25rem; overflow: auto; border: 1px solid var(--rule-strong); border-radius: 4px; background: var(--panel); color: var(--code-ink); font: 400 .88rem/1.7 var(--mono); }
+.code-wrap { position: relative; margin: 1.5rem 0; }
+.code-wrap pre { margin: 0 !important; }
+.prose pre { margin: 1.5rem 0; padding: 1rem 1.25rem; overflow: auto; border: 1px solid var(--rule-strong); border-radius: 4px; background: var(--panel); color: var(--code-ink); font: 400 .88rem/1.7 var(--mono); }
 .prose pre code { font: inherit; }
 .prose blockquote { margin: 1.5rem 0; padding-left: 1.1rem; border-left: 3px solid var(--rule-strong); color: var(--slate); }
 .prose table { width: 100%; margin: 1.5rem 0; border-collapse: collapse; font: 400 .93rem/1.5 var(--sans); }
