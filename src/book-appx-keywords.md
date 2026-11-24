@@ -25,8 +25,8 @@ let      var      return   pack     true     false    self     _
 - `self` is a keyword, not a name. It can only be a method's first parameter (`self`, `&self`,
   `self: T`), a path in an expression (`self.n`), or the pattern of a rebinding, `var self = self;`.
 - `_` is the wildcard. It can be a pattern (`let _ = ...`), the last match arm (`_ =>`), a binder in
-  a case (`Rect(w, _)`), or an
-  unnamed place slot in a function type (`&_: C`).
+  a case (`Rect(w, _)`), an inferred type argument in an expression (`first[_, u8](7u32, 1)`; not in a
+  type annotation), or an unnamed place slot in a function type (`&_: C`).
 - A keyword never takes the `!` of a linear type's name. `return!x` reads as `return !x`.
 - These are ordinary names, not keywords: `package` (the root of the current package in a path),
   `Self` (a conventional trait parameter name), the primitive type names, and `Copy`, `Exposed`,

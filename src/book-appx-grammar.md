@@ -39,20 +39,21 @@ TUPLE_INDEX = "." digits ;
 
 ```ebnf
 file        = { item } ;
-item        = [ forall ] item_body ;
+item        = ( "use" | "export" ) use_tree ";"
+            | const
+            | [ forall ] item_body ;       (* forall before use or const: "`forall` comes before a struct, tuple, enum, function, impl, trait or instance" (later) *)
 forall      = "forall" fparam { "," fparam } [ "->" fparam { "," fparam } ]
               [ "where" premise { "," premise } ] "." ;
 fparam      = NAME | BRAND ;
 premise     = path "[" type_args "]" ;
 
-item_body   = ( "use" | "export" ) use_tree ";"
-            | aggregate
+item_body   = aggregate
             | [ "unsafe" ] fn_decl
             | extern
             | "impl" type "{" { [ forall ] ( const | fn_decl ) } "}"
-            | "trait" NAME "{" { fn_decl } "}"
+            | "trait" NAME "{" { fn_decl } "}"              (* each method is a signature ending in ";": a body is (later) *)
             | "instance" type "{" { fn_decl } "}"
-            | const ;
+            ;
             (* "module": a reserved keyword. "unsafe instance": "`unsafe` marks a function, not an instance" *)
 
 use_tree    = NAME { "::" NAME } [ "::" ( "*" | "{" list(use_tree) "}" ) ] [ "as" NAME ] ;
@@ -64,7 +65,7 @@ aggregate   = [ "exposed" [ "(" path ")" ] ]
 field       = NAME ":" type ;
 variant     = NAME [ "(" type { "," type } [ "," ] ")" ] ;
 
-fn_decl     = [ "unsafe" ] "fn" NAME "(" params ")" [ "->" type ] ( ";" | block ) ;
+fn_decl     = [ "unsafe" ] "fn" NAME "(" params ")" [ "->" type ] ( ";" | block ) ;                 (* ";" only in a trait, or in an extern: elsewhere "a function needs a body" (later) *)
 params      = [ param { "," param } [ "," ] ] ;             (* "self" only as the first *)
 param       = [ "&" ] ( "self" [ ":" type ] | NAME ":" ptype ) ;
               (* a trait's or instance's method writes "self: T": "parameter self needs a type" (later) *)
@@ -94,7 +95,7 @@ ptype       = type
 slot        = "&" ( NAME | "_" ) ":" type                   (* a place slot *)
             | ptype ;
 type_args   = targ { "," targ } [ "->" targ { "," targ } ] [ "," ] ;
-targ        = BRAND | type ;
+targ        = BRAND | "_" | type ;                          (* "_" outside an expression's path: (later) *)
 brands      = BRAND { "," BRAND } "." ;
 path        = NAME { "::" NAME } ;
 ```
@@ -189,6 +190,12 @@ Each case below was built, and each is rejected after parsing with the message s
 | `extern "system" fn ...` | `the only extern ABI is "C"` |
 | `forall T.` before an `extern` | `extern id takes no type or brand parameters` |
 | an extern's place, zero-size or safe-fn parameter, or its checked-only, enum or zero-size linear result | the rule's message, at the parameter or result |
+| `fn f() -> i32;` outside a trait or extern | `a function needs a body; only a trait method or an extern is a signature` |
+| `trait Show { fn show(self) -> i32 { 0 } }` | `a trait method is a signature; its body belongs in each instance` |
+| `forall T. const X: i32 = 0;` | ``` `forall` comes before a struct, tuple, enum, function, impl, trait or instance ``` |
+| `impl A { forall T. const C: i32 = 0; }` | ``` in an impl, `forall` comes before a method ``` |
+| `let x: Option[_] = ...` | `_ stands for a type argument only in an expression, where inference fills it in` |
+| `*p = 1u8;` | ``a store through a raw pointer is written `unsafe *p = v;` `` |
 | `fn area(self) -> Out;` in a trait or instance | `parameter self needs a type` |
 | `const ORIGIN: Point = Point.{ x: 0 };` | `not a constant expression` |
 | `[u8; LIMIT as usize]` | `an array length cannot use arithmetic on usize or isize` |
