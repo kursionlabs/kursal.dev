@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "guide"
 title = "unsafe as a stated contract"
 eyebrow = "Guide · 6 of 8"
 intro = "Call C's malloc and free, read raw memory, and say out loud what you are promising."

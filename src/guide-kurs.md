@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "guide"
 title = "The checker you can run in your head"
 eyebrow = "Guide · 8 of 8"
 intro = "Every feature so far lowers to a small core language. Its checker looks at one block at a time."

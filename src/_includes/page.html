@@ -10,10 +10,14 @@ layout = "base.html"
 </div>
 <div class="shell content-grid">
   <aside class="page-sidebar" aria-label="Section navigation">
-    <span class="sidebar-label">Learn</span>
-    <a href="/start/" {% if page.url == '/start/' %}aria-current="page"{% endif %}>Quick start</a>
-    <a href="/tour/" {% if page.url == '/tour/' %}aria-current="page"{% endif %}>Language tour</a>
-    <a href="/walkthroughs/" {% if page.url == '/walkthroughs/' %}aria-current="page"{% endif %}>Walkthroughs</a>
+    {% if page.section == "start" %}
+    <span class="sidebar-label">Quick start</span>
+    <a href="/start/" {% if page.url == '/start/' %}aria-current="page"{% endif %}>Build and run hello</a>
+    <span class="sidebar-label">Next</span>
+    <a href="/guide/" {% if page.url == '/guide/' %}aria-current="page"{% endif %}>Quick guide</a>
+    <a href="/book/" {% if page.url == '/book/' %}aria-current="page"{% endif %}>The book</a>
+    {% endif %}
+    {% if page.section == "guide" %}
     <span class="sidebar-label">Quick guide</span>
     <a href="/guide/" {% if page.url == '/guide/' %}aria-current="page"{% endif %}>Start here</a>
     <a href="/guide/handles/" {% if page.url == '/guide/handles/' %}aria-current="page"{% endif %}>1 · A handle is a number</a>
@@ -24,6 +28,8 @@ layout = "base.html"
     <a href="/guide/unsafe/" {% if page.url == '/guide/unsafe/' %}aria-current="page"{% endif %}>6 · unsafe as a contract</a>
     <a href="/guide/resource/" {% if page.url == '/guide/resource/' %}aria-current="page"{% endif %}>7 · Your own resource</a>
     <a href="/guide/kurs/" {% if page.url == '/guide/kurs/' %}aria-current="page"{% endif %}>8 · The core checker</a>
+    {% endif %}
+    {% if page.section == "book" %}
     <span class="sidebar-label">Book</span>
     <a href="/book/" {% if page.url == '/book/' %}aria-current="page"{% endif %}>Contents</a>
     <a href="/book/start/" {% if page.url == '/book/start/' %}aria-current="page"{% endif %}>1 · Getting started</a>
@@ -37,13 +43,18 @@ layout = "base.html"
     <a href="/book/closures/" {% if page.url == '/book/closures/' %}aria-current="page"{% endif %}>9 · Closures and function values</a>
     <a href="/book/iteration/" {% if page.url == '/book/iteration/' %}aria-current="page"{% endif %}>10 · for and f-strings</a>
     <a href="/book/modules/" {% if page.url == '/book/modules/' %}aria-current="page"{% endif %}>11 · Modules, packages and encapsulation</a>
-    <span class="sidebar-label">Understand</span>
+    {% endif %}
+    {% if page.section == "more" %}
+    <span class="sidebar-label">About Kursal</span>
     <a href="/why/" {% if page.url == '/why/' %}aria-current="page"{% endif %}>Why kursal</a>
     <a href="/ideas/" {% if page.url == '/ideas/' %}aria-current="page"{% endif %}>What each idea catches</a>
     <a href="/compiler/" {% if page.url == '/compiler/' %}aria-current="page"{% endif %}>The compiler</a>
     <a href="/story/" {% if page.url == '/story/' %}aria-current="page"{% endif %}>How Kursal came to be</a>
-    <span class="sidebar-label">Reference</span>
-    <a href="/source/" {% if page.url == '/source/' %}aria-current="page"{% endif %}>Source map</a>
+        <a href="/source/" {% if page.url == '/source/' %}aria-current="page"{% endif %}>Source map</a>
+      <span class="sidebar-label">Older pages</span>
+    <a href="/tour/" {% if page.url == '/tour/' %}aria-current="page"{% endif %}>Language tour</a>
+    <a href="/walkthroughs/" {% if page.url == '/walkthroughs/' %}aria-current="page"{% endif %}>Walkthroughs</a>
+    {% endif %}
   </aside>
   <article class="prose">{{ content | safe }}</article>
 </div>

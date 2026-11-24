@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Values and operators"
 eyebrow = "Book · Part 1 · Chapter 2"
 intro = "Numbers, bytes, strings, tuples and arrays, and the operators that combine them. Kursal converts nothing for you."

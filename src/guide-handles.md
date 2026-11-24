@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "guide"
 title = "A handle is a number"
 eyebrow = "Guide · 1 of 8"
 intro = "A C-style handle has to be closed exactly once. Nothing in the program says so."

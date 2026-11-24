@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "guide"
 title = "A graph"
 eyebrow = "Guide · 4 of 8"
 intro = "A cyclic graph needs pointers you can copy. Brands and capabilities decide who may use them."

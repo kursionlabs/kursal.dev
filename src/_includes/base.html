@@ -19,7 +19,9 @@
       <div class="shell header-inner">
         <a class="brand" href="/" aria-label="Kursal home"><span class="brand-mark" aria-hidden="true"></span><span>kursal</span></a>
         <nav class="site-nav" aria-label="Main navigation">
-          <a href="/start/" {% if page.url == '/' %}{% else %}aria-current="page"{% endif %}>Guide</a>
+          <a href="/start/" {% if page.section == 'start' %}aria-current="page"{% endif %}>Quick start</a>
+          <a href="/guide/" {% if page.section == 'guide' %}aria-current="page"{% endif %}>Guide</a>
+          <a href="/book/" {% if page.section == 'book' %}aria-current="page"{% endif %}>Book</a>
           <a class="nav-source" href="{{ site.sourceUrl }}">Source</a>
         </nav>
         <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">

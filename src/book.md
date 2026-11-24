@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "The Kursal book"
 eyebrow = "Layer 3 of 3"
 intro = "The whole language, in the order you need it. Part 1 is the everyday language. Part 2, on places, brands and unsafe, is still being written."

@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Structs, enums and match"
 eyebrow = "Book · Part 1 · Chapter 4"
 intro = "Three ways to declare data, one way to build it, and match to take it apart."

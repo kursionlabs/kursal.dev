@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "more"
 title = "How Kursal came to be"
 eyebrow = "Understand"
 intro = "Almost two years of reading, one frustration, and a handful of decisions we reversed."

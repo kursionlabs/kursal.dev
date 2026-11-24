@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "more"
 title = "Why kursal"
 eyebrow = "Understand"
 intro = "The case for a smaller checker, and an honest account of what it costs."

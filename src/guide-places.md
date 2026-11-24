@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "guide"
 title = "Looking without consuming"
 eyebrow = "Guide · 3 of 8"
 intro = "Ask a handle where it is, or move it along, without closing it."

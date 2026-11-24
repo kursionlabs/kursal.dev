@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Option, Result and ?"
 eyebrow = "Book · Part 1 · Chapter 8"
 intro = "Absence and failure are ordinary enums. The ? operator hands them up the call stack without hiding where."

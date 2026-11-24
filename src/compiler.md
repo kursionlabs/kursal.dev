@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "more"
 title = "The compiler"
 eyebrow = "Understand"
 intro = "Two compilers, one small core language, and a C backend. How a Kursal package becomes a checked program and then an executable."

@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Closures and function values"
 eyebrow = "Book · Part 1 · Chapter 9"
 intro = "A closure carries the values it captured. If one of them is linear, the closure is too."

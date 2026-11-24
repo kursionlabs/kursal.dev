@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Generics and traits"
 eyebrow = "Book · Part 1 · Chapter 7"
 intro = "forall for code that works on many types, traits for what those types can do. Every call is resolved from what you can see."

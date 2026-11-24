@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Modules, packages and encapsulation"
 eyebrow = "Book · Part 1 · Chapter 11"
 intro = "How code is split across files and packages, and who is allowed to build and take apart a type."

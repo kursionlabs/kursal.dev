@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "guide"
 title = "Your own resource"
 eyebrow = "Guide · 7 of 8"
 intro = "Wrap a heap counter once, behind a module, so every safe caller is correct."

@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "more"
 title = "Walkthroughs"
 eyebrow = "Learn"
 intro = "Three small programs, followed one decision at a time. Each shows what the compiler checks and why it is checkable from where you are reading."

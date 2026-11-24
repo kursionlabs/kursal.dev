@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Linear types"
 eyebrow = "Book · Part 1 · Chapter 6"
 intro = "A type whose name ends in ! has to be used exactly once, on every path through the function."

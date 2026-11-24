@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Getting started"
 eyebrow = "Book · Part 1 · Chapter 1"
 intro = "A package is a directory with a kur.toml. Every .kur file in it is a module, and the entry is a function called main."

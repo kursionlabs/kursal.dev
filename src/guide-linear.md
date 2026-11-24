@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "guide"
 title = "Linear types"
 eyebrow = "Guide · 2 of 8"
 intro = "Put a ! on the type and the same handle must be used exactly once on every path."

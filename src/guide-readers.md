@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "guide"
 title = "Many readers"
 eyebrow = "Guide · 5 of 8"
 intro = "Two walks read the shared graph, then the program writes to it again."

@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "more"
 title = "Follow a buffer"
 eyebrow = "Walkthrough"
 intro = "A program reads a name and prints a greeting. Watch who is responsible for the bytes at every step."

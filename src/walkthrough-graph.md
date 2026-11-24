@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "more"
 title = "Who owns a graph that points back at itself?"
 eyebrow = "Walkthrough"
 intro = "If every edge owned its destination, a cycle would make cleanup awkward. Here is how Kursal handles it without lifetimes, reference counts, or unsafe."

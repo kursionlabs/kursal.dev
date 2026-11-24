@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "more"
 title = "What each idea catches"
 eyebrow = "Understand"
 intro = "The compiler's actual messages, grouped by the idea that produces them, and how the ideas depend on one another."

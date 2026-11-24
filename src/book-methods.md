@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Methods"
 eyebrow = "Book · Part 1 · Chapter 5"
 intro = "An impl block attaches functions to a type. Whether a call reads the value or changes it is visible at the call site."

@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "for and f-strings"
 eyebrow = "Book · Part 1 · Chapter 10"
 intro = "Two pieces of syntax that are really calls to a trait: for calls Iterator, and an f-string calls Format."

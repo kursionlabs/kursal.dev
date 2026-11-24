@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "more"
 title = "A tour of the language"
 eyebrow = "Learn"
 intro = "The syntax you will meet in the examples and in the compiler's own source, with just enough explanation to read it."

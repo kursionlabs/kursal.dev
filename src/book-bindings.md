@@ -1,5 +1,6 @@
 +++
 layout = "page.html"
+section = "book"
 title = "Bindings and control flow"
 eyebrow = "Book · Part 1 · Chapter 3"
 intro = "let and var, functions, if as an expression, one kind of loop, and the type of something that never returns."
