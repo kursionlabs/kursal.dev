@@ -67,7 +67,7 @@ The first is for calling `read_u32(p)` bare, and the second for dereferencing `*
 Nothing checks that a contract is kept. [`lib/std/CONTRACTS.md`](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md) says it itself: a signature classification is not a proof of its implementation. `unsafe` is a way to **find** the places that need a human, and a place to **write down** what that human must be sure of.
 
 - `unsafe` marks one operation. There are no `unsafe { }` blocks.
-- Inside an `unsafe fn`, the operations need no marker of their own, so keep those bodies small.
+- Inside an `unsafe fn`, each unsafe operation still carries its own `unsafe`. The `unsafe fn` only says that callers take on an obligation.
 - Numeric `as` is safe. Pointer casts are not.
 - kursal is not memory safe by default. It is a language in which you can *build* a safe abstraction over this, which is the next step.
 

@@ -126,7 +126,7 @@ a pointer's target, `static_brand`, atomics, volatile accesses and fences. Each 
 own `unsafe` prefix. There are no unsafe blocks.
 
 **unsafe fn.** A function whose caller takes on an obligation, so calling it is an unsafe operation.
-The operations in its own body need no marker of their own.
+Its body is not an unsafe context: each unsafe operation in it carries its own `unsafe`.
 
 **Raw pointer.** `*T`, an address with no guarantees. `NonNull[T]` is the same, but never null.
 

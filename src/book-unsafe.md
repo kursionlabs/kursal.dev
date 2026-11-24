@@ -64,7 +64,7 @@ fn main() {
 - atomic operations, volatile accesses and fences
 - lending a pointer's target, `f(unsafe &*p)`
 
-A safe function may contain unsafe operations. Nothing in its signature says so, and that is the point of wrapping them once, as in chapter 14. Leave `unsafe` off an operation that needs it and the compiler stops you, naming the operation: calling an `unsafe fn` plainly gives `calling an unsafe function needs unsafe`, a bare `*p` gives `reading through a raw pointer needs unsafe`, and a bare `alloca[u32]()` gives `calling alloca needs unsafe`. Inside an `unsafe fn` the operations need no marker of their own: its whole body is the caller's obligation.
+A safe function may contain unsafe operations. Nothing in its signature says so, and that is the point of wrapping them once, as in chapter 14. Leave `unsafe` off an operation that needs it and the compiler stops you, naming the operation: calling an `unsafe fn` plainly gives `calling an unsafe function needs unsafe`, a bare `*p` gives `reading through a raw pointer needs unsafe`, and a bare `alloca[u32]()` gives `calling alloca needs unsafe`. This holds inside an `unsafe fn` too: its body is not an unsafe context, and every unsafe operation in it carries its own `unsafe`. `unsafe fn` only says that callers take on an obligation.
 
 A pointer's target can be lent to a place parameter, as `tick(unsafe &*c)` does, or to a `&self` method through the path form `Counter::tick(unsafe &*c)`. The dotted form, `(unsafe &*c).tick()`, is rejected:
 
