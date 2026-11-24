@@ -178,7 +178,7 @@ let g = Gear.{ teeth: 12 };
 ```
 
 ```text
-lib.kur:5:13: the shape of scope::engine::part::Gear is not exposed here
+lib.kur:5:13: the shape of demo::engine::part::Gear is not exposed here
   5 |     let g = Gear.{ teeth: 12 };
     |             ^
 ```

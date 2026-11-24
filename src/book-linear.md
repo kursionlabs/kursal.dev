@@ -107,7 +107,7 @@ fn main() {
 ```
 
 ```text
-lib.kur:5:5: lin_leak::main: linear value 't' is not consumed before return
+lib.kur:5:5: demo::main: linear value 't' is not consumed before return
   5 |     let t = issue(3);
     |     ^
 ```
@@ -123,7 +123,7 @@ fn main() {
 ```
 
 ```text
-lib.kur:7:20: lin_twice::main: value 't' has been moved or is only partially available
+lib.kur:7:20: demo::main: value 't' has been moved or is only partially available
   7 |     let b = redeem(t);
     |                    ^
 ```
@@ -140,7 +140,7 @@ fn early(t: Ticket!) -> u32 {
 ```
 
 ```text
-lib.kur:4:1: lin_early::early: linear value 't' is not consumed before return
+lib.kur:4:1: demo::early: linear value 't' is not consumed before return
 ```
 
 The compiler reports this one against the function, and the `return` that leaves `t` behind is the one inside the `if`.

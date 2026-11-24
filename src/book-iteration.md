@@ -84,7 +84,7 @@ instance Format[Point, W] {
 
 fn main() {
     let p = Point.{ x: 3, y: -4 };
-    let name = Buffer!::new().push_static("Ada");   // a linear, owned string
+    var name = Buffer!::new().push_static("Ada");   // a linear, owned string
     let line = f"{&name} is at {p}; braces: {{}}\n";
     name.destroy();
     print_buffer(line);

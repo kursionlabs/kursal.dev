@@ -73,7 +73,11 @@ lib.kur:33:5: tick takes its receiver by &
 
 That `&` is the point. When you read `a.tick()` you cannot tell whether `a` will change, so the language makes you write `&a.tick()` when it will. The call and the method's signature are all you need to judge it.
 
+Lending a place for change requires a `var`. `&a.tick()` is accepted only because `a` is a `var`, so a `let` binding never changes after it is bound.
+
 There is no `&mut` and no reference type. `&` appears at a call to say "lend this", and in a signature to say "this parameter is lent". Part 2 returns to it.
+
+An `impl` has to be in the same package as its type, so you cannot add inherent methods to another package's type. The primitive types get theirs from the core library. To give someone else's type new behaviour, write a trait (chapter 7).
 
 `self` can only be the first parameter. A generic type's methods are written in an `impl` with a `forall` in front, and chapter 7 shows that. There is no method privacy: every function in an `impl` can be called wherever the type's name is visible.
 

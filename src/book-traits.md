@@ -56,7 +56,7 @@ fn dup(x: T) -> (T, T) {
 ```
 
 ```text
-lib.kur:3:9: gen_copy::dup: value 'x' has been moved or is only partially available
+lib.kur:3:9: demo::dup: value 'x' has been moved or is only partially available
   3 |     (x, x)
     |         ^
 ```

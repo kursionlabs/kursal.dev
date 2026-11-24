@@ -84,7 +84,7 @@ let b = f(2);
 ```
 
 ```text
-lib.kur:8:13: clo_linear_twice::main: value 'f' has been moved or is only partially available
+lib.kur:8:13: demo::main: value 'f' has been moved or is only partially available
   8 |     let b = f(2);
     |             ^
 ```
@@ -98,7 +98,7 @@ fn apply_twice(f: closure(u32) -> u32, x: u32) -> u32 {
 ```
 
 ```text
-lib.kur:2:7: clo_twice::apply_twice: value 'f' has been moved or is only partially available
+lib.kur:2:7: demo::apply_twice: value 'f' has been moved or is only partially available
   2 |     f(f(x))
     |       ^
 ```
