@@ -3,28 +3,26 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#1B1D2E">
+    <meta name="theme-color" content="#F3F4F8">
     <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
     <meta property="og:type" content="website">
     <meta property="og:title" content="{% if page.title %}{{ page.title }} | Kursal{% else %}{{ site.title }}{% endif %}">
     <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
     <title>{% if page.title %}{{ page.title }} · {% endif %}Kursal</title>
-    <script>try{if(localStorage.getItem('kursal-theme')==='light')document.documentElement.dataset.theme='light'}catch(e){}</script>
+    <script>(function(){var d=document.documentElement,t=null;d.classList.add('js');try{t=localStorage.getItem('kursal-theme')}catch(e){}if(t!=='light'&&t!=='dark')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';d.dataset.theme=t})()</script>
     <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/assets/site.css">
-    <link rel="stylesheet" href="/assets/theme.css">
-    <link rel="stylesheet" href="/assets/home.css">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="shell header-inner">
-        <a class="brand" href="/" aria-label="Kursal home"><span class="brand-mark" aria-hidden="true"><span class="brand-glyph"></span></span><span>Kursal</span></a>
+        <a class="brand" href="/" aria-label="Kursal home"><span class="brand-mark" aria-hidden="true"></span><span>Kursal</span></a>
         <nav class="site-nav" aria-label="Main navigation">
           <a href="/start/" {% if page.url == '/' %}{% else %}aria-current="page"{% endif %}>Guide</a>
-          <a class="nav-source" href="{{ site.sourceUrl }}">Source <span aria-hidden="true">↗</span></a>
+          <a class="nav-source" href="{{ site.sourceUrl }}">Source</a>
         </nav>
-        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="false" title="Switch to light mode">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
           <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path></svg>
           <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.1A8.7 8.7 0 0 1 9.9 3.5 8.8 8.8 0 1 0 20.5 14.1Z"></path></svg>
         </button>
@@ -34,7 +32,7 @@
     <footer class="site-footer">
       <div class="shell footer-inner">
         <div><a class="footer-brand" href="/">kursal<span>.</span></a><p>Language, libraries, and compiler source.</p></div>
-        <div class="footer-links"><a href="/start/">Get started</a><a href="/tour/">Tour</a><a href="/ideas/">Ideas</a><a href="/walkthroughs/">Walkthroughs</a><a href="/compiler/">Compiler</a><a href="/story/">Story</a><a href="/source/">Source map</a><a href="{{ site.sourceUrl }}">Repository ↗</a></div>
+        <div class="footer-links"><a href="/start/">Get started</a><a href="/tour/">Tour</a><a href="/ideas/">Ideas</a><a href="/walkthroughs/">Walkthroughs</a><a href="/compiler/">Compiler</a><a href="/story/">Story</a><a href="/source/">Source map</a><a href="{{ site.sourceUrl }}">Repository</a></div>
         <p class="footer-note">Kursal is part of the Kursion ecosystem. This site is generated with <a href="https://github.com/kursionlabs/krayon">Krayon</a>, the Kursion static-site generator.</p>
       </div>
     </footer>
