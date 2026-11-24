@@ -18,7 +18,7 @@ The guide borrows its method from [Austral](https://austral-lang.org/)'s tutoria
 2. [Linear types](/guide/linear/): the same handle, now used exactly once on every path.
 3. [Looking without consuming](/guide/places/): asking a handle a question without giving it away.
 4. [A graph](/guide/graph/): pointers that can be copied, and a capability that controls who may read and write.
-5. [Many readers](/guide/readers/): several walks over a frozen graph, then the writer again.
+5. [Many readers](/guide/readers/): several walks over a shared graph, then the writer again.
 6. [`unsafe` as a stated contract](/guide/unsafe/): calling C, reading raw memory, and saying what you promise.
 7. [Your own resource](/guide/resource/): wrapping that contract once, so every safe caller is correct.
 8. [The checker you can run in your head](/guide/kurs/): what is actually checked, and how small the checker is.

@@ -2,7 +2,7 @@
 layout = "page.html"
 title = "Many readers"
 eyebrow = "Guide · 5 of 8"
-intro = "Two walks read the frozen graph, then the program writes to it again."
+intro = "Two walks read the shared graph, then the program writes to it again."
 permalink = "/guide/readers/"
 +++
 
