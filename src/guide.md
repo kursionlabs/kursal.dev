@@ -1,7 +1,7 @@
 +++
 layout = "page.html"
-title = "Kursal from first principles"
-eyebrow = "Guide"
+title = "Quick guide"
+eyebrow = "Layer 2 of 3"
 intro = "Eight short steps. Each starts with a job a program has to do, shows what goes wrong, and adds the one idea that fixes it."
 permalink = "/guide/"
 +++

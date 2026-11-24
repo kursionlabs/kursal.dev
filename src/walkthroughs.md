@@ -17,7 +17,7 @@ The [ideas page](/ideas/) says what the pieces are. These pages show them workin
 
 ## More examples, by topic
 
-The repository has 60+ example packages. The [examples guide](https://github.com/kursionlabs/kursal/blob/main/examples/README.md) lists every one with how to run it. Some places to start:
+The repository has a large set of example packages. The [examples guide](https://github.com/kursionlabs/kursal/blob/main/examples/README.md) lists every one with how to run it. Some places to start:
 
 | Topic | Read |
 | --- | --- |

@@ -33,9 +33,9 @@ Because each block's contract is complete, blocks can be checked independently. 
 
 <h2 id="testing">How we know the two agree</h2>
 
-The test suite compares the two implementations' verdicts, diagnostics, lowered KURS, and C output on the examples and on the compiler's own inputs. The self-hosted compiler also reaches a bootstrap fixpoint: stage 1 and stage 2 emit byte-identical C. 64 test groups pass, including valgrind on the self-build in the self-host test mode, which reports no errors and no leaks.
+The test suite compares the two implementations' verdicts, diagnostics, lowered KURS, and C output on the examples and on the compiler's own inputs. The self-hosted compiler also reaches a bootstrap fixpoint: stage 1 and stage 2 emit byte-identical C. The test suite also runs the self-build under valgrind.
 
-A fuzzer then generates and mutates programs to look for disagreements, crashes, and miscompiled C. Run against the front end and the checker together (21,156 generated and mutated programs plus about 150 targeted probes), it found seven distinct cases where the front end accepted something the checker rejected, including an aliasing hole in `f(&x, &x)`. All are fixed, and later campaigns of 9,056, 4,000, 3,576, and 3,000 programs found none. The [fuzzing notes](https://github.com/kursionlabs/kursal/blob/main/reference-compiler/README.md#fuzzing) say how to run a campaign.
+A fuzzer then generates and mutates programs to look for disagreements, crashes, and miscompiled C. Run against the front end and the checker together, it has found cases where the front end accepted something the checker rejected, including an aliasing hole in `f(&x, &x)`. All of them are fixed. The [fuzzing notes](https://github.com/kursionlabs/kursal/blob/main/reference-compiler/README.md#fuzzing) say how to run a campaign.
 
 None of this is a proof. A successful check says the program obeys KURS's rules. Unsafe operations and backend assumptions still rest on their stated contracts, which the standard library writes down in [CONTRACTS.md](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md).
 
@@ -45,7 +45,7 @@ The backend emits GNU C that Clang and GCC both accept. It gives C storage to li
 
 `kursal build` invokes `$KURSAL_CC` when it is set and `clang` otherwise, compiling the generated C and any package-declared C helpers into an executable. A freestanding target needs only `memcpy`, `memmove`, `memset`, and `memcmp`, but you bring your own runtime. The [backend notes](https://github.com/kursionlabs/kursal/blob/main/compiler/README.md#the-c-backend) explain the storage and call decisions, including where aliasing assumptions come from.
 
-C is also where most of the build time goes. Compiling the self-hosted compiler's roughly 24 MB of generated C takes about 36 seconds at `-O3`, against about 4.7 seconds for Kursal's own front end.
+C is also where most of the build time goes: compiling the generated C for the self-hosted compiler takes far longer than running Kursal's own front end.
 
 <h2 id="self-hosting">Bootstrap</h2>
 
@@ -57,22 +57,6 @@ The self-hosted compiler is the largest program written in Kursal, and it eats i
 
 <h2 id="status">Where it stands</h2>
 
-Kursal has not had a 1.0. Expect breaking changes. The `!` naming was one, and it was recent.
-
-**Works**
-
-- Two compilers, the Python reference and the self-hosted one, kept identical by differential tests.
-- 64 test groups pass, including valgrind on the self-build with 0 errors and 0 leaks.
-- A standard library with files, directories, processes, env, time, threads, `Vec`, `HashMap`, arena collections, a TOML 1.0 parser, and formatting.
-- `kursal doc`, an API doc generator, and 60+ examples.
-
-**Rough**
-
-- Linux/POSIX hosted only. Freestanding works if you bring your own runtime.
-- You need a C compiler, and clang dominates build time: about 36 s for the self-hosted compiler's ~24 MB of C at `-O3`, against about 4.7 s for the Kursal front end.
-- Diagnostics: name resolution reports up to 20 errors, but later stages stop at the first.
-- No item-level privacy yet, no trait-method `forall`, no superclass traits, and instances can't overlap: a generic instance such as `forall T. instance Describe[T]` rules out every more specific one.
-- No package manager or registry. Packages are directories with a `kur.toml`.
-- Core output grows roughly quadratically with function size, a price of complete block contracts.
+Kursal has not had a 1.0, and breaking changes are expected. It currently targets Linux and compiles through a C compiler. What is supported today, and what is known to be rough, changes quickly, so it lives in the [repository](https://github.com/kursionlabs/kursal) next to the code and the tests.
 
 Next: [where things live in the repository](/source/).

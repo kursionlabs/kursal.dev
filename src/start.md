@@ -1,7 +1,7 @@
 +++
 layout = "page.html"
-title = "Get started"
-eyebrow = "Learn"
+title = "Quick start"
+eyebrow = "Layer 1 of 3"
 intro = "Build the compiler, run hello world, and look at the C it writes. About ten minutes, most of it waiting for a C compiler."
 permalink = "/start/"
 +++

@@ -38,7 +38,7 @@ Kursal makes trades, and some are real costs.
 - **Lends can't be stored.** A lend lasts one call. It can't sit in a struct, be returned, or be captured. Structures whose parts point at each other go through arenas and brands, which asks more of you than a pointer does.
 - **More ceremony.** `!` in type names, `exists` to open a brand, explicit capabilities. It is visible on purpose, and it is more to write.
 - **Contracts aren't checked.** `unsafe` marks where a human must be sure. Nothing verifies that the promise is kept, and Kursal is not memory safe by default.
-- **It's young.** Linux only, no package manager, no 1.0, and breaking changes ahead. The [status list](/compiler/#status) has the details.
+- **It's young.** Linux only, no package manager, no 1.0, and breaking changes ahead. The [repository](https://github.com/kursionlabs/kursal) tracks what is supported today.
 
 ## Who it's for
 

@@ -102,7 +102,7 @@ For the surface language, the same idea comes with limits. Place state flows thr
 
 ## Where to go next
 
-- [Get started](/start/) to install it and build a first program.
+- [Quick start](/start/) to install it and build a first program.
 - [The language tour](/tour/) for the syntax in one pass.
 - [The compiler](/compiler/) for the two implementations and the bootstrap.
 - The repository's `reference-compiler/README.md` has the sections "KURS names" and "A worked example: Counter", and `examples/counter/generated/program.kurs` is a ready-made KURS program. `compiler/README.md` has "The language, for a compiler author".

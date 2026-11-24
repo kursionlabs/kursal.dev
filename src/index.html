@@ -9,7 +9,7 @@ description = "Kursal is a systems language that compiles to C. Linear types, le
   <div class="h-hero-copy">
     <h1>A checker small enough to run in your head.</h1>
     <p class="h-lede">Kursal is a systems language that compiles to C. A few ideas let a library say who owns a resource and who may touch it, and the compiler holds every caller to it. Each check looks at one function and the signatures it calls, so you can read code and know whether it will pass.</p>
-    <p class="h-actions"><a class="h-button h-primary" href="/guide/">Start the guide</a><a class="h-button" href="/start/">Build it in two commands</a></p>
+    <p class="h-actions"><a class="h-button h-primary" href="/guide/">Start the quick guide</a><a class="h-button" href="/start/">Build it in two commands</a></p>
     <p class="h-fine">Kursal is not memory safe by default. It gives libraries the tools to build resource-safe abstractions, and <code>unsafe</code> marks the layer underneath them.</p>
   </div>
   <div class="h-hero-demo">
@@ -97,7 +97,7 @@ description = "Kursal is a systems language that compiles to C. Linear types, le
   <header class="h-head"><h2>The checker is small, and it gets checked</h2></header>
   <p class="h-intro">Kursal lowers every program to KURS, a small core language in which each block states its complete contract: what is full, what is empty, what is lent. A separate checker re-verifies the KURS before any C is emitted. If the front end gets something wrong, the result is “front end accepted, checker rejected”, not a miscompiled program.</p>
   <div class="h-principles">
-    <div><h3>Fuzzed against itself</h3><p>21,156 generated and mutated programs, plus about 150 targeted probes, turned up 7 distinct cases where the front end accepted what the checker rejected. All were fixed, and later campaigns found none.</p></div>
+    <div><h3>Fuzzed against itself</h3><p>A fuzzer generates and mutates programs to find cases where the front end accepts something the checker rejects. Every case it has found has been fixed.</p></div>
     <div><h3>Two compilers</h3><p>A Python reference compiler and a self-hosted one, kept identical by differential tests. The self-hosted compiler reaches a bootstrap fixpoint: stage 1 and stage 2 emit byte-identical C.</p></div>
     <div><h3>A proof of the design</h3><p>The soundness of the core’s design is proven in Lean. The compilers are not proven, which is why the checker runs over their output instead.</p></div>
   </div>
@@ -106,7 +106,7 @@ description = "Kursal is a systems language that compiles to C. Linear types, le
 
 <section class="h-section shell">
   <header class="h-head"><h2>Young, and open about it</h2></header>
-  <p class="h-intro">Kursal has not had a 1.0, and breaking changes are expected. It targets Linux, compiles through a C compiler, and has no package manager yet. Some things you might expect are not there. <a href="/why/">Why kursal</a> says plainly what you give up, and the <a href="/compiler/#status">status list</a> tracks what works today.</p>
+  <p class="h-intro">Kursal has not had a 1.0, and breaking changes are expected. It targets Linux, compiles through a C compiler, and has no package manager yet. Some things you might expect are not there. <a href="/why/">Why kursal</a> says plainly what you give up, and the <a href="https://github.com/kursionlabs/kursal">repository</a> tracks what is supported today.</p>
 </section>
 
 <section class="h-section shell">
@@ -117,7 +117,7 @@ cd kursal
 scripts/bootstrap.sh
 bin/kursal build examples/hello -o /tmp/hello &amp;&amp; /tmp/hello</code></pre></div>
   <p class="h-caption">Needs Linux, <code>uv</code> (the first bootstrap stage runs the Python reference compiler), and clang or <code>$KURSAL_CC</code>. See the <a href="/start/">build guide</a>.</p>
-  <p class="h-actions"><a class="h-button h-primary" href="/guide/">Start the guide</a><a class="h-button" href="/tour/">Language tour</a><a class="h-button" href="https://github.com/kursionlabs/kursal">Source</a></p>
+  <p class="h-actions"><a class="h-button h-primary" href="/guide/">Start the quick guide</a><a class="h-button" href="/tour/">Language tour</a><a class="h-button" href="https://github.com/kursionlabs/kursal">Source</a></p>
 </section>
 
 </div>
