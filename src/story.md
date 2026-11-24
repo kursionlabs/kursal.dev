@@ -41,4 +41,4 @@ That is how KURS, the core language, and Kursal, the surface language, came to b
 
 The measure we keep coming back to is whether a person can look at a function and tell, easily, whether the checker will accept it. When a feature would make that depend on far-away code, it is a reason to cut the feature. That is why the `!` is visible, why lends are judged at the call site, and why a struct's shape can only be built inside its own module unless it is `exposed`.
 
-Kursal hasn't had a 1.0. Expect breaking changes. The `!` naming landed on 2026-11-16, and it is the most recent example. The [front page](/#status) has the honest list of what works and what doesn't.
+Kursal hasn't had a 1.0. Expect breaking changes. The `!` naming landed on 2026-11-16, and it is the most recent example. The [status list](/compiler/#status) has the honest list of what works and what doesn't.

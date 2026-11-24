@@ -93,6 +93,6 @@ Closures capture the values they mention. Capturing a linear value moves it into
 
 <h2 id="whats-missing">What's not there yet</h2>
 
-There's no item-level privacy, so internal helpers appear in API docs. Trait methods can't have their own `forall`, and there are no superclass traits. Instances can't overlap: a generic instance such as `forall T. instance Describe[T]` rules out every more specific instance of that trait. Closures can't name a locally opened brand. Allocation failure aborts when a collection grows, though fallible constructors such as `try_new` (`Owned!::try_new`, for one) exist. The [status list](/#status) has the rest.
+There's no item-level privacy, so internal helpers appear in API docs. Trait methods can't have their own `forall`, and there are no superclass traits. Instances can't overlap: a generic instance such as `forall T. instance Describe[T]` rules out every more specific instance of that trait. Closures can't name a locally opened brand. Allocation failure aborts when a collection grows, though fallible constructors such as `try_new` (`Owned!::try_new`, for one) exist. The [status list](/compiler/#status) has the rest.
 
 Once you can read the source, the [compiler page](/compiler/) shows what happens to it next.

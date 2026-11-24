@@ -55,4 +55,24 @@ From the repository root, `scripts/bootstrap.sh` has the Python compiler build t
 
 The self-hosted compiler is the largest program written in Kursal, and it eats its own cooking. It uses one arena per group of phases: front end, core checking, and backend. Each arena gets its own brand and capability. The core program is copied between groups so the earlier arena can be destroyed, and short-lived worklists and maps use owned collections that are freed after each walk. The [storage chapter](https://github.com/kursionlabs/kursal/blob/main/compiler/README.md#storage) documents the design.
 
+<h2 id="status">Where it stands</h2>
+
+Kursal has not had a 1.0. Expect breaking changes. The `!` naming was one, and it was recent.
+
+**Works**
+
+- Two compilers, the Python reference and the self-hosted one, kept identical by differential tests.
+- 64 test groups pass, including valgrind on the self-build with 0 errors and 0 leaks.
+- A standard library with files, directories, processes, env, time, threads, `Vec`, `HashMap`, arena collections, a TOML 1.0 parser, and formatting.
+- `kursal doc`, an API doc generator, and 60+ examples.
+
+**Rough**
+
+- Linux/POSIX hosted only. Freestanding works if you bring your own runtime.
+- You need a C compiler, and clang dominates build time: about 36 s for the self-hosted compiler's ~24 MB of C at `-O3`, against about 4.7 s for the Kursal front end.
+- Diagnostics: name resolution reports up to 20 errors, but later stages stop at the first.
+- No item-level privacy yet, no trait-method `forall`, no superclass traits, and instances can't overlap: a generic instance such as `forall T. instance Describe[T]` rules out every more specific one.
+- No package manager or registry. Packages are directories with a `kur.toml`.
+- Core output grows roughly quadratically with function size, a price of complete block contracts.
+
 Next: [where things live in the repository](/source/).

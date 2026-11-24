@@ -166,6 +166,17 @@ h3 + p, h2 + p { margin-top: 0; }
 .h-status > div:first-child li::before { border: 2px solid var(--settled); }
 .h-status > div:last-child li::before { border: 2px dashed var(--slate); }
 
+/* ---------- Code with notes in the margin ---------- */
+.mc { border: 1px solid var(--rule-strong); border-radius: 4px; background: var(--panel); overflow: hidden; }
+.mc-row { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: start; border-top: 1px dotted var(--rule); }
+.mc-row:first-child { border-top: 0; }
+.mc-row code { display: block; padding: .5rem 1rem; font: 400 .82rem/1.7 var(--mono); color: var(--code-ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+.mc-row p { margin: 0; padding: .5rem 1rem .5rem 1rem; border-left: 1px solid var(--rule); font: 400 .88rem/1.5 var(--sans); color: var(--slate); }
+.mc-row p:empty { border-left-color: transparent; }
+.mc-row p code { display: inline; padding: 0; font-size: .85em; color: var(--ink); white-space: normal; }
+.h-out-line { margin: 1rem 0 1.4rem; font: 500 .95rem var(--mono); }
+.h-out-line span { margin-right: .8rem; color: var(--slate); font: 400 .85rem var(--sans); }
+
 /* ---------- Code, shared ---------- */
 .h-code { border: 1px solid var(--rule-strong); border-radius: 4px; background: var(--panel); overflow: hidden; }
 .h-code-head { display: flex; justify-content: space-between; gap: 1rem; padding: .5rem 1rem; border-bottom: 1px solid var(--rule); background: var(--paper); font: 400 .8rem var(--mono); color: var(--slate); }
@@ -225,6 +236,8 @@ h3 + p, h2 + p { margin-top: 0; }
   .footer-inner { grid-template-columns: 1fr; }
 }
 @media (max-width: 40rem) {
+  .mc-row { grid-template-columns: 1fr; }
+  .mc-row p { border-left: 0; padding-top: 0; padding-bottom: .8rem; }
   .h-principles > div { grid-template-columns: 1fr; gap: .4rem; }
   .h-status { grid-template-columns: 1fr; }
   .ledger-key { display: none; }
