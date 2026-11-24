@@ -58,7 +58,7 @@ The compiler reads your program in a front end: parsing, name resolution, type i
 
 The front end is meant to reject a bad program first, with a message about your source. The core checker is a second line of defence, independent of the front end. Compiler testing counts "the front end accepted it and the checker rejected it" as a bug, and that is how holes like the `f(&x, &x)` overlap of chapter 12 were found.
 
-You can run the stages yourself. For the `swap_token` program of chapter 12:
+You can run the stages yourself. For the `swap_token` program of chapter 12, in a package directory `kursdemo` whose package is also named `kursdemo`:
 
 ```sh
 kursal lower kursdemo > prog.kurs
@@ -83,9 +83,9 @@ The diagnostics are the compiler's text and may be reworded. They are for readin
 
 ## What this does and does not claim
 
-Every program is re-checked in the core language by a checker independent of the front end, before C is emitted. A Lean proof covers the design of a restricted, single-threaded core, without atomics, volatile accesses, `NonNull` or extern callbacks. The compilers and the checker are not proven, and the checker is trusted code. Unsafe code and extern declarations carry obligations that are stated in [`CONTRACTS.md`](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md) and are not checked.
+Every program is re-checked in the core language by a checker independent of the front end, before C is emitted. A Lean proof covers the design of a restricted, single-threaded, value-only core, without place parameters, atomics, volatile accesses, `NonNull` or extern callbacks. The compilers and the checker are not proven, and the checker is trusted code. Unsafe code and extern declarations carry obligations that are stated in [`CONTRACTS.md`](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md) and are not checked.
 
-What kursal gives you is tools for building abstractions that are resource-safe, linearity, places, brands and capabilities, and a checker small enough that you can run it in your head. There is no whole-program analysis and no inference across function boundaries.
+What kursal gives you is tools for building abstractions that are resource-safe, linearity, places, brands and capabilities, and rules local enough that you can apply them by hand. There is no whole-program analysis and no inference across function boundaries.
 
 ## Check by hand
 

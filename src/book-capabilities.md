@@ -59,12 +59,12 @@ Read it as a protocol.
 
 While readers are out there is no writer, because the writer was consumed. The checker never reasons about data races. It sees a linear value that was handed over.
 
-Writing with a leaf fails because a reader has no write access. The compiler says that no instance of `Access` exists for the leaf's capability type. The error names the library trait and not the idea, and it says nothing about needing the writer. Read it as "this capability doesn't allow that".
+Writing with a leaf fails because a reader has no write access. `set` takes any context that lends the writer, which std expresses with its `Access` trait (`core::cap`), and a `Shared!` leaf is not such a context.
 
-Rejoining the wrong thing is an ordinary brand mismatch:
+Resuming from the wrong thing is an ordinary brand mismatch:
 
 ```kursal
-let tag = resume.resume(left);    // resume the writer from one leaf
+let tag = resume.resume(left);
 ```
 
 ```text

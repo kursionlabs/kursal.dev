@@ -7,7 +7,7 @@ intro = "A function can work on the caller's own variable without owning it and 
 permalink = "/book/places/"
 +++
 
-Part 1 used `&` twice without explaining it: `&a.tick()` in chapter 5, and `for x in &it` in chapter 10. This chapter is the whole story. A **place** is a variable, a field of one, or a parameter. To **lend** a place is to let a callee read and change it for the length of one call. The callee does not get a pointer it can keep. When the call returns, the place is the caller's again, with whatever the callee put in it.
+Part 1 used `&` twice without the whole story: `&a.tick()` in chapter 5, and `for x in &it` in chapter 10. This chapter is the whole story. A **place** is a variable, a field of one, or a parameter. To **lend** a place is to let a callee read and change it for the length of one call. The callee does not get a pointer it can keep. When the call returns, the place is the caller's again, with whatever the callee put in it.
 
 There is no reference type and no `&mut`. `&` appears in a signature to say "this parameter is lent", and at a call to say "I am lending this".
 
@@ -75,7 +75,7 @@ lib.kur:14:7: a is not a var; a lent place must be a var
      |       ^
 ```
 
-The numbers count the `Counter` declaration that comes first in each failing example in this chapter. The fix is `var a`. A by-value parameter is not a var either: `fn bump(c: Counter) { &c.tick() }` is rejected with `c is not a var`. Ask for a place with `&c: Counter` if the function needs to change the caller's value.
+The numbers count the declarations that come first in each failing example in this chapter: `Counter` for most of them, and `Token!` and `Slot!` for `take_token`. The fix is `var a`. A by-value parameter is not a var either: `fn bump(c: Counter) { &c.tick() }` is rejected with `c is not a var`. Ask for a place with `&c: Counter` if the function needs to change the caller's value.
 
 ## Lending is not storing
 
@@ -156,6 +156,7 @@ old 1, new 2, uses 1
 This is how a linear value can be looked at and changed without being handed over. The caller sees the place full again after the call. Leave the place empty and the function is rejected:
 
 ```kursal
+// Moves the slot out and never puts it back.
 fn take_token(&s: Slot!) -> Token! {
     let { token, uses } = s;
     token

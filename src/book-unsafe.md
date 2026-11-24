@@ -59,7 +59,7 @@ fn main() {
 - calling an `unsafe fn` or an `extern` function (chapter 16)
 - reading or writing through `*T`
 - `alloca`, which makes room in the current function's frame
-- a cast to or from a pointer, or any cast that reinterprets bits
+- a cast to or from a pointer (except `NonNull` to `*T`), or any cast that reinterprets bits
 - `unsafe static_brand()`
 - atomic operations, volatile accesses and fences
 - lending a pointer's target, `f(unsafe &*p)`
@@ -170,7 +170,7 @@ lib.kur:3:5: a raw read, write or alloca at T needs Sized[T]
 
 `as` between numbers is always safe and never needs `unsafe` (chapter 2). The other casts, which reinterpret bits, need it:
 
-- a pointer to or from a pointer, a `NonNull` or an integer
+- a pointer to or from a pointer or an integer, or a pointer to a `NonNull` (a `NonNull` back to `*T`, `n as *T`, needs no `unsafe`)
 - an *integer* to a plain struct of the same size: `unsafe (5u64 as Pair)` for a `Pair` of two `u32` fields compiles and gives a `Pair` whose first field is 5.
 
 A pointer does not cast straight to a struct. The compiler says an unsafe cast converts a pointer only to or from a pointer or an integer.
@@ -178,6 +178,13 @@ A pointer does not cast straight to a struct. The compiler says an unsafe cast c
 What no cast can do is produce or take apart a package, a brand witness, a function value, a transform, a value of a type parameter or `Never`, nor a value whose layout holds an enum or `NonNull`. So casts cannot conjure a brand witness:
 
 ```kursal
+use std::cap::Brand;
+
+forall 'k.
+exposed struct Key {
+    marker: Brand['k],
+}
+
 forall 'k.
 fn forge(n: u8) -> Key['k] {
     unsafe (n as Key['k])
@@ -228,16 +235,16 @@ This program runs on one thread on purpose, to show the operations. The reposito
 
 The standard library writes down what each unsafe operation promises in [`lib/std/CONTRACTS.md`](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md). In short:
 
-- A pointer you read or write points at live, initialized memory of the right type and alignment.
-- Nothing frees memory that another owner still holds, and no capability (an `Exclusive!`, a `Ref` under a live brand) is forged over memory something else owns.
+- A pointer you read or write is not null, is aligned for its type, and points into a live allocation big enough for it, which no live `Ref`, `Slice` or capability covers in a way the access would break. A read also needs an initialized value of that type there. A write never targets a string constant's bytes.
+- Nothing frees memory that another owner still holds. No capability (an `Exclusive!`) is minted, and no `Ref` built, over memory something else owns.
 - `f(unsafe &*p)` also needs exclusivity: from the call until it returns, nothing reaches that memory except through the lent place. That means no other pointer, no `Ref`, no capability and no thread.
-- A value holding a brand witness is read only from memory that a value of that type was moved into.
+- A value holding a brand witness is read only from memory that a value of that type was moved into and not since moved out of.
 - A `NonNull` is never null.
 - An extern function returns normally: no `longjmp`, and no exception unwinding through kursal frames. This is stated and not checked.
 
 ## What this does and does not give you
 
-kursal gives you tools, namely linearity, places, brands and capabilities, for building abstractions that are safe to use. The checker holds safe code to the rules in this book. Unsafe code carries obligations that are stated and not checked, and a mistake in one is not caught by anything. The Lean proof mentioned in the [guide](/guide/kurs/) covers a restricted single-threaded core, with no atomics, no volatile, no `NonNull` and no extern callbacks, so everything in this chapter after `unsafe fn` values is outside it. The compilers and the checker are not proven either.
+kursal gives you tools, namely linearity, places, brands and capabilities, for building abstractions that are safe to use. The checker holds safe code to the rules in this book. Unsafe code carries obligations that are stated and not checked, and a mistake in one is not caught by anything. The Lean proof mentioned in the [guide](/guide/kurs/) covers a restricted, single-threaded, value-only core, with no place parameters, no atomics, no volatile, no `NonNull` and no extern callbacks. So lending a pointer's target, `f(unsafe &*p)`, is outside it, and so are every cast except a pointer to a pointer, `usize` or `isize`, and everything in the atomics section. The compilers and the checker are not proven either.
 
 The discipline is to put each obligation in one place: next to the `unsafe` operation, in a comment a reviewer can hold the code to. Then wrap it, so that safe callers cannot get it wrong.
 
