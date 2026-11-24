@@ -3,11 +3,11 @@ layout = "page.html"
 section = "start"
 title = "Quick start"
 eyebrow = "Layer 1 of 3"
-intro = "Build the compiler, run hello world, and look at the C it writes. About ten minutes, most of it waiting for a C compiler."
+intro = "Build the compiler, run a program, and watch it refuse a bad one."
 permalink = "/start/"
 +++
 
-kursal is pre-1.0 and currently builds on **Linux** only. Expect rough edges and breaking changes. If you want to see how the pieces fit before installing anything, the [ideas](/ideas/) and the [walkthroughs](/walkthroughs/) don't need a toolchain.
+kursal is pre-1.0 and builds on **Linux** only. Expect rough edges and breaking changes.
 
 ## What you need
 
@@ -69,12 +69,8 @@ bin/kursal build examples/bad/leaked_handle.kur
 
 The build exits with status 1 and writes no executable. The path is shown shortened here, and the compiler prints a caret under the source line. Errors have the form `FILE:LINE:COL: message`. Each file in `examples/bad/` fails with the message quoted in its own comments. Then open `examples/linear` for the version that gets it right.
 
-## What a package looks like
-
-`examples/hello` has a `kur.toml` naming its source root, its entry function, and its `std` dependency. Every `.kur` file under the source root is a module, and this package's `lib.kur` defines `main`. For several files and an exported facade, see [`examples/modules`](https://github.com/kursionlabs/kursal/tree/main/examples/modules). There is no package manager or registry yet: a package is a directory with a `kur.toml`.
-
 ## Where next
 
-- [A tour of the language](/tour/) walks through the syntax you will meet in the examples.
-- [The ideas](/ideas/) explains why the rules are shaped the way they are.
-- [Walkthroughs](/walkthroughs/) follow single programs and show each decision the compiler checks.
+- The [quick guide](/guide/) builds the central ideas in eight short steps, each driven by a problem a program has to solve.
+- The [book](/book/) covers the whole language, chapter by chapter.
+- [Why kursal](/why/) says what the language is for and what it costs.
