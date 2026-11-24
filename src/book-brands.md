@@ -96,7 +96,13 @@ lib.kur:38:5: brand mismatch: Ticket['b] and Ticket['a]; 'b was opened at 37:5, 
      |     ^
 ```
 
-(The numbers count the declarations above `greeting`, which precede this `main`.) The message says where each brand was opened. That is why every opening has to use a new name, and why you cannot open a second brand called `'a` while the first is in scope.
+(The numbers count the declarations above `greeting`, which precede this `main`.) The message says where each brand was opened. That is why every opening has to use a new name, and why you cannot open a second brand called `'a` while the first is in scope:
+
+```text
+lib.kur:37:5: var exists 'a reuses a brand already in scope
+  37 |     var exists 'a. (c2, t2) = open_counter();
+     |     ^
+```
 
 A brand also cannot leave the place it was opened. If `open_counter` is called inside a function and the ticket is returned, there is nothing in the function's signature to name its brand, and the compiler says `brand 'k is not in scope`. If the function is generic over a brand `'k`, and the ticket came from a brand opened inside, the two differ and the result is a brand mismatch.
 
@@ -156,7 +162,7 @@ fn main() {
 
 ## Rules for names
 
-- Every opening (`let exists` or `var exists`) and every `exists` binder is a **new** name: never `'static`, a brand parameter, an earlier opening still in scope, or an enclosing binder. One name then means one brand inside a function, which is what lets the messages say where each was opened.
+- Every opening (`let exists` or `var exists`) and every `exists` binder is a **new** name: never `'static`, a brand parameter, an earlier opening still in scope, or an enclosing binder. One name then means one brand inside a function, which is what lets the messages say where each was opened. `forall 'k. fn rewrap(t: Ticket['k]) -> exists 'k. Ticket['k]` is rejected at the binder with `exists binder 'k shadows a brand in scope`, and `exists 'k, 'k. ...` with `an exists type repeats a binder`.
 - `exists` appears only in a result type.
 - A function value's type (`fn(..) -> R`) quantifies no brands. Using a function as a value fixes its brands once.
 - **A closure cannot mention a brand that its own block opened.** The closure may run later, or on another thread, and nothing in its type could say which brand it means:

@@ -43,3 +43,9 @@ kursal has not had a 1.0 yet. Where a feature is likely to change, the chapter s
 17. [foreach traversal](/book/foreach/): code that visits every field. Advanced, and likely to change.
 18. [Concurrency](/book/concurrency/): moving ownership into threads, and sharing through capabilities.
 19. [How checking works](/book/checking/): local checking, place state, and the independent core checker.
+
+## Appendices
+
+- [A. Keywords and operators](/book/keywords/): every reserved word, and operator precedence.
+- [B. Grammar summary](/book/grammar/): the surface syntax in one place.
+- [C. Glossary](/book/glossary/): the terms this book uses.

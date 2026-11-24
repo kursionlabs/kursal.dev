@@ -56,7 +56,7 @@ fn main() {
 
 A closure captures the local variables it mentions. A value that is Copy is captured by copy, and a linear value is **moved in**. Moving a linear value into a closure makes the closure itself linear, and it then has to be called, or handed on, exactly once.
 
-A closure holds a copy of what it captures, so it cannot change the original. Assigning to a captured name, or lending it, is rejected, even when the name is a `var`:
+A closure holds its own value of what it captures, a copy or the value moved in, so it cannot change the original. Assigning to a captured name, or lending it, is rejected, even when the name is a `var`:
 
 ```kursal
 fn main() {
@@ -67,12 +67,12 @@ fn main() {
 ```
 
 ```text
-lib.kur:3:26: total is captured as a copy, which cannot be assigned
+lib.kur:3:26: total is captured, and a body cannot assign what it captures; assign it outside, or give a closure a place parameter for it
   3 |     let add = |x: u32| { total = total + x; };
     |                          ^
 ```
 
-Lending it, as in `|| &c.tick()` with the `Counter` of chapter 5, gives `c is captured as a copy, which cannot be lent`. Make the change outside the closure, or have the closure return the new value.
+Lending it, as in `|| &c.tick()` with the `Counter` of chapter 5, gives `c is captured, and a body cannot lend what it captures; lend it outside, or give a closure a place parameter for it`. Make the change outside the closure, have the closure return the new value, or give the closure a place parameter (chapter 12).
 
 ## Two kinds of function value
 

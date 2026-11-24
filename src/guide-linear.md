@@ -57,7 +57,7 @@ It prints `open 1`, `open 2`, `close 1`, `close 2`, `open 3`, `close 3`, `open 4
 If `close` keeps its old body, `let id = h.id;`, reading a field does not use the handle up:
 
 ```
-step2bad::close: linear value 'h' is not consumed before return
+lib.kur:16:1: step2bad::close: linear value 'h' is not consumed before return
 ```
 
 With `close` fixed, the double close in the first version is rejected:
@@ -69,7 +69,7 @@ lib.kur:22:11: step2bad::main: value 'a' has been moved or is only partially ava
 And once the second `close(a)` is deleted, the forgotten `b` is:
 
 ```
-step2bad::main: linear value 'b' is not consumed before return
+lib.kur:22:1: step2bad::main: linear value 'b' is not consumed before return
 ```
 
 The repository has these as ready-made failing programs. `examples/bad/leaked_handle.kur` reports `linear value 'h' is not consumed before return`. `examples/bad/double_use_handle.kur` reports `value 'h' has been moved`. A branch that closes on one side only, as in `examples/bad/branch_inconsistent.kur`, reports `linear value 'h' remains live on some paths`. A loop that consumes without replacing, as in `examples/bad/while_consume_without_replacement.kur`, reports `linear value 'h' remains live where the loop at 25:5 starts, but not when it repeats`.

@@ -70,12 +70,26 @@ fn main() -> i32 {
 ```
 
 ```text
-lib.kur:4:5: calling an unsafe function requires unsafe authorization
+lib.kur:4:5: calling an unsafe function needs unsafe
   4 |     abs(-3)
     |     ^
 ```
 
-The declaration always says `"C"`. That is the only form to write.
+The declaration always says `"C"`. It is the only ABI, and any other string is rejected where it is written:
+
+```kursal
+extern "system" fn abs(x: i32) -> i32;
+
+fn main() -> i32 {
+    unsafe abs(-3)
+}
+```
+
+```text
+lib.kur:1:8: the only extern ABI is "C"
+  1 | extern "system" fn abs(x: i32) -> i32;
+    |        ^
+```
 
 ## What the compiler checks in a declaration
 
@@ -89,7 +103,13 @@ C takes bytes and returns bytes, so the compiler rejects declarations that could
 - **No enum or `NonNull` in a result**, because the compiler chooses their layout: `-> Option[u32]` is rejected.
 - **A zero-size result must be `Copy`.** `()` acts as `void`. A zero-size linear result is rejected, because foreign code would be making a resource from nothing.
 
-A rejected extern gets a message that names the rule, for example `extern bump takes a place parameter; foreign code takes values`.
+A rejected extern gets a message that names the rule, at the parameter or result type at fault:
+
+```text
+lib.kur:1:20: extern bump takes a place parameter; foreign code takes values
+  1 | extern "C" fn bump(&x: u32) -> ();
+    |                    ^
+```
 
 ## What is not checked
 

@@ -81,7 +81,7 @@ lib.kur:3:5: count is not a var
     |     ^
 ```
 
-There is no `+=` or other compound assignment, so write `count = count + 1`. Function parameters are immutable in the same way. What you can do is shadow one: `let n = n * 2;` makes a new `n`, and `var n = n;` makes one you can assign to or lend. The name a `for` binds is immutable too. Shadowing works for any name and the old binding is simply out of reach afterwards, which is why the program above can have two `x`.
+There is no `+=` or other compound assignment, so write `count = count + 1`. Function parameters are immutable in the same way. What you can do is shadow one: `let n = n * 2;` makes a new `n`, and `var n = n;` makes one you can assign to or lend. The same `var x = x;` works for every name that is not a var: a parameter, a method's `self` (`var self = self;`), and the name a `for` binds, which is immutable too. Shadowing works for any name and the old binding is simply out of reach afterwards, which is why the program above can have two `x`.
 
 Lending a `let` is an error, even when the call only reads:
 

@@ -64,9 +64,17 @@ fn main() {
 - atomic operations, volatile accesses and fences
 - lending a pointer's target, `f(unsafe &*p)`
 
-A safe function may contain unsafe operations. Nothing in its signature says so, and that is the point of wrapping them once, as in chapter 14. Leave `unsafe` off an operation that needs it and the compiler stops you. Calling an `unsafe fn` plainly gives `calling an unsafe function requires unsafe authorization`.
+A safe function may contain unsafe operations. Nothing in its signature says so, and that is the point of wrapping them once, as in chapter 14. Leave `unsafe` off an operation that needs it and the compiler stops you, naming the operation: calling an `unsafe fn` plainly gives `calling an unsafe function needs unsafe`, a bare `*p` gives `reading through a raw pointer needs unsafe`, and a bare `alloca[u32]()` gives `calling alloca needs unsafe`. Inside an `unsafe fn` the operations need no marker of their own: its whole body is the caller's obligation.
 
-A pointer's target can be lent to a place parameter, as `tick(unsafe &*c)` does, or to a `&self` method through the path form `Counter::tick(unsafe &*c)`. The dotted form on a lent pointer target, `(unsafe &*p).tick()`, is not accepted. Use the path form.
+A pointer's target can be lent to a place parameter, as `tick(unsafe &*c)` does, or to a `&self` method through the path form `Counter::tick(unsafe &*c)`. The dotted form, `(unsafe &*c).tick()`, is rejected:
+
+```text
+lib.kur:17:14: a lend in parentheses is no receiver: a local's or a field's is lent as `&x.m()`, and a raw pointer's target as an argument, `T::m(unsafe &*p)`
+  17 |     let t = (unsafe &*c).tick();
+     |              ^
+```
+
+Use the path form.
 
 ## unsafe fn
 

@@ -82,7 +82,7 @@ lib.kur:33:6: a is not a var; a lent place must be a var
      |      ^
 ```
 
-A `let` never changes once it is bound. Neither does a receiver taken by value: inside a method that takes `self`, calling a `&self` method on it needs a `var` first, as in `var c = self; &c.tick();`.
+A `let` never changes once it is bound. Neither does a receiver taken by value: inside a method that takes `self`, calling a `&self` method on it needs a `var` first. `var self = self;` makes one, as `var x = x;` does for any parameter, and then `&self.tick();` lends it.
 
 There is no `&mut` and no reference type. `&` appears at a call to say "lend this", and in a signature to say "this parameter is lent". Part 2 returns to it.
 

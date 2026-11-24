@@ -55,7 +55,13 @@ fn main() {
 
 `foreach f of p` with `p: *Rec` runs the body once per field, handing it that field's pointer (`*F`). It reads nothing. The result type `foreach *F of *Rec => usize` says "one `usize` per component of `*Rec`", and the value is destructured by field name. The offsets 0, 4 and 8 are what this program printed, and the book makes no promise about field order or layout.
 
-The generic `ones` needs the premise `Exposed[*T]`, which says the traversal may see `T`'s shape. Chapter 11 described shapes. A restricted type never satisfies it outside its own scope, and an enum never does. Without the premise the compiler rejects the traversal.
+The generic `ones` needs the premise `Exposed[*T]`, which says the traversal may see `T`'s shape. Chapter 11 described shapes. A restricted type never satisfies it outside its own scope, and an enum never does. Without the premise the compiler rejects the traversal and says what to write:
+
+```text
+lib.kur:21:5: the shape of *T is not visible here: write `where Exposed[*T]`, or expose its declaration to this module
+  21 |     foreach f of p {
+     |     ^
+```
 
 ## By value
 
@@ -100,7 +106,22 @@ The second `foreach` maps `tagged`, of type `foreach F of (Token!, Token!) => (F
 ## The rules
 
 - **A `foreach` type is flat.** It is the type of a whole value, parameter or result. It is never a field, an element, a pointee, a type argument or another `foreach`'s source. A struct with a `foreach` field is rejected. To keep one, make it a function's whole result.
-- **`*F` binds each component's pointee**, so the source has to be written with pointer components: `*T`, or a tuple, struct or array of pointers.
+- **`*F` binds each component's pointee**, so the source has to be written with pointer components: `*T`, or a tuple, struct or array of pointers. The compiler checks this where the type is written:
+
+  ```kursal
+  // `*F` names each component's pointee, but Rec's components are not pointers.
+  fn sizes(r: Rec) -> foreach *F of Rec => usize {
+      foreach f of r {
+          0usize
+      }
+  }
+  ```
+
+  ```text
+  lib.kur:8:21: foreach *F needs a source written with pointer components
+    8 | fn sizes(r: Rec) -> foreach *F of Rec => usize {
+      |                     ^
+  ```
 - **A pointer to a sum is no source.** Components of `*Option[u8]` depend on which variant is stored there, and only a read could find out. `foreach x of p` with `p: *Option[u8]` is rejected with `a foreach source cannot be a pointer to a sum`.
 - **Generic traversal needs `Exposed[*T]`**, and the body is checked once for every `T`, not again where a function is called.
 - **Through a pointer, `foreach` computes addresses only.** Anything done with them, a read or a cast, is its own unsafe operation, as `unsafe (f as usize)` is above.

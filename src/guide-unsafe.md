@@ -56,11 +56,11 @@ The comments are part of the idea. Each `unsafe` marks one operation, and the se
 That the marker is there. Without it:
 
 ```
-lib.kur:17:16: calling an unsafe function requires unsafe authorization
-lib.kur:17:16: ptr_load requires unsafe authorization
+lib.kur:17:16: calling an unsafe function needs unsafe
+lib.kur:17:16: reading through a raw pointer needs unsafe
 ```
 
-The first is for calling `read_u32(p)` bare, and the second for dereferencing `*p` bare. The second message names an operation of the core language underneath, which is more detail than you usually want. Calling `free(raw)` without `unsafe` gets the first message again. The repository's `examples/bad/close_by_number.kur`, `write_by_number.kur` and `safe_adopt.kur` all report `calling an unsafe function requires unsafe authorization`.
+The first is for calling `read_u32(p)` bare, and the second for dereferencing `*p` bare. Each names the operation that needs the marker. Calling `free(raw)` without `unsafe` gets the first message again. The repository's `examples/bad/close_by_number.kur`, `write_by_number.kur` and `safe_adopt.kur` all report `calling an unsafe function needs unsafe`.
 
 ## What it does not
 

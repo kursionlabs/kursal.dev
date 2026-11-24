@@ -99,7 +99,7 @@ Ada is at (3, -4); braces: {}
 - An f-string produces a `Buffer!`, an owned byte buffer. It is linear, so it has to be used: print it, pass it on, or `.destroy()` it.
 - Each `{expr}` calls `Format` for the type of the expression, and the expression can be any expression, a call included. `{{` and `}}` are literal braces. There are no width or precision specifiers.
 - The library gives `Format` instances for all the integers, `f32`, `f64`, `bool`, `Slice[u8, 'static]` (string literals), readable byte views, `std::io::Error`, and `Buffer!` (written `{&b}`).
-- A linear value has to be written `{&name}`, which lends it to the formatter and leaves it for you to consume afterwards. Like every lend it needs a `var`, which is why `name` above is one. Splicing it in without the `&` would use it up, and the compiler rejects that and tells you to lend it.
+- A linear value has to be written `{&name}`, which lends it to the formatter and leaves it for you to consume afterwards. Like every lend it needs a `var`, which is why `name` above is one. Splicing it in without the `&` would use it up, and the compiler rejects that: `{name} in an f-string drops a linear value; lend it with {&name}`. A linear value that is not a variable or a field, such as a call's result, gets `a value in an f-string is formatted and dropped, and this one is linear; bind it to a var and lend that`.
 - `f"...".write(out)` writes into any `Writable` instead of making a new buffer. That is how a `Format` instance for your own type writes its text into whichever writer it is given, as above.
 
 If a type has no `Format` instance you get the error you would expect:

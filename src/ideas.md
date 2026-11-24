@@ -18,12 +18,12 @@ Each idea in kursal exists to rule out a specific mistake. Here is what the mist
 | A callee that keeps a lent value | `lent value 'h' must be restored before return` | [Places](/guide/places/) |
 | The same place lent twice in one call | `'h' overlaps another place the same call lends` | [Places](/guide/places/) |
 | Lending a `let`, or a parameter taken by value | `a is not a var; a lent place must be a var` | [Places](/guide/places/) |
-| Lending or assigning, inside a closure, a name it captured | `a is captured as a copy, which cannot be lent` | [Places](/guide/places/) |
+| Lending or assigning, inside a closure, a name it captured | `a is captured, and a body cannot lend what it captures; …` | [Places](/guide/places/) |
 | A stale reference after the container changed | `brand mismatch: 'b and 'a; 'b was opened at 14:5, 'a at 12:5` | [Brands](/guide/graph/) |
 | A write through a read-only capability | `no instance of Access[Shared!['k, 'l], 'k, _]` | [Capabilities](/guide/readers/) |
 | Closing a resource while readers are out | `value 'exclusive' has been moved or is only partially available` | [Capabilities, through linearity](/guide/resource/) |
 | Taking apart a type you don't own | `the shape of std::io::File! is not exposed here` | [Encapsulation](/guide/resource/) |
-| A raw operation without `unsafe` | `calling an unsafe function requires unsafe authorization` | [Contracts](/guide/unsafe/) |
+| A raw operation without `unsafe` | `calling an unsafe function needs unsafe` | [Contracts](/guide/unsafe/) |
 
 The write-through-a-reader message is the least friendly one. It means the call needs something that holds the domain's `Exclusive!`, and a reader holds none.
 

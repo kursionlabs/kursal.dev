@@ -108,8 +108,12 @@ fn main() {
 ```
 
 ```text
-demo::main: linear value 't' is not consumed before return
+lib.kur:6:1: demo::main: linear value 't' is not consumed before return
+  6 | }
+    | ^
 ```
+
+With no `return` written, the compiler points at the closing brace, where `t` would be dropped.
 
 A value consumed twice:
 
@@ -171,7 +175,7 @@ Some quieter ways to leak a value are also caught:
 
 - `let _ = issue(1);` is rejected: a pattern cannot discard a linear value. Bind it and consume it.
 - `issue(1);` as a statement is rejected: cannot discard a linear expression result; bind or consume it.
-- `t = issue(2);` over a `var t` that still holds a ticket is rejected: cannot overwrite live linear value `t`.
+- `t = issue(2);` over a `var t` that still holds a ticket is rejected: `cannot overwrite live linear value 't'`.
 - A struct pattern that leaves out a linear field is rejected for the same reason as `let _`.
 
 ## Linear values spread

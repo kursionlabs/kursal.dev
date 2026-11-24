@@ -59,7 +59,7 @@ lib.kur:25:28: demo::main: value 'job' has been moved or is only partially avail
 A `Copy` capture such as `rate` is plain data, and the thread gets its own copy. That is also why a thread cannot change the spawner's variable. The closure holds a copy, and assigning to it is rejected:
 
 ```text
-lib.kur:7:9: hits is captured as a copy, which cannot be assigned
+lib.kur:7:9: hits is captured, and a body cannot assign what it captures; assign it outside, or give a closure a place parameter for it
   7 |         hits = hits + 1;
     |         ^
 ```

@@ -227,7 +227,7 @@ fn main() {
 42 1.5
 ```
 
-The compiler cannot see into C, so a call has to say `unsafe`. Without it you get `calling an unsafe function requires unsafe authorization`. Part 2 explains what `unsafe` promises and how the standard library wraps it once so callers do not have to.
+The compiler cannot see into C, so a call has to say `unsafe`. Without it you get `calling an unsafe function needs unsafe`. Part 2 explains what `unsafe` promises and how the standard library wraps it once so callers do not have to.
 
 ## Check by hand
 

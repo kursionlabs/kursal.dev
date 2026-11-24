@@ -90,14 +90,14 @@ fn main() -> i32 {
 ```
 
 ```text
-lib.kur:14:13: & lends a place only as a call argument, a receiver, or a match scrutinee
+lib.kur:14:13: & lends a place only as a call argument `f(&x)`, a receiver `&x.m()` or a match scrutinee `match &x`
   14 |     let r = &a;
      |             ^
 ```
 
 Writing `&Counter` as a return type is a syntax error. Those are the same fact seen twice: the `&` is an argument mode, not a type, so there is nothing for a lifetime to describe.
 
-A closure holds copies of what it mentions (chapter 9), so it cannot lend or assign them either. A closure that has to change something takes it as a place parameter instead, which is the last example below.
+A closure holds its own value of what it mentions, a copy or the value moved in (chapter 9), so it cannot lend or assign them either. A closure that has to change something takes it as a place parameter instead, which is the last example below.
 
 ```kursal
 fn main() -> i32 {
@@ -108,12 +108,12 @@ fn main() -> i32 {
 ```
 
 ```text
-lib.kur:14:20: a is captured as a copy, which cannot be lent
+lib.kur:14:20: a is captured, and a body cannot lend what it captures; lend it outside, or give a closure a place parameter for it
   14 |     let next = || &a.tick();
      |                    ^
 ```
 
-Assigning to a captured variable fails the same way with `... cannot be assigned`.
+Assigning to a captured variable fails the same way, with `a is captured, and a body cannot assign what it captures; assign it outside, or give a closure a place parameter for it`.
 
 ## Taking a place apart and putting it back
 
