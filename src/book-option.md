@@ -85,6 +85,8 @@ Matching inside an arm, as `show` does for the error, is how you look at a neste
 
 So `two_digits` reads as a straight line, and each `?` is a visible place where the function can leave. For `?` to work, the operand and the function's result have to be the same type, error type included. Mixing is rejected:
 
+With `use std::option::{Option, Result};` and `half` from above at the top of the file:
+
 ```kursal
 fn checked(n: u32) -> Result[u32, u8] {
     let h = half(n)?;      // half returns an Option

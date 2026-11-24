@@ -106,7 +106,7 @@ The only loop keyword is `while`. There is no `loop`, `break` or `continue`, and
 
 ## const
 
-`const NAME: T = expr;` works at module level, inside a block (like `STEP` above) and inside an `impl`. It is evaluated at compile time. A constant that divides by zero is a compile error.
+`const NAME: T = expr;` works at module level, inside a block (like `STEP` above) and inside an `impl`. It is evaluated at compile time.
 
 ## Functions that do not return
 

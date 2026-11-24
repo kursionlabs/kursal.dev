@@ -97,7 +97,7 @@ Ada is at (3, -4); braces: {}
 
 - An f-string produces a `Buffer!`, an owned byte buffer. It is linear, so it has to be used: print it, pass it on, or `.destroy()` it.
 - Each `{expr}` calls `Format` for the type of the expression, and the expression can be any expression, a call included. `{{` and `}}` are literal braces. There are no width or precision specifiers.
-- `Format` is built in for all the integers, `f32`, `f64`, `bool`, string literals, `std::io::Error`, and `Buffer!`.
+- The library gives `Format` instances for all the integers, `f32`, `f64`, `bool`, `Slice[u8, 'static]` (string literals), readable byte views, `std::io::Error`, and `Buffer!` (written `{&b}`).
 - A linear value has to be written `{&name}`, which lends it to the formatter and leaves it for you to consume afterwards. Splicing it in without the `&` would use it up, and the f-string cannot do that on your behalf.
 - `f"...".write(out)` writes into any `Writable` instead of making a new buffer. That is how a `Format` instance for your own type writes its text into whichever writer it is given, as above.
 

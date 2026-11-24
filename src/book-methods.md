@@ -77,7 +77,7 @@ Lending a place for change requires a `var`. `&a.tick()` is accepted only becaus
 
 There is no `&mut` and no reference type. `&` appears at a call to say "lend this", and in a signature to say "this parameter is lent". Part 2 returns to it.
 
-An `impl` has to be in the same package as its type, so you cannot add inherent methods to another package's type. The primitive types get theirs from the core library. To give someone else's type new behaviour, write a trait (chapter 7).
+An `impl` for a named type has to be in the same package as the type, so you cannot add inherent methods to another package's type. (Impls over a type parameter work differently, and chapter 7 covers them.) The primitive types get theirs from the core library. To give someone else's type new behaviour, write a trait (chapter 7).
 
 `self` can only be the first parameter. A generic type's methods are written in an `impl` with a `forall` in front, and chapter 7 shows that. There is no method privacy: every function in an `impl` can be called wherever the type's name is visible.
 

@@ -76,11 +76,15 @@ let r = apply_once(|x| x + redeem(t), 1);   // t moves into the closure, which i
 
 Call it twice and the second call fails:
 
+(after the three one-line `Ticket!` declarations from chapter 6)
+
 ```kursal
-let t = issue(4);
-let f = |x: u32| x + redeem(t);
-let a = f(1);
-let b = f(2);
+fn main() {
+    let t = issue(4);
+    let f = |x: u32| x + redeem(t);
+    let a = f(1);
+    let b = f(2);
+}
 ```
 
 ```text

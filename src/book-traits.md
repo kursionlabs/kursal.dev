@@ -153,6 +153,7 @@ You can always write the trait's name instead of a dot: `Measure::measure(Rope.{
 A method call through a trait works when the trait is visible where you call it. If the trait lives in another module, import it:
 
 ```kursal
+use std::io::print_buffer;
 use package::geo::Square;
 
 fn main() {
@@ -167,7 +168,7 @@ lib.kur:6:21: Square has no method area
     |                     ^
 ```
 
-`Area` is declared next to `Square` in `geo`, but it was not imported here. Write `use package::geo::{Square, Area};` and the call works. Calling `Area::area(s)` by its full name also works without the import. The point is that you can decide what `s.area()` means by reading the imports of the file in front of you.
+`Area` is declared next to `Square` in `geo`, but it was not imported here. Write `use package::geo::{Square, Area};` and the call works. Calling it by its full path, `package::geo::Area::area(s)`, also works without the import. The point is that you can decide what `s.area()` means by reading the imports of the file in front of you.
 
 ## One instance per case
 
@@ -190,9 +191,9 @@ instance Describe[u32] {
 ```
 
 ```text
-lib.kur:9:1: overlapping instances of Describe: (u32) and (T)
-  9 | instance Describe[u32] {
-    | ^
+lib.kur:11:1: overlapping instances of Describe: (u32) and (T)
+  11 | instance Describe[u32] {
+     | ^
 ```
 
 ## Check by hand

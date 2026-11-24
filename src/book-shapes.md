@@ -96,7 +96,7 @@ fn main() {
 - a range, written `a..=b`, which includes both ends
 - `_`, which matches anything
 
-Cases can be grouped with `|`. In a group, a payload variant is written without binders, as `Dot | Circle` above. Write the labels bare, as in `Circle(r)`, and not as `Shape::Circle(r)`. The compiler looks the label up in the type of what you are matching. A misspelled label is an error, not a catch-all name.
+Cases can be grouped with `|`. In a group, a payload variant is written without binders, as `Dot | Circle` above. Write the label bare, as in `Circle(r)`. The compiler looks the label up in the type of what you are matching. A misspelled label is an error, not a catch-all name.
 
 ```kursal
 use std::slice::Slice;

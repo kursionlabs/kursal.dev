@@ -10,7 +10,7 @@ permalink = "/book/modules/"
 
 ```kursal
 use std::io::print;              // one name
-use std::io::{print, eprint};    // several
+use std::io::{eprint, print_buffer};    // several
 use std::io::*;                  // everything in the module
 use std::slice::Slice as View;   // under another name
 use package::text as t;          // a module under another name
@@ -136,7 +136,7 @@ There are two separate questions, and they have separate answers.
 **Which names can you reach?** Declarations (functions, structs, traits, constants) are always members of their module. You cannot mark one private.
 
 - Inside one package, every module, its child modules and everything it imports can be reached by path.
-- From another package, you can reach only a module's own declarations and what it `export`s. A child module has to be exported to be reachable, as `inventory` exports `stock` above. Without that line, `use inventory::stock::audit::Record;` fails with `unknown or private member audit of stock`.
+- From another package, you can reach only a module's own declarations and what it `export`s. A child module has to be exported to be reachable, as `inventory` exports `stock` above. `stock` does not export `audit` in turn, so `use inventory::stock::audit::Record;` fails with `unknown or private member audit of stock`. Without the `export package::stock;` line, even `use inventory::stock::Stock!;` fails, with `unknown or private member stock of inventory`.
 
 **Which modules can build and take apart a type?** That is its **shape**: constructing a value, reading its fields, destructuring it, and matching on it. It is decided by a modifier on the declaration:
 
@@ -150,7 +150,7 @@ The type's name and its functions are usable wherever they are reachable, whatev
 use inventory::stock::Stock!;
 fn main() {
     let s = Stock!::new();
-    let t = s.total;    // reading a field
+    let t = s.total;
     let n = s.close();
 }
 ```
@@ -197,6 +197,9 @@ entry = "main"
 source_root = "."
 c_sources = ["triple.c"]
 link_flags = ["-lm"]
+
+[dependencies.std]
+path = "../kursal/lib/std"
 ```
 
 ```kursal

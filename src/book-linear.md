@@ -96,7 +96,7 @@ Four rules show up here.
 
 ## The mistakes it catches
 
-Each of these starts from the same declarations of `Ticket!`, `issue` and `redeem`.
+Each of these follows the same three declarations, written one per line: `struct Ticket! { seat: u32 }`, `fn issue(seat: u32) -> Ticket! { Ticket!.{ seat } }` and `fn redeem(t: Ticket!) -> u32 { let { seat } = t; seat }`.
 
 A value that is never consumed:
 
@@ -170,7 +170,7 @@ fn settle(b: Booking!) -> u32 {
 }
 ```
 
-Declare `Booking` without the `!` and the compiler stops at the declaration:
+Declare `Booking` without the `!` and the compiler stops at the declaration (here after the same three one-line declarations):
 
 ```text
 lib.kur:4:8: struct Booking holds a linear type in its field ticket; declare it Booking!
@@ -182,9 +182,11 @@ This is the same rule for tuples and enums. The `!` is how you can tell from a d
 
 ## && and || drop their right side
 
-`ready && valid(t)` only evaluates `valid(t)` when `ready` is true. When it is false, `t` is never consumed. The checker rejects a linear value on the right of `&&` or `||`. Use an `if`, which consumes the value on both paths:
+`ready && valid(t)` only evaluates `valid(t)` when `ready` is true. When it is false, `t` is never consumed. The checker rejects consuming a linear value on the right of `&&` or `||`. Reading a Copy field there, as in `ready && t.seat > 3`, is fine. Use an `if`, which consumes the value on both paths:
 
 ```kursal
+fn valid(t: Ticket!) -> bool { redeem(t) > 0 }
+
 fn check(ready: bool, t: Ticket!) -> bool {
     if ready { valid(t) } else { redeem(t); false }
 }

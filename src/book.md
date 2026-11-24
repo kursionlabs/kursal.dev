@@ -10,7 +10,7 @@ The [quick start](/start/) gets a program running and the [quick guide](/guide/)
 
 ## How to read it
 
-Each chapter introduces a few forms, shows a complete program for them, and shows what the compiler says when you get one wrong. Everything on these pages was built and run with the Kursal compiler. The error messages are real ones, with paths shortened to `lib.kur:line:col`.
+Each chapter introduces a few forms, shows a complete program for them, and shows what the compiler says when you get one wrong. Everything on these pages was built and run with the Kursal compiler. The error messages are real ones, with each path shortened to the file's place in its package, such as `lib.kur:line:col` or `src/lib.kur:line:col`.
 
 Most chapters end with a short **check by hand** note: what you would look at to decide, without the compiler, whether the code is accepted. That is the habit the language is built around.
 
