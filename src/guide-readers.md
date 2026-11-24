@@ -8,7 +8,7 @@ permalink = "/guide/readers/"
 
 Reading a graph does not need exclusive rights. Many readers at once is fine, as long as nobody writes while they do. Kursal expresses that with a **read tree**.
 
-Freezing turns the writer into the root of a tree of read-only capabilities. The root can be split into two halves, each of which can read, and each split hands back a **receipt** for putting the halves back together. Once everything has been joined back into the root, the writer can resume.
+Sharing turns the writer into the root of a tree of read-only capabilities. The root can be split into two halves, each of which can read, and each split hands back a **receipt** for putting the halves back together. Once everything has been joined back into the root, the writer can resume.
 
 The imports and `Node` are as in step 4, plus `Shared!`:
 
@@ -37,7 +37,7 @@ fn main() {
     let b = &arena.alloc(&tag, Node.{ id: 2, next: Option::Some.(a) });
     a.set(&tag, Node.{ id: 1, next: Option::Some.(b) });
 
-    // Freeze: the writer becomes the root of a read tree, split in two.
+    // Share: the writer becomes the root of a read tree, split in two.
     let exists 'q. (root, resume) = tag.share();
     let exists 'l, 'r. (left, right, join) = root.split();
     let from_a = walk(&left, a, 3);

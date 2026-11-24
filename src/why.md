@@ -17,7 +17,7 @@ C leaves the rules to comments and discipline. That works until a refactor adds 
 
 You can have no checker, or a large one.
 
-Large checkers can enforce a great deal, including things Kursal can't. Rust's borrow checker is the obvious example and an excellent one. Its cost is predictability: you learn the rules by being rejected, and when the checker says no, working out why can take real effort.
+Large checkers can enforce a great deal, including things Kursal can't. Rust's borrow checker is the obvious example and an excellent one. Its cost is a larger set of rules, with lifetimes and their inference, so when the checker says no, working out why can take real effort.
 
 Kursal started from a narrower question: how much of this checking can a person do alone, by reading? The answer shaped everything. A rule makes it into the language only if you can apply it by looking at a function and the signatures it calls. When a feature would make a check depend on far-away code, that is a reason to cut it.
 
@@ -25,7 +25,7 @@ Kursal started from a narrower question: how much of this checking can a person 
 
 - **Resources you can't forget or reuse.** A type ending in `!` must be used exactly once on every path. A leak and a double close are compile errors, not review comments.
 - **Lending without lifetimes.** A `&` parameter lends your value for one call and must be handed back. You can inspect a resource without giving it up, and there is nothing to infer across function boundaries.
-- **Sharing you can reason about.** Brands name memory and capabilities grant access. Cyclic graphs and many-readers-then-one-writer are expressible without reference counting, and a stale pointer fails to type-check instead of crashing.
+- **Sharing you can reason about.** Brands name memory and capabilities grant access. Cyclic graphs and many-readers-then-one-writer are expressible without reference counting, and a stale reference into a structure fails to type-check instead of crashing.
 - **Unsafe code with a stated contract.** Raw memory and C calls carry `unsafe` at the site, with the promise written beside them. A module states its promise once and hides the representation, so safe callers inherit it.
 - **A checker you can read.** Everything lowers to KURS, a small core where each block states its full contract. A separate checker re-verifies the result before C is emitted.
 

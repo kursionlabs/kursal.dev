@@ -13,12 +13,12 @@ Each idea in Kursal exists to rule out a specific mistake. Here is what the mist
 | --- | --- | --- |
 | A handle that is never closed | `linear value 'h' is not consumed before return` | [Linear types](/guide/linear/) |
 | A handle closed twice | `value 'a' has been moved or is only partially available` | [Linear types](/guide/linear/) |
-| A branch that closes it on one side only | `linear value 'h' remains live on some paths` | [Linear types](/guide/linear/) |
+| A branch that closes it on one side only | `linear value 'h' remains live on some paths to …` | [Linear types](/guide/linear/) |
 | A callee that keeps a lent value | `lent value 'h' must be restored before return` | [Places](/guide/places/) |
 | The same place lent twice in one call | `'h' overlaps another place the same call lends` | [Places](/guide/places/) |
 | A stale reference after the container changed | `brand mismatch: 'b and 'a; 'b was opened at 15:5, 'a at 13:5` | [Brands](/guide/graph/) |
 | A write through a read-only capability | `no instance of Access[Shared!['k, 'l], 'k, _]` | [Capabilities](/guide/readers/) |
-| Closing a resource while readers are out | `value 'exclusive' has been moved or is only partially available` | [Capabilities](/guide/resource/) |
+| Closing a resource while readers are out | `value 'exclusive' has been moved or is only partially available` | [Capabilities, through linearity](/guide/resource/) |
 | Taking apart a type you don't own | `the shape of std::io::File! is not exposed here` | [Encapsulation](/guide/resource/) |
 | A raw operation without `unsafe` | `calling an unsafe function requires unsafe authorization` | [Contracts](/guide/unsafe/) |
 
@@ -30,11 +30,11 @@ The ideas aren't a menu. Each one is there because the one before it leaves a ga
 
 **Linear types make places worth having.** Without lending, looking at a linear value means handing it in and getting it back with the answer. `&` lets a function inspect or update a resource and return it untouched, so linear values stay practical.
 
-**Linear types are what make capabilities mean something.** The right to write a memory domain, `Exclusive!`, is itself linear. Freezing it consumes it, and the only way to get it back is to join every reader. If it were an ordinary copyable value, anyone could keep a spare and the rest of the scheme would fall apart.
+**Linear types are what make capabilities mean something.** The right to write a memory domain, `Exclusive!`, is itself linear. Sharing it consumes it, and the only way to get it back is to join every reader and hand the root to the receipt. If it were an ordinary copyable value, anyone could keep a spare and the rest of the scheme would fall apart.
 
 **Brands make copying safe.** A `Ref` can be copied freely because it carries a brand and grants nothing. The brand ties it to a capability for the same domain. When a container hands itself back under a new brand, every old `Ref` stops type-checking, which is how a stale pointer becomes a compile error.
 
-**Encapsulation seals the brand.** A module can return a brand nobody could have named in advance, then hide the struct shapes that would let a caller forge a handle. That is how a resource module makes its guarantees hold for every caller instead of only the careful ones.
+**Encapsulation keeps the brand honest.** A module returns its brand sealed in `exists`, so no caller can name it in advance, and hides the struct shapes, its own and `Exclusive!`’s, that would let a caller forge a handle or a capability. That is how a resource module makes its guarantees hold for every caller instead of only the careful ones.
 
 **`unsafe` is where the contract is stated.** Under every safe abstraction there is a small amount of raw memory work, marked at each site. The module states its promise once. Capabilities then prove how access tokens are used, and the module's constructor is what establishes that the underlying pointer really was uniquely owned.
 

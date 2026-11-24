@@ -35,7 +35,7 @@ Because each block's contract is complete, blocks can be checked independently. 
 
 The test suite compares the two implementations' verdicts, diagnostics, lowered KURS, and C output on the examples and on the compiler's own inputs. The self-hosted compiler also reaches a bootstrap fixpoint: stage 1 and stage 2 emit byte-identical C. The test suite also runs the self-build under valgrind.
 
-A fuzzer then generates and mutates programs to look for disagreements, crashes, and miscompiled C. Run against the front end and the checker together, it has found cases where the front end accepted something the checker rejected, including an aliasing hole in `f(&x, &x)`. All of them are fixed. The [fuzzing notes](https://github.com/kursionlabs/kursal/blob/main/reference-compiler/README.md#fuzzing) say how to run a campaign.
+A fuzzer then generates and mutates programs to look for disagreements, crashes, and miscompiled C. Run against the front end and the checker together, it turned up cases where the front end accepted something the checker rejected, among them an aliasing hole in `f(&x, &x)`. All are fixed and kept as regression tests. The [fuzzing notes](https://github.com/kursionlabs/kursal/blob/main/reference-compiler/README.md#fuzzing) say how to run a campaign.
 
 None of this is a proof. A successful check says the program obeys KURS's rules. Unsafe operations and backend assumptions still rest on their stated contracts, which the standard library writes down in [CONTRACTS.md](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md).
 
