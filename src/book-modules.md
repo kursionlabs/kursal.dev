@@ -27,7 +27,13 @@ use inventory::stock::Stock! as Store;     // the alias Store of Stock! must end
 
 ## Packages
 
-A library and an executable that uses it:
+A manifest is checked when it is read, before its sources or dependencies are. A `[dependencies.NAME]` table has exactly one key, `path`: the dependency's directory, or its `kur.toml`, relative to the manifest. An executable needs an `entry`, and a library may not have one. Any other key is rejected:
+
+```text
+.../kur.toml: unknown manifest key version
+```
+
+Here is a library and an executable that uses it:
 
 ```toml
 # inventory/kur.toml

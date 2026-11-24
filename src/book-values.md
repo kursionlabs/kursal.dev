@@ -189,10 +189,28 @@ fn main() {
 
 `as` binds tighter than the arithmetic operators, so `a + b as u64` converts only `b`. `bool` is not a number, so `true as u8` is rejected. Write `if b { 1u8 } else { 0 }`.
 
-What integer arithmetic does at the edges of a type, such as overflow, division by zero and large shifts, is being written down in the repository's language reference. It will be added here when that text is settled.
+## Integer arithmetic
+
+Every integer operation is defined for every pair of operands. No input is undefined behaviour. For a type of N bits:
+
+- `+`, `-` and `*` wrap modulo 2^N, signed and unsigned alike. `127i8 + 1i8` is `-128` and `0u8 - 1u8` is `255`. Nothing is detected or reported when an operation wraps.
+- `-x` means `0 - x`, so negating the smallest value of a signed type gives that same value back.
+- `/` rounds toward zero, so `-7i32 / 2i32` is `-3`. The smallest signed value divided by `-1` wraps to the smallest value.
+- `%` is `x - (x / y) * y`, so it takes the sign of `x`: `-7i32 % 2i32` is `-1`. The smallest signed value `% -1` is `0`.
+- `/` or `%` by zero **traps**: the program stops. It does not produce an error value. The trap happens wherever the operation is evaluated, even when its result is not used.
+- In `<<` and `>>`, the shift amount is taken modulo N, as a two's-complement value. An amount of N or more, or a negative one, shifts by its low bits: `1u64 << 65u64` is `2` and `1i8 << -1i8` is `-128`.
+- `>>` on a signed type is arithmetic: `-128i8 >> 1i8` is `-64`.
+
+Constant expressions give the same results as the same code at run time. The one difference is that dividing by a constant zero is rejected when you build:
+
+```text
+constant division by zero
+```
+
+For `usize` and `isize`, only a literal or constant `0` divisor is caught at compile time. A divisor that only becomes zero when it is computed traps at run time.
 
 ## Check by hand
 
-Every arithmetic operator has the same type on both sides. You can see that from the signatures and the suffixes on the literals.
+Every arithmetic operator has the same type on both sides. You can see that from the signatures and the suffixes on the literals. Wherever a `/` or `%` appears, its divisor is the place the program can stop.
 
 Next: [Bindings and control flow →](/book/bindings/)

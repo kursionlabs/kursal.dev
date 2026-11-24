@@ -106,7 +106,7 @@ The only loop keyword is `while`. There is no `loop`, `break` or `continue`, and
 
 ## const
 
-`const NAME: T = expr;` works at module level, inside a block (like `STEP` above) and inside an `impl`. It is evaluated at compile time.
+`const NAME: T = expr;` works at module level, inside a block (like `STEP` above) and inside an `impl`. It is evaluated at compile time, with the same results the arithmetic would give at run time (chapter 2).
 
 ## Functions that do not return
 
