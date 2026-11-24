@@ -1,7 +1,7 @@
 +++
 layout = "page.html"
 section = "book"
-title = "The Kursal book"
+title = "The kursal book"
 eyebrow = "Layer 3 of 3"
 intro = "The whole language, in the order you need it. Part 1 is the everyday language. Part 2, on places, brands and unsafe, is still being written."
 permalink = "/book/"
@@ -11,13 +11,13 @@ The [quick start](/start/) gets a program running and the [quick guide](/guide/)
 
 ## How to read it
 
-Each chapter introduces a few forms, shows a complete program for them, and shows what the compiler says when you get one wrong. Everything on these pages was built and run with the Kursal compiler. The error messages are real ones, with each path shortened to the file's place in its package, such as `lib.kur:line:col` or `src/lib.kur:line:col`.
+Each chapter introduces a few forms, shows a complete program for them, and shows what the compiler says when you get one wrong. Everything on these pages was built and run with the kursal compiler. The error messages are real ones, with each path shortened to the file's place in its package, such as `lib.kur:line:col` or `src/lib.kur:line:col`.
 
 Most chapters end with a short **check by hand** note: what you would look at to decide, without the compiler, whether the code is accepted. That is the habit the language is built around.
 
 The book covers the language only. Examples use the standard library (`print_buffer`, `Buffer!`, `range` and so on) and say in a line what each piece does, but they do not document it. The full library reference will live at docs.kursal.dev.
 
-Kursal has not had a 1.0 yet. Where a feature is likely to change, the chapter says so.
+kursal has not had a 1.0 yet. Where a feature is likely to change, the chapter says so.
 
 ## Part 1: the everyday language
 

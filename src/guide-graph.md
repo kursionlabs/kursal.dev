@@ -12,7 +12,7 @@ A graph node points at other nodes, possibly back at itself through a cycle. Tha
 - a pointer you can **copy** and store, and
 - a way to say **who may read and write** through it, because copyable pointers on their own would be a free-for-all.
 
-Kursal splits the pointer from the authority to use it.
+kursal splits the pointer from the authority to use it.
 
 - `Ref[T, 'k]` names a place holding a `T` in a memory domain `'k`. It is copyable, and by itself it grants nothing.
 - `Exclusive!['k]` is the one linear right to read and write domain `'k`.

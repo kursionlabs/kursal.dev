@@ -3,12 +3,12 @@ layout = "page.html"
 section = "more"
 title = "The compiler"
 eyebrow = "Understand"
-intro = "Two compilers, one small core language, and a C backend. How a Kursal package becomes a checked program and then an executable."
-description = "Kursal compiler phases, the KURS core checker, self-hosting, C generation, and how the two implementations are compared."
+intro = "Two compilers, one small core language, and a C backend. How a kursal package becomes a checked program and then an executable."
+description = "kursal compiler phases, the KURS core checker, self-hosting, C generation, and how the two implementations are compared."
 permalink = "/compiler/"
 +++
 
-Kursal has two implementations of the same pipeline: a [Python reference compiler](https://github.com/kursionlabs/kursal/tree/main/reference-compiler) and a [compiler written in Kursal](https://github.com/kursionlabs/kursal/tree/main/compiler). The reference came first and acts as the executable spec. The two are expected to accept and reject the same programs with the same messages, and to produce the same lowered KURS and the same C. The Kursal one is bootstrapped by the Python one, and then it builds itself.
+kursal has two implementations of the same pipeline: a [Python reference compiler](https://github.com/kursionlabs/kursal/tree/main/reference-compiler) and a [compiler written in kursal](https://github.com/kursionlabs/kursal/tree/main/compiler). The reference came first and acts as the executable spec. The two are expected to accept and reject the same programs with the same messages, and to produce the same lowered KURS and the same C. The kursal one is bootstrapped by the Python one, and then it builds itself.
 
 <h2 id="pipeline">The pipeline</h2>
 
@@ -46,18 +46,18 @@ The backend emits GNU C that Clang and GCC both accept. It gives C storage to li
 
 `kursal build` invokes `$KURSAL_CC` when it is set and `clang` otherwise, compiling the generated C and any package-declared C helpers into an executable. A freestanding target needs only `memcpy`, `memmove`, `memset`, and `memcmp`, but you bring your own runtime. The [backend notes](https://github.com/kursionlabs/kursal/blob/main/compiler/README.md#the-c-backend) explain the storage and call decisions, including where aliasing assumptions come from.
 
-C is also where most of the build time goes: compiling the generated C for the self-hosted compiler takes far longer than running Kursal's own front end.
+C is also where most of the build time goes: compiling the generated C for the self-hosted compiler takes far longer than running kursal's own front end.
 
 <h2 id="self-hosting">Bootstrap</h2>
 
-From the repository root, `scripts/bootstrap.sh` has the Python compiler build the Kursal compiler, and that compiler builds itself into `bin/kursal`. Adding `--check` does another self-build and requires the generated C to match.
+From the repository root, `scripts/bootstrap.sh` has the Python compiler build the kursal compiler, and that compiler builds itself into `bin/kursal`. Adding `--check` does another self-build and requires the generated C to match.
 
 <h2 id="memory">The compiler's own storage</h2>
 
-The self-hosted compiler is the largest program written in Kursal, and it eats its own cooking. It uses one arena per group of phases: front end, core checking, and backend. Each arena gets its own brand and capability. The core program is copied between groups so the earlier arena can be destroyed, and short-lived worklists and maps use owned collections that are freed after each walk. The [storage chapter](https://github.com/kursionlabs/kursal/blob/main/compiler/README.md#storage) documents the design.
+The self-hosted compiler is the largest program written in kursal, and it eats its own cooking. It uses one arena per group of phases: front end, core checking, and backend. Each arena gets its own brand and capability. The core program is copied between groups so the earlier arena can be destroyed, and short-lived worklists and maps use owned collections that are freed after each walk. The [storage chapter](https://github.com/kursionlabs/kursal/blob/main/compiler/README.md#storage) documents the design.
 
 <h2 id="status">Where it stands</h2>
 
-Kursal has not had a 1.0, and breaking changes are expected. It currently targets Linux and compiles through a C compiler. What is supported today, and what is known to be rough, changes quickly, so it lives in the [repository](https://github.com/kursionlabs/kursal) next to the code and the tests.
+kursal has not had a 1.0, and breaking changes are expected. It currently targets Linux and compiles through a C compiler. What is supported today, and what is known to be rough, changes quickly, so it lives in the [repository](https://github.com/kursionlabs/kursal) next to the code and the tests.
 
 Next: [where things live in the repository](/source/).

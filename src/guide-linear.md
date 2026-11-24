@@ -82,7 +82,7 @@ Linearity spreads to whatever holds a linear value. A struct with a `Handle!` fi
 - Every early `return` has to dispose of every linear value that is live at that point.
 - In generic code, a type parameter `T` may be linear unless the function says `Copy[T]`. So inside generic code, linearity is not visible at the use.
 
-Linear types are not a new idea here. [Austral](https://austral-lang.org/) showed how far this one idea goes on its own, and that is the spark Kursal started from.
+Linear types are not a new idea here. [Austral](https://austral-lang.org/) showed how far this one idea goes on its own, and that is the spark kursal started from.
 
 ## Check it in your head
 

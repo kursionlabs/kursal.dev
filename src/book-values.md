@@ -3,7 +3,7 @@ layout = "page.html"
 section = "book"
 title = "Values and operators"
 eyebrow = "Book · Part 1 · Chapter 2"
-intro = "Numbers, bytes, strings, tuples and arrays, and the operators that combine them. Kursal converts nothing for you."
+intro = "Numbers, bytes, strings, tuples and arrays, and the operators that combine them. kursal converts nothing for you."
 permalink = "/book/values/"
 +++
 
@@ -92,7 +92,7 @@ multi
 line
 ```
 
-A string literal is a `Slice[u8, 'static]`: a view of bytes that lives for the whole program. Kursal has no `char` type and no built-in `String`. Text is bytes. The escapes are `\n \t \r \0 \\ \' \"` and `\xHH` up to `\x7f`. A literal may span lines. The `'static` is a brand, and Part 2 explains them. For now it is what you write when you need to name the type of a literal.
+A string literal is a `Slice[u8, 'static]`: a view of bytes that lives for the whole program. kursal has no `char` type and no built-in `String`. Text is bytes. The escapes are `\n \t \r \0 \\ \' \"` and `\xHH` up to `\x7f`. A literal may span lines. The `'static` is a brand, and Part 2 explains them. For now it is what you write when you need to name the type of a literal.
 
 ## Operators
 

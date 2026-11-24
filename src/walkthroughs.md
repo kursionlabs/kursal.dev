@@ -4,7 +4,7 @@ section = "more"
 title = "Walkthroughs"
 eyebrow = "Learn"
 intro = "Three small programs, followed one decision at a time. Each shows what the compiler checks and why it is checkable from where you are reading."
-description = "Worked examples of Kursal programs: a greeting, a cyclic graph, and a thread that fails to start."
+description = "Worked examples of kursal programs: a greeting, a cyclic graph, and a thread that fails to start."
 permalink = "/walkthroughs/"
 +++
 

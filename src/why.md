@@ -4,7 +4,7 @@ section = "more"
 title = "Why kursal"
 eyebrow = "Understand"
 intro = "The case for a smaller checker, and an honest account of what it costs."
-description = "Why Kursal exists: a resource checker small enough to run in your head, what that buys, and what you give up."
+description = "Why kursal exists: a resource checker small enough to run in your head, what that buys, and what you give up."
 permalink = "/why/"
 +++
 
@@ -18,9 +18,9 @@ C leaves the rules to comments and discipline. That works until a refactor adds 
 
 You can have no checker, or a large one.
 
-Large checkers can enforce a great deal, including things Kursal can't. Rust's borrow checker is the obvious example and an excellent one. Its cost is a larger set of rules, with lifetimes and their inference, so when the checker says no, working out why can take real effort.
+Large checkers can enforce a great deal, including things kursal can't. Rust's borrow checker is the obvious example and an excellent one. Its cost is a larger set of rules, with lifetimes and their inference, so when the checker says no, working out why can take real effort.
 
-Kursal started from a narrower question: how much of this checking can a person do alone, by reading? The answer shaped everything. A rule makes it into the language only if you can apply it by looking at a function and the signatures it calls. When a feature would make a check depend on far-away code, that is a reason to cut it.
+kursal started from a narrower question: how much of this checking can a person do alone, by reading? The answer shaped everything. A rule makes it into the language only if you can apply it by looking at a function and the signatures it calls. When a feature would make a check depend on far-away code, that is a reason to cut it.
 
 ## What you get
 
@@ -34,11 +34,11 @@ Kursal started from a narrower question: how much of this checking can a person 
 
 ## What you give up
 
-Kursal makes trades, and some are real costs.
+kursal makes trades, and some are real costs.
 
 - **Lends can't be stored.** A lend lasts one call. It can't sit in a struct, be returned, or be captured. Structures whose parts point at each other go through arenas and brands, which asks more of you than a pointer does.
 - **More ceremony.** `!` in type names, `exists` to open a brand, explicit capabilities. It is visible on purpose, and it is more to write.
-- **Contracts aren't checked.** `unsafe` marks where a human must be sure. Nothing verifies that the promise is kept, and Kursal is not memory safe by default.
+- **Contracts aren't checked.** `unsafe` marks where a human must be sure. Nothing verifies that the promise is kept, and kursal is not memory safe by default.
 - **It's young.** Linux only, no package manager, no 1.0, and breaking changes ahead. The [repository](https://github.com/kursionlabs/kursal) tracks what is supported today.
 
 ## Who it's for

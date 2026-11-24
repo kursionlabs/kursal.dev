@@ -7,13 +7,13 @@ intro = "Build the compiler, run hello world, and look at the C it writes. About
 permalink = "/start/"
 +++
 
-Kursal is pre-1.0 and currently builds on **Linux** only. Expect rough edges and breaking changes. If you want to see how the pieces fit before installing anything, the [ideas](/ideas/) and the [walkthroughs](/walkthroughs/) don't need a toolchain.
+kursal is pre-1.0 and currently builds on **Linux** only. Expect rough edges and breaking changes. If you want to see how the pieces fit before installing anything, the [ideas](/ideas/) and the [walkthroughs](/walkthroughs/) don't need a toolchain.
 
 ## What you need
 
 - [uv](https://docs.astral.sh/uv/), which supplies Python 3.12. The first bootstrap stage runs the Python reference compiler.
-- Clang, or another C compiler named in `KURSAL_CC`. Kursal emits C, and your C compiler does the code generation.
-- The [Kursal repository](https://github.com/kursionlabs/kursal). Run everything below from its root.
+- Clang, or another C compiler named in `KURSAL_CC`. kursal emits C, and your C compiler does the code generation.
+- The [kursal repository](https://github.com/kursionlabs/kursal). Run everything below from its root.
 
 ## Build the compiler
 
@@ -21,7 +21,7 @@ Kursal is pre-1.0 and currently builds on **Linux** only. Expect rough edges and
 scripts/bootstrap.sh
 ```
 
-This takes a few minutes. The Python reference compiler builds Kursal's own compiler once, then that compiler builds itself into `bin/kursal`, and clang compiles the generated C each time.
+This takes a few minutes. The Python reference compiler builds kursal's own compiler once, then that compiler builds itself into `bin/kursal`, and clang compiles the generated C each time.
 
 ## Run hello world
 

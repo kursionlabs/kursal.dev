@@ -4,11 +4,11 @@ section = "more"
 title = "Source map"
 eyebrow = "Reference"
 intro = "Where to read the implementation, tests, and generated API documentation."
-description = "A source map for the Kursal compiler, standard library, examples, editor grammars, tests, and API documentation generator."
+description = "A source map for the kursal compiler, standard library, examples, editor grammars, tests, and API documentation generator."
 permalink = "/source/"
 +++
 
-The [Kursal repository](https://github.com/kursionlabs/kursal) is the authority on the current language. Its root [README](https://github.com/kursionlabs/kursal/blob/main/README.md) has the latest bootstrap requirements and commands. The pages on this site are a guided way in, and the source and tests carry the exact behavior.
+The [kursal repository](https://github.com/kursionlabs/kursal) is the authority on the current language. Its root [README](https://github.com/kursionlabs/kursal/blob/main/README.md) has the latest bootstrap requirements and commands. The pages on this site are a guided way in, and the source and tests carry the exact behavior.
 
 ## Implementation
 

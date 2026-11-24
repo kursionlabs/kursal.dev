@@ -9,9 +9,9 @@ permalink = "/guide/"
 
 This guide builds the language's central ideas in the order you would need them. It starts with a handle that is just a number, and ends at the small core language the checker really runs on. No step assumes more than the one before it, and each ends by naming the question the next one answers.
 
-Every program on these pages was built and run with the Kursal compiler, and the error messages are real ones. Where a snippet is trimmed, it says so. Paths in messages are shortened to `lib.kur:line:col`.
+Every program on these pages was built and run with the kursal compiler, and the error messages are real ones. Where a snippet is trimmed, it says so. Paths in messages are shortened to `lib.kur:line:col`.
 
-The guide borrows its method from [Austral](https://austral-lang.org/)'s tutorial, which introduces linear types by need, one at a time. Austral was the spark for Kursal: it showed that you don't have to boil the ocean to get safety.
+The guide borrows its method from [Austral](https://austral-lang.org/)'s tutorial, which introduces linear types by need, one at a time. Austral was the spark for kursal: it showed that you don't have to boil the ocean to get safety.
 
 ## The steps
 
@@ -26,7 +26,7 @@ The guide borrows its method from [Austral](https://austral-lang.org/)'s tutoria
 
 ## What to expect from it
 
-Kursal is not memory safe by default. The language gives libraries the tools to build resource-safe abstractions, and it checks that a program uses them consistently. The guide is honest about where that stops. Steps 6 and 7 are about exactly that boundary.
+kursal is not memory safe by default. The language gives libraries the tools to build resource-safe abstractions, and it checks that a program uses them consistently. The guide is honest about where that stops. Steps 6 and 7 are about exactly that boundary.
 
 The thread through all eight steps is one test: *can I look at a piece of code and tell whether it will pass the checker?* Each step ends with a short hand check, the thing you would look at to answer that for the idea just introduced.
 

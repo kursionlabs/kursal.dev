@@ -7,7 +7,7 @@ intro = "Two walks read the shared graph, then the program writes to it again."
 permalink = "/guide/readers/"
 +++
 
-Reading a graph does not need exclusive rights. Many readers at once is fine, as long as nobody writes while they do. Kursal expresses that with a **read tree**.
+Reading a graph does not need exclusive rights. Many readers at once is fine, as long as nobody writes while they do. kursal expresses that with a **read tree**.
 
 Sharing turns the writer into the root of a tree of read-only capabilities. The root can be split into two halves, each of which can read, and each split hands back a **receipt** for putting the halves back together. Once everything has been joined back into the root, the writer can resume.
 
@@ -87,7 +87,7 @@ Every `split` returns a `join` receipt that names the parent and both children, 
 
 ## What this leaves open
 
-All of this so far is library code. The arena, the capabilities and the read tree are written in Kursal on top of something. How does that code touch raw memory and C?
+All of this so far is library code. The arena, the capabilities and the read tree are written in kursal on top of something. How does that code touch raw memory and C?
 
 Next: [`unsafe`, as a stated contract →](/guide/unsafe/)
 

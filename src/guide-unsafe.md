@@ -7,7 +7,7 @@ intro = "Call C's malloc and free, read raw memory, and say out loud what you ar
 permalink = "/guide/unsafe/"
 +++
 
-Everything above has to bottom out somewhere. At the bottom there are raw pointers, calls into C and operations the checker cannot reason about. Kursal does not hide them. It makes each one carry the word `unsafe` at the place it happens, and asks you to write down what you are promising when you do.
+Everything above has to bottom out somewhere. At the bottom there are raw pointers, calls into C and operations the checker cannot reason about. kursal does not hide them. It makes each one carry the word `unsafe` at the place it happens, and asks you to write down what you are promising when you do.
 
 This is adapted from `examples/heap`, with an `unsafe fn` and a `main` added:
 
@@ -69,7 +69,7 @@ Nothing checks that a contract is kept. [`lib/std/CONTRACTS.md`](https://github.
 - `unsafe` marks one operation. There are no `unsafe { }` blocks.
 - Inside an `unsafe fn`, the operations need no marker of their own, so keep those bodies small.
 - Numeric `as` is safe. Pointer casts are not.
-- Kursal is not memory safe by default. It is a language in which you can *build* a safe abstraction over this, which is the next step.
+- kursal is not memory safe by default. It is a language in which you can *build* a safe abstraction over this, which is the next step.
 
 ## Check it in your head
 

@@ -49,7 +49,7 @@ The loop reads each byte through the tag and appends it to a fresh output buffer
 
 ## Run it
 
-After [building the compiler](/start/), from the Kursal repository root:
+After [building the compiler](/start/), from the kursal repository root:
 
 ```sh
 bin/kursal build examples/greet -o /tmp/greet

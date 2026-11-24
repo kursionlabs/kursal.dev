@@ -1,16 +1,16 @@
 +++
 layout = "base.html"
 permalink = "/"
-description = "Kursal is a systems language that compiles to C. Linear types, lent places, brands, and capabilities let a library say who owns a resource and who may touch it, and every check is small enough to do in your head."
+description = "kursal is a systems language that compiles to C. Linear types, lent places, brands, and capabilities let a library say who owns a resource and who may touch it, and every check is small enough to do in your head."
 +++
 <div class="home">
 
 <section class="h-hero shell">
   <div class="h-hero-copy">
     <h1>A checker small enough to run in your head.</h1>
-    <p class="h-lede">Kursal is a systems language that compiles to C. A few ideas let a library say who owns a resource and who may touch it, and the compiler holds every caller to it. Each check looks at one function and the signatures it calls, never another function’s body, so you can read code and know whether it will pass.</p>
+    <p class="h-lede">kursal is a systems language that compiles to C. A few ideas let a library say who owns a resource and who may touch it, and the compiler holds every caller to it. Each check looks at one function and the signatures it calls, never another function’s body, so you can read code and know whether it will pass.</p>
     <p class="h-actions"><a class="h-button h-primary" href="/guide/">Start the quick guide</a><a class="h-button" href="/start/">Build it in two commands</a></p>
-    <p class="h-fine">Kursal is not memory safe by default. It gives libraries the tools to build resource-safe abstractions, and <code>unsafe</code> marks the layer underneath them.</p>
+    <p class="h-fine">kursal is not memory safe by default. It gives libraries the tools to build resource-safe abstractions, and <code>unsafe</code> marks the layer underneath them.</p>
   </div>
   <div class="h-hero-demo">
     <div class="ledger" data-ledger>
@@ -59,7 +59,7 @@ description = "Kursal is a systems language that compiles to C. Linear types, le
 <section class="h-section shell">
   <header class="h-head"><h2>Resource rules live in comments</h2></header>
   <p class="h-intro">Close this exactly once. Don’t touch it after the callee frees it. One writer at a time. Every systems codebase has rules like these, and most of them are written in comments and enforced by whoever reviews the diff.</p>
-  <p>Checkers that enforce such rules exist, and some are very capable. The cost is that when one says no, working out why can take as long as the bug would have. Kursal makes a different trade: fewer rules, each one checked locally, so the answer to “will this pass?” is something you can reach by reading.</p>
+  <p>Checkers that enforce such rules exist, and some are very capable. The cost is that when one says no, working out why can take as long as the bug would have. kursal makes a different trade: fewer rules, each one checked locally, so the answer to “will this pass?” is something you can reach by reading.</p>
   <p>The rest of this page is how that works, and what it costs.</p>
 </section>
 
@@ -95,7 +95,7 @@ description = "Kursal is a systems language that compiles to C. Linear types, le
 
 <section class="h-section shell">
   <header class="h-head"><h2>The checker is small, and it gets checked</h2></header>
-  <p class="h-intro">Kursal lowers every program to KURS, a small core language in which each block states its complete contract: what is full, what is empty, what is lent. A separate checker re-verifies the KURS before any C is emitted. If the front end breaks one of these rules, the result is “front end accepted, checker rejected”, not a program that runs with the rule broken.</p>
+  <p class="h-intro">kursal lowers every program to KURS, a small core language in which each block states its complete contract: what is full, what is empty, what is lent. A separate checker re-verifies the KURS before any C is emitted. If the front end breaks one of these rules, the result is “front end accepted, checker rejected”, not a program that runs with the rule broken.</p>
   <div class="h-principles">
     <div><h3>Fuzzed against itself</h3><p>Thousands of generated and mutated programs turned up cases where the front end accepted what the checker rejected, among them an aliasing hole in <code>f(&amp;x, &amp;x)</code>. All are fixed and kept as regression tests. The fuzzer also compares the two compilers and runs sanitizers.</p></div>
     <div><h3>Two compilers</h3><p>A Python reference compiler and a self-hosted one, kept identical by differential tests. The self-hosted compiler reaches a bootstrap fixpoint: stage 1 and stage 2 emit byte-identical C.</p></div>
@@ -106,7 +106,7 @@ description = "Kursal is a systems language that compiles to C. Linear types, le
 
 <section class="h-section shell">
   <header class="h-head"><h2>Young, and open about it</h2></header>
-  <p class="h-intro">Kursal has not had a 1.0, and breaking changes are expected. It targets Linux, compiles through a C compiler, and has no package manager yet. Some things you might expect are not there. <a href="/why/">Why kursal</a> says plainly what you give up, and the <a href="https://github.com/kursionlabs/kursal">repository</a> tracks what is supported today.</p>
+  <p class="h-intro">kursal has not had a 1.0, and breaking changes are expected. It targets Linux, compiles through a C compiler, and has no package manager yet. Some things you might expect are not there. <a href="/why/">Why kursal</a> says plainly what you give up, and the <a href="https://github.com/kursionlabs/kursal">repository</a> tracks what is supported today.</p>
 </section>
 
 <section class="h-section shell">

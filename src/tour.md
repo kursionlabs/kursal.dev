@@ -4,7 +4,7 @@ section = "more"
 title = "A tour of the language"
 eyebrow = "Learn"
 intro = "The syntax you will meet in the examples and in the compiler's own source, with just enough explanation to read it."
-description = "A concise tour of Kursal packages, expressions, linear types, place lending, traits, error handling, closures, and unsafe operations."
+description = "A concise tour of kursal packages, expressions, linear types, place lending, traits, error handling, closures, and unsafe operations."
 permalink = "/tour/"
 +++
 
@@ -90,7 +90,7 @@ Closures capture the values they mention. Capturing a linear value moves it into
 
 <h2 id="unsafe-and-interop">Unsafe and C interop</h2>
 
-`unsafe` marks one operation: an unsafe or external call, a raw-pointer read or write, a cast to a pointer type such as `x as *T`, or anything else with an explicit obligation. Numeric casts are safe. It is not a mode for a whole block. A package can declare C sources and linker flags in `kur.toml`, and external symbols can be declared in Kursal. [`examples/libuv_echo`](https://github.com/kursionlabs/kursal/tree/main/examples/libuv_echo) is a concrete C-library integration, and the [standard library's contracts](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md) show how raw-pointer obligations are written down.
+`unsafe` marks one operation: an unsafe or external call, a raw-pointer read or write, a cast to a pointer type such as `x as *T`, or anything else with an explicit obligation. Numeric casts are safe. It is not a mode for a whole block. A package can declare C sources and linker flags in `kur.toml`, and external symbols can be declared in kursal. [`examples/libuv_echo`](https://github.com/kursionlabs/kursal/tree/main/examples/libuv_echo) is a concrete C-library integration, and the [standard library's contracts](https://github.com/kursionlabs/kursal/blob/main/lib/std/CONTRACTS.md) show how raw-pointer obligations are written down.
 
 <h2 id="whats-missing">What's not there yet</h2>
 

@@ -44,7 +44,7 @@ path = "../kursal/lib/std"
 - `kind` is `executable` or `library`.
 - `entry` names the function the executable starts in.
 - `source_root` is the directory the sources live under. It defaults to `src`.
-- `[dependencies.NAME]` gives another package's directory as a `path`. Kursal has no registry yet, so a dependency is always a directory.
+- `[dependencies.NAME]` gives another package's directory as a `path`. kursal has no registry yet, so a dependency is always a directory.
 
 Build and run it:
 

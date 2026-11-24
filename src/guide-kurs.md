@@ -7,7 +7,7 @@ intro = "Every feature so far lowers to a small core language. Its checker looks
 permalink = "/guide/kurs/"
 +++
 
-Everything in the last seven steps is surface language. The compiler lowers it to **KURS**, a small core, and a separate checker for that core decides whether the program is accepted. KURS came first: it was designed, and programs were written in it by hand, before the surface language existed. Kursal was built on top of it.
+Everything in the last seven steps is surface language. The compiler lowers it to **KURS**, a small core, and a separate checker for that core decides whether the program is accepted. KURS came first: it was designed, and programs were written in it by hand, before the surface language existed. kursal was built on top of it.
 
 Here is a library with no `std`:
 

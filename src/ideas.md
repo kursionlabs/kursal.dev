@@ -4,11 +4,11 @@ section = "more"
 title = "What each idea catches"
 eyebrow = "Understand"
 intro = "The compiler's actual messages, grouped by the idea that produces them, and how the ideas depend on one another."
-description = "What Kursal's linear types, places, brands, capabilities, encapsulation, and unsafe contracts each catch, and how they fit together."
+description = "What kursal's linear types, places, brands, capabilities, encapsulation, and unsafe contracts each catch, and how they fit together."
 permalink = "/ideas/"
 +++
 
-Each idea in Kursal exists to rule out a specific mistake. Here is what the mistakes look like in practice. Messages are copied from the compiler, with long paths shortened. The [guide](/guide/) builds every one of them from scratch.
+Each idea in kursal exists to rule out a specific mistake. Here is what the mistakes look like in practice. Messages are copied from the compiler, with long paths shortened. The [guide](/guide/) builds every one of them from scratch.
 
 | You wrote | The compiler says | Idea |
 | --- | --- | --- |
