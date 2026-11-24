@@ -233,4 +233,4 @@ The compiler cannot see into C, so a call has to say `unsafe`. Without it you ge
 
 Every literal, field access, destructuring and `match` of a type sits in a module where that type's shape is exposed. Every path that crosses a package boundary goes through an `export`.
 
-Next: Part 2 is in progress. Meanwhile, the [quick guide](/guide/) teaches its central ideas by example.
+Next: [Places and lending →](/book/places/)

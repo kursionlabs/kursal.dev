@@ -3,7 +3,7 @@ layout = "page.html"
 section = "book"
 title = "The kursal book"
 eyebrow = "Layer 3 of 3"
-intro = "The whole language, in the order you need it. Part 1 is the everyday language. Part 2, on places, brands and unsafe, is still being written."
+intro = "The whole language, in the order you need it. Part 1 is the everyday language. Part 2 is resources: places, brands, capabilities, unsafe and threads."
 permalink = "/book/"
 +++
 
@@ -35,4 +35,11 @@ kursal has not had a 1.0 yet. Where a feature is likely to change, the chapter s
 
 ## Part 2: resources and contracts
 
-Places and lending, brands and existentials, capabilities, `unsafe`, `extern "C"`, concurrency, and how checking works. These chapters are being checked against the compiler and will appear here as they are done. The [quick guide](/guide/) already teaches the central ideas of Part 2 by example.
+12. [Places and lending](/book/places/): `&` parameters, moving out and restoring, and why there are no references.
+13. [Brands and existentials](/book/brands/): `'k`, `exists`, `pack`, and values that belong together.
+14. [Capabilities in practice](/book/capabilities/): handles that grant nothing, linear capabilities that grant access.
+15. [Unsafe and raw pointers](/book/unsafe/): one operation at a time, and the obligation each one carries.
+16. [Calling C with extern](/book/extern/): declaring, linking and calling foreign functions.
+17. [foreach traversal](/book/foreach/): code that visits every field. Advanced, and likely to change.
+18. [Concurrency](/book/concurrency/): moving ownership into threads, and sharing through capabilities.
+19. [How checking works](/book/checking/): local checking, place state, and the independent core checker.
