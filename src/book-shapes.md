@@ -62,7 +62,7 @@ fn main() {
 - A **tuple** declaration gives a tuple its own name: `tuple Meters(u32);`, with a semicolon. It is a different type from the anonymous `(u32,)` and from any other declaration with the same contents, so a `Meters` cannot be passed where a `Feet` is expected.
 - An **enum** lists its variants, each with no payload or a tuple of payloads. It needs at least one.
 
-Values are built with a dot before the brackets. A struct uses braces, `Point.{ x: 1, y: 2 }`, and a field whose variable has the same name can be written once (`Point.{ x: 5, y }`). A tuple declaration or a variant uses parentheses, `Meters.(42)` and `Shape::Circle.(2)`. A variant with no payload is just its path, `Shape::Dot`. This is the one form of construction, and `Meters(42)` is not accepted in an expression. A missing field is an error, `missing field y`.
+Values are built with a dot before the brackets. A struct uses braces, `Point.{ x: 1, y: 2 }`, and a field whose variable has the same name can be written once (`Point.{ x: 5, y }`). A tuple declaration or a variant uses parentheses, `Meters.(42)` and `Shape::Circle.(2)`. A variant with no payload is just its path, `Shape::Dot`. This is the one form of construction. `Meters(42)` is rejected with ``` `Meters` is a constructor; write `Meters.(...)` ```. A missing field is an error, `missing field y`.
 
 ## Spread
 
@@ -129,14 +129,14 @@ digit letter space other
 
 ### What the checker requires
 
-- An enum match lists every variant, or ends with `_`. A match that leaves a variant out is rejected.
+- An enum match lists every variant, or ends with `_`. A match that leaves a variant out is rejected, and the message names it: `a match must cover every enum variant; it misses Dot and Rect`.
 - An integer or byte match always ends with `_`, even when its ranges happen to cover the whole type, and `_` has to be the last case.
 - Ranges and literals must not overlap, and a variant may not appear twice.
 - A `bool` cannot be matched. Use `if`.
 
 ### What a case cannot do
 
-A case binds names or `_`, and nothing more. There are no nested patterns, so `Some(Some(x))` is a syntax error, and no guards. To look inside a payload, match again inside the arm, as chapter 8 does. Writing a lent match, `match &s { ... }`, lets you look at a value without consuming it, and that is covered with places in Part 2.
+A case binds names or `_`, and nothing more. There are no nested patterns, so `Some(Some(x))` is a syntax error, and no guards. To look inside a payload, match again inside the arm, as chapter 8 does. Writing a lent match, `match &s { ... }`, lets you look at a value without consuming it. Like every lend, it needs `s` to be a `var`. Places in chapter 12 cover it.
 
 ## Check by hand
 

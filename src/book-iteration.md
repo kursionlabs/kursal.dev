@@ -59,7 +59,7 @@ lib.kur:4:5: a for loop lends its iterator: `for x in &it`
     |     ^
 ```
 
-The binder is a single name, with no patterns, and the body has type `()`. Leave early with `return`, since there is no `break`. You only need to import `Iterator` to write an instance of it, and the `for` itself needs no import.
+The binder is a single name, with no patterns, and the body has type `()`. The binder is not a `var`: to change it or lend it in the body, write `var i = i;` first. Leave early with `return`, since there is no `break`. You only need to import `Iterator` to write an instance of it, and the `for` itself needs no import.
 
 The `&it: Countdown` parameter in `next` is a **lent** parameter: the function may change `it` and the caller gets the change back. Part 2 covers lending in full.
 
@@ -99,7 +99,7 @@ Ada is at (3, -4); braces: {}
 - An f-string produces a `Buffer!`, an owned byte buffer. It is linear, so it has to be used: print it, pass it on, or `.destroy()` it.
 - Each `{expr}` calls `Format` for the type of the expression, and the expression can be any expression, a call included. `{{` and `}}` are literal braces. There are no width or precision specifiers.
 - The library gives `Format` instances for all the integers, `f32`, `f64`, `bool`, `Slice[u8, 'static]` (string literals), readable byte views, `std::io::Error`, and `Buffer!` (written `{&b}`).
-- A linear value has to be written `{&name}`, which lends it to the formatter and leaves it for you to consume afterwards. Splicing it in without the `&` would use it up, and the f-string cannot do that on your behalf.
+- A linear value has to be written `{&name}`, which lends it to the formatter and leaves it for you to consume afterwards. Like every lend it needs a `var`, which is why `name` above is one. Splicing it in without the `&` would use it up, and the compiler rejects that and tells you to lend it.
 - `f"...".write(out)` writes into any `Writable` instead of making a new buffer. That is how a `Format` instance for your own type writes its text into whichever writer it is given, as above.
 
 If a type has no `Format` instance you get the error you would expect:

@@ -56,6 +56,24 @@ fn main() {
 
 A closure captures the local variables it mentions. A value that is Copy is captured by copy, and a linear value is **moved in**. Moving a linear value into a closure makes the closure itself linear, and it then has to be called, or handed on, exactly once.
 
+A closure holds a copy of what it captures, so it cannot change the original. Assigning to a captured name, or lending it, is rejected, even when the name is a `var`:
+
+```kursal
+fn main() {
+    var total = 0u32;
+    let add = |x: u32| { total = total + x; };
+    add(1);
+}
+```
+
+```text
+lib.kur:3:26: total is captured as a copy, which cannot be assigned
+  3 |     let add = |x: u32| { total = total + x; };
+    |                          ^
+```
+
+Lending it, as in `|| &c.tick()` with the `Counter` of chapter 5, gives `c is captured as a copy, which cannot be lent`. Make the change outside the closure, or have the closure return the new value.
+
 ## Two kinds of function value
 
 A **function value** is written `fn(A) -> R`. A named function used without parentheses is one, as in `apply_fn(double, 4)` and `let g = double;`. It carries nothing with it.

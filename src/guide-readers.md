@@ -33,19 +33,19 @@ fn walk(&view: Shared!['k, 'q], at: Ref[Node['k], 'k], steps: u32) -> u64 {
 }
 
 fn main() {
-    let exists 'k. (tag, arena) = Arena!::new(hash_seed());
+    var exists 'k. (tag, arena) = Arena!::new(hash_seed());
     let a = &arena.alloc(&tag, Node.{ id: 1, next: Option::None });
     let b = &arena.alloc(&tag, Node.{ id: 2, next: Option::Some.(a) });
     a.set(&tag, Node.{ id: 1, next: Option::Some.(b) });
 
     // Share: the writer becomes the root of a read tree, split in two.
     let exists 'q. (root, resume) = tag.share();
-    let exists 'l, 'r. (left, right, join) = root.split();
+    var exists 'l, 'r. (left, right, join) = root.split();
     let from_a = walk(&left, a, 3);
     let from_b = walk(&right, b, 3);
 
     // Thaw: both halves go back through the receipts, then the writer is back.
-    let tag = resume.resume(join.join(left, right));
+    var tag = resume.resume(join.join(left, right));
     a.set(&tag, Node.{ id: 10, next: Option::Some.(b) });
     let after = walk_once(&tag, a);
     arena.destroy(tag);

@@ -66,7 +66,7 @@ fn main() {
 
 ## let and var
 
-`let` makes a binding that cannot be assigned to. `var` makes one that can. You assign with `=` to a `var`, to a field of one (`p.x = 1`), or to a tuple element (`(p.0).1 = 1`).
+`let` makes a binding that never changes once it is bound. `var` makes one that can. You assign with `=` to a `var`, to a field of one (`p.x = 1`), or to a tuple element (`(p.0).1 = 1`). A `var` is also what you **lend**: writing `&` before a name, as in `&sr` in chapter 1, `&a.tick()` in chapter 5 or `for x in &it` in chapter 10, hands the value to a call that may change it, so the name has to be a `var`.
 
 ```kursal
 fn main() {
@@ -81,9 +81,32 @@ lib.kur:3:5: count is not a var
     |     ^
 ```
 
-There is no `+=` or other compound assignment, so write `count = count + 1`. Function parameters are immutable in the same way. What you can do is shadow one: `let n = n * 2;` makes a new `n`. Shadowing works for any name and the old binding is simply out of reach afterwards, which is why the program above can have two `x`.
+There is no `+=` or other compound assignment, so write `count = count + 1`. Function parameters are immutable in the same way. What you can do is shadow one: `let n = n * 2;` makes a new `n`, and `var n = n;` makes one you can assign to or lend. The name a `for` binds is immutable too. Shadowing works for any name and the old binding is simply out of reach afterwards, which is why the program above can have two `x`.
 
-A `let` can also take a pattern: a name, `_`, a tuple `(a, b)`, an array `[a, b, c]`, or a struct pattern `{ x, y: py, ..rest }`. Chapter 4 covers the last.
+Lending a `let` is an error, even when the call only reads:
+
+```kursal
+use std::io::print_buffer;
+use std::iter::range;
+
+fn main() {
+    let r = range(1, 4);
+    for i in &r {
+        print_buffer(f"{i} ");
+    }
+    print_buffer(f"\n");
+}
+```
+
+```text
+lib.kur:6:15: r is not a var; a lent place must be a var
+  6 |     for i in &r {
+    |               ^
+```
+
+Write `var r = range(1, 4);` and it prints `1 2 3 `. A lent parameter (`&x: T`, or `&self` in chapter 5) can be lent on as it is. A parameter taken by value, `self` included, cannot, so bind it with `var` first.
+
+A `let` can also take a pattern: a name, `_`, a tuple `(a, b)`, an array `[a, b, c]`, or a struct pattern `{ x, y: py, ..rest }`. Chapter 4 covers the last. `var` takes the same patterns, and every name it binds is a `var`: `var (a, b) = pair;`, `var [first, second] = xs;`, `var { x, ..rest } = p;`.
 
 ## Functions
 
@@ -91,7 +114,7 @@ A `let` can also take a pattern: a name, `_`, a tuple `(a, b)`, an array `[a, b,
 fn name(a: T, b: U) -> R { body }
 ```
 
-The body is a block, and a block's value is its last expression, without a semicolon. A function with no `->` returns `()`. `return value;` leaves early, and it needs its own semicolon. Writing `return n` as the last thing in a block, with no `;`, is a syntax error.
+The body is a block, and a block's value is its last expression, without a semicolon. A function with no `->` returns `()`. `return value;` leaves early, and it needs its own semicolon. Writing `return n` as the last thing in a block, with no `;`, is rejected: ``a `return` at the end of a block ends with `;` ``.
 
 Every parameter type and the return type are written out. Local bindings and closures can have their types inferred.
 
@@ -146,6 +169,6 @@ The second line goes to standard error and the exit status is 2. `trap` also nee
 
 ## Check by hand
 
-For each function, every `return` and the block's last expression have the declared result type. Each name you assign to is a `var`, or a parameter that is lent for writing (Part 2).
+For each function, every `return` and the block's last expression have the declared result type. Each name you assign to or lend with `&` is a `var`, or a parameter that is itself lent (`&x`, `&self`).
 
 Next: [Structs, enums and match →](/book/shapes/)

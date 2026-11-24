@@ -18,7 +18,7 @@ kursal has two implementations of the same pipeline: a [Python reference compile
 | Signatures and inference | Declaration types, expression types, call targets, and captures. |
 | Lower | Control flow, places, and operations in KURS. |
 | Check | A verdict on the core program's types, uses, and place contracts. |
-| C backend | One GNU C translation unit, then a native build by your C compiler. |
+| C backend | GNU C, a file per module (or one file with `--single-c`), then a native build by your C compiler. |
 
 The [compiler module map](https://github.com/kursionlabs/kursal/blob/main/compiler/README.md) names the modules behind each stage. The [reference compiler's package section](https://github.com/kursionlabs/kursal/blob/main/reference-compiler/README.md#packages) gives the accepted `kur.toml` shape.
 

@@ -46,7 +46,7 @@ fn main() {
 
 ## Look at what the compiler wrote
 
-`kursal build` leaves a C file next to the executable. With the command above that is `/tmp/hello.c`. To print the generated C without building a binary:
+`kursal build` leaves the C next to the executable, in a directory with a file per module. With the command above that is `/tmp/hello.build/`. To print the generated C without building a binary:
 
 ```sh
 bin/kursal build examples/hello --emit-c
@@ -63,8 +63,8 @@ bin/kursal build examples/bad/leaked_handle.kur
 ```
 
 ```text
-…/examples/bad/leaked_handle.kur:14:5: leaked_handle::leaks_a_handle: linear value 'h' is not consumed before return
-  14 |     let h = make_handle(id);
+…/examples/bad/leaked_handle.kur:15:5: leaked_handle::leaks_a_handle: linear value 'h' is not consumed before return
+  15 |     5u32
 ```
 
 The build exits with status 1 and writes no executable. The path is shown shortened here, and the compiler prints a caret under the source line. Errors have the form `FILE:LINE:COL: message`. Each file in `examples/bad/` fails with the message quoted in its own comments. Then open `examples/linear` for the version that gets it right.

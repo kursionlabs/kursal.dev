@@ -55,10 +55,10 @@ use std::io::print_buffer;
 use package::counter::new_counter;
 
 fn main() {
-    let exists 'r. (owner, view, exclusive) = new_counter(10);
+    var exists 'r. (owner, view, exclusive) = new_counter(10);
     view.write(&exclusive, 32);
     let exists 'q. (root, resume) = exclusive.share();
-    let exists 'a, 'b. (left, right, join) = root.split();
+    var exists 'a, 'b. (left, right, join) = root.split();
     let a = view.read(&left);
     let b = view.read(&right);
     let exclusive = resume.resume(join.join(left, right));

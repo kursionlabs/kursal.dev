@@ -35,7 +35,7 @@ fn main() {
 
 Integers can be written in decimal, hex (`0x`), octal (`0o`) or binary (`0b`), with `_` between digits. The integer types are `i8`, `i16`, `i32`, `i64`, `isize`, `u8`, `u16`, `u32`, `u64` and `usize`, and the float types are `f32` and `f64`. `bool` has `true` and `false`. A byte literal like `b'A'` is a `u8`, which is why it prints as a number, and its character has to be ASCII. A float needs digits on both sides of the point, so `2.5` is a float and `2.` is not.
 
-A bare literal has no default type. `let n = 5;` on its own is an error, because nothing says whether `n` is a `u8` or an `i64`. Give it a suffix (`5u32`), an annotation (`let n: u32 = 5;`), or use it where a type is already fixed, as `let e: i32 = -42` does. A literal that does not fit its type is rejected: `let x: u8 = 256;` gives `literal 256 does not fit u8`.
+A bare literal has no default type. `let n = 5;` on its own is an error, `an integer literal's type is not determined; write a suffix`, because nothing says whether `n` is a `u8` or an `i64`. Give it a suffix (`5u32`), an annotation (`let n: u32 = 5;`), or use it where a type is already fixed, as `let e: i32 = -42` does. A literal that does not fit its type is rejected: `let x: u8 = 256;` gives `literal 256 does not fit u8`.
 
 ## Tuples and arrays
 

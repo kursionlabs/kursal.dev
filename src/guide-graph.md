@@ -16,7 +16,7 @@ kursal splits the pointer from the authority to use it.
 
 - `Ref[T, 'k]` names a place holding a `T` in a memory domain `'k`. It is copyable, and by itself it grants nothing.
 - `Exclusive!['k]` is the one linear right to read and write domain `'k`.
-- `let exists 'k.` opens a **brand**: a fresh `'k` that no other value has.
+- `var exists 'k.` opens a **brand**: a fresh `'k` that no other value has. It is `var` because `main` lends what it binds (`&arena`, `&tag`), and only a `var` can be lent. `let exists` opens one too when nothing it binds is lent.
 
 ```kursal
 use std::arena::Arena!;
@@ -52,7 +52,7 @@ fn walk(&tag: Exclusive!['k], at: Ref[Node['k], 'k], steps: u32) {
 
 fn main() {
     // A fresh brand 'k, the one capability for it, and an arena in it.
-    let exists 'k. (tag, arena) = Arena!::new(hash_seed());
+    var exists 'k. (tag, arena) = Arena!::new(hash_seed());
     let a = &arena.alloc(&tag, Node.{ id: 1, next: Option::None });
     let b = &arena.alloc(&tag, Node.{ id: 2, next: Option::Some.(a) });
     a.set(&tag, Node.{ id: 1, next: Option::Some.(b) });   // closes the cycle
@@ -67,7 +67,7 @@ Two details of the syntax: in an expression you write `Option::Some.(x)` and `Op
 
 ## What the brand does
 
-Every access through a `Ref[_, 'k]` names a capability whose type has the same `'k`. The `'k` is fresh for this `let exists`, so a reference from one arena cannot be used with another arena's capability. The checker compares them as types:
+Every access through a `Ref[_, 'k]` names a capability whose type has the same `'k`. The `'k` is fresh for this opening, so a reference from one arena cannot be used with another arena's capability. The checker compares them as types:
 
 ```
 lib.kur:8:13: brand mismatch: 'b and 'a; 'b was opened at 6:5, 'a at 5:5
@@ -79,7 +79,7 @@ Linearity does the rest. Destroying the arena consumes its capability, so any re
 lib.kur:8:13: s4a::main: value 'tag' has been moved and cannot be lent
 ```
 
-The repository has failing versions. `examples/bad/ref_after_remove_in.kur` reports `17:28: brand mismatch: 'b and 'a; 'b was opened at 15:5, 'a at 13:5`. `examples/bad/linear_in_arena.kur` reports `type argument must satisfy Copy`, since the arena holds copyable values. `examples/bad/function_value_at_two_brands.kur` reports `22:36: brand mismatch: Tag!['b] and Tag!['a]; 'b was opened at 20:5, 'a at 19:5`.
+The repository has failing versions. `examples/bad/ref_after_remove_in.kur` reports `16:20: brand mismatch: 'b and 'a; 'b was opened at 14:5, 'a at 12:5`. `examples/bad/linear_in_arena.kur` reports `type argument must satisfy Copy`, since the arena holds copyable values. `examples/bad/function_value_at_two_brands.kur` reports `22:36: brand mismatch: Tag!['b] and Tag!['a]; 'b was opened at 20:5, 'a at 19:5`.
 
 ## What it costs and what it doesn't
 
@@ -90,7 +90,7 @@ The repository has failing versions. `examples/bad/ref_after_remove_in.kur` repo
 
 ## Check it in your head
 
-Look at the signatures. Every use of a `Ref[_, 'k]` has to be paired with a capability whose type mentions the same `'k`. Each `let exists` brand matches nothing else, so mixing two domains shows up as a mismatch between two names you can read.
+Look at the signatures. Every use of a `Ref[_, 'k]` has to be paired with a capability whose type mentions the same `'k`. Each brand an `exists` opening makes matches nothing else, so mixing two domains shows up as a mismatch between two names you can read.
 
 ## What this leaves open
 

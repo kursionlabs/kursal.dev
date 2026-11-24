@@ -108,9 +108,7 @@ fn main() {
 ```
 
 ```text
-lib.kur:5:5: demo::main: linear value 't' is not consumed before return
-  5 |     let t = issue(3);
-    |     ^
+demo::main: linear value 't' is not consumed before return
 ```
 
 A value consumed twice:
@@ -141,17 +139,38 @@ fn early(t: Ticket!) -> u32 {
 ```
 
 ```text
-lib.kur:4:1: demo::early: linear value 't' is not consumed before return
+lib.kur:6:9: demo::early: linear value 't' is not consumed before return
+  6 |         return 0;
+    |         ^
 ```
 
-The compiler reports this one against the function, and the `return` that leaves `t` behind is the one inside the `if`.
+The compiler points at the `return` that leaves `t` behind, the one inside the `if`.
 
-A loop that consumes the value on each trip and never replaces it fails because the second trip would have nothing to consume. The compiler's message for that case names a block it generated for the loop. The fix is the one `main` used above, a fresh value put back before the loop repeats.
+A loop that consumes the value on each trip and never replaces it fails because the second trip would have nothing to consume:
+
+```kursal
+fn main() {
+    let t = issue(1);
+    var i = 0u32;
+    while i < 3 {
+        redeem(t);
+        i = i + 1;
+    }
+}
+```
+
+```text
+lib.kur:7:5: demo::main: linear value 't' remains live where the loop at 7:5 starts, but not when it repeats
+  7 |     while i < 3 {
+    |     ^
+```
+
+The fix is the one `main` used above, a fresh value put back before the loop repeats.
 
 Some quieter ways to leak a value are also caught:
 
 - `let _ = issue(1);` is rejected: a pattern cannot discard a linear value. Bind it and consume it.
-- `issue(1);` as a statement is rejected: cannot discard a linear expression result.
+- `issue(1);` as a statement is rejected: cannot discard a linear expression result; bind or consume it.
 - `t = issue(2);` over a `var t` that still holds a ticket is rejected: cannot overwrite live linear value `t`.
 - A struct pattern that leaves out a linear field is rejected for the same reason as `let _`.
 

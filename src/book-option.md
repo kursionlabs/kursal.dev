@@ -96,7 +96,7 @@ fn checked(n: u32) -> Result[u32, u8] {
 ```
 
 ```text
-lib.kur:6:13: ? needs the operand and the function result to be the same direct Option/Result type
+lib.kur:6:13: ? needs the operand and the function result to be the same Option or Result of core::option
   6 |     let h = half(n)?;
     |             ^
 ```
@@ -111,7 +111,7 @@ lib.kur:6:13: type mismatch: u8 and u16
 
 When you want to change the error, match, convert it yourself and build the new `Err`. It keeps every conversion in the text of the function.
 
-`?` is only for `Option` and `Result`, and this is how `main` can return `Result[(), Error]` and stop with a message, as in chapter 1.
+`?` is only for the standard `Option` and `Result` (defined in `core::option`, which `std::option` re-exports). On an enum of your own, even one with `Some` and `None` variants, it is rejected with the same message. This is how `main` can return `Result[(), Error]` and stop with a message, as in chapter 1.
 
 ## Check by hand
 

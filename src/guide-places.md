@@ -20,7 +20,7 @@ and every call site threads it through, `let (h, before) = tell_threaded(h);`. T
 
 ## A lend is a parameter mode
 
-Write `&` before a parameter name and the caller lends its own value for the duration of the call:
+Write `&` before a parameter name and the caller lends its own value for the duration of the call. What the caller lends has to be a `var`, since a `let` never changes once bound, which is why `main` below binds `h` with `var`:
 
 ```kursal
 use std::io::print_buffer;
@@ -58,7 +58,7 @@ fn advance(&h: Handle!, n: u64) {
 
 fn main() {
     let h = open(7);
-    let (h, before) = tell_threaded(h);
+    var (h, before) = tell_threaded(h);
     advance(&h, 5);
     advance(&h, 2);
     let after = tell(&h);
@@ -69,7 +69,7 @@ fn main() {
 
 It prints `before 0, after 7, closed at 7`.
 
-`tell` and `advance` never own the handle. `advance` may take it apart, as long as a value is back in the place before the function returns. The repository's `examples/at_sugar` states the relationship in a comment: `let x = mint(&t);` means `let (t, x) = mint(t);`. A lend is a handing back, written once, in the signature.
+`tell` and `advance` never own the handle. `advance` may take it apart, as long as a value is back in the place before the function returns. The reference compiler's test fixture `reference-compiler/tests/fixtures/at_sugar` states the relationship in a comment: `let x = mint(&t);` is `let (t, x) = mint(t);`. A lend is a handing back, written once, in the signature.
 
 ## What the checker refuses
 
@@ -86,6 +86,12 @@ lib.kur:15:5: s3b::main: 'h' overlaps another place the same call lends
 ```
 
 Returning a lend is not possible. `-> &Handle!` is a syntax error. And `&x` is allowed only as a call argument, a receiver, or a match scrutinee, so `&x as *u32` is rejected too.
+
+Lending a `let` is refused, because a lend may change what it lends. With `let (h, before) = ...` in `main`:
+
+```
+lib.kur:37:14: h is not a var; a lent place must be a var
+```
 
 Lending a value that was already moved away fails as you would expect. `examples/bad/push_after_finish.kur` reports `value 'builder' has been moved and cannot be lent`.
 
@@ -105,4 +111,4 @@ A lend cannot outlive its call, so it cannot be stored. A structure whose parts 
 
 Next: [pointers you can copy, and who may use them →](/guide/graph/)
 
-Examples: [`examples/at_sugar`](https://github.com/kursionlabs/kursal/tree/main/examples/at_sugar), [`examples/stock`](https://github.com/kursionlabs/kursal/tree/main/examples/stock) and [`examples/shop`](https://github.com/kursionlabs/kursal/tree/main/examples/shop).
+Examples: [`examples/stock`](https://github.com/kursionlabs/kursal/tree/main/examples/stock) and [`examples/shop`](https://github.com/kursionlabs/kursal/tree/main/examples/shop).

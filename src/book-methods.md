@@ -74,11 +74,19 @@ lib.kur:33:5: tick takes its receiver by &
 
 That `&` is the point. When you read `a.tick()` you cannot tell whether `a` will change, so the language makes you write `&a.tick()` when it will. The call and the method's signature are all you need to judge it.
 
-Lending a place for change requires a `var`. `&a.tick()` is accepted only because `a` is a `var`, so a `let` binding never changes after it is bound.
+Lending requires a `var`, whether or not the method changes anything. `&a.tick()` is accepted only because `a` is a `var`. With `let a = Counter::new();` the compiler stops at the lend:
+
+```text
+lib.kur:33:6: a is not a var; a lent place must be a var
+  33 |     &a.tick();
+     |      ^
+```
+
+A `let` never changes once it is bound. Neither does a receiver taken by value: inside a method that takes `self`, calling a `&self` method on it needs a `var` first, as in `var c = self; &c.tick();`.
 
 There is no `&mut` and no reference type. `&` appears at a call to say "lend this", and in a signature to say "this parameter is lent". Part 2 returns to it.
 
-An `impl` for a named type has to be in the same package as the type, so you cannot add inherent methods to another package's type. (Impls over a type parameter work differently, and chapter 7 covers them.) The primitive types get theirs from the core library. To give someone else's type new behaviour, write a trait (chapter 7).
+An `impl` for a named type has to be in the same package as the type, so you cannot add inherent methods to another package's type: `impl Buffer! { ... }` in your package gives `an inherent impl of Buffer! belongs in the package that declares it`. (Impls over a type parameter work differently, and chapter 7 covers them.) The primitive types get theirs from the core library, and `impl u32` gives `an inherent impl of u32 belongs in core`. To give someone else's type new behaviour, write a trait (chapter 7).
 
 `self` can only be the first parameter. A generic type's methods are written in an `impl` with a `forall` in front, and chapter 7 shows that. There is no method privacy: every function in an `impl` can be called wherever the type's name is visible.
 

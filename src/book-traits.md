@@ -164,7 +164,7 @@ fn main() {
 ```
 
 ```text
-lib.kur:6:21: Square has no method area
+lib.kur:6:21: Square has no method area; the trait Area provides it, import it
   6 |     print_buffer(f"{s.area()}\n");
     |                     ^
 ```
