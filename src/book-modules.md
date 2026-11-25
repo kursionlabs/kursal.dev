@@ -13,7 +13,7 @@ permalink = "/book/modules/"
 use std::io::print;              // one name
 use std::io::{eprint, print};    // several
 use std::io::*;                  // everything in the module
-use std::slice::Slice as View;   // under another name
+use std::str::Str as View;   // under another name
 use package::text as t;          // a module under another name
 ```
 

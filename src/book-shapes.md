@@ -100,9 +100,9 @@ fn main() {
 Cases can be grouped with `|`. In a group, a payload variant is written without binders, as `Dot | Circle` above. Write the label bare, as in `Circle(r)`. The compiler looks the label up in the type of what you are matching. A misspelled label is an error, not a catch-all name.
 
 ```kursal
-use std::slice::Slice;
+use std::str::Str;
 
-fn kind(b: u8) -> Slice[u8, 'static] {
+fn kind(b: u8) -> Str['static] {
     match b {
         b'0'..=b'9' => "digit",
         b'a'..=b'z' | b'A'..=b'Z' => "letter",
@@ -140,7 +140,7 @@ A case binds names or `_`, and nothing more. There are no nested patterns, so `S
 
 ## Type aliases
 
-`type Name = Type;` gives a type a second name. An alias is transparent: it **is** the type it stands for, and the two mix freely. It can be generic, as in `forall 'k. type Str = Slice[u8, 'k];`. An `impl` written through an alias is an impl of the expanded type. `type` is a reserved keyword.
+`type Name = Type;` gives a type a second name. An alias is transparent: it **is** the type it stands for, and the two mix freely. It can be generic, as in `forall 'k. type Bytes = Slice[u8, 'k];`. An `impl` written through an alias is an impl of the expanded type. `type` is a reserved keyword.
 
 An alias has a few rules, each with its own error:
 
@@ -149,7 +149,7 @@ An alias has a few rules, each with its own error:
 - The `!` is there exactly when the type is linear: `type alias Handles stands for a linear type; name it Handles!`, and `type alias Count! stands for a type that is not linear; name it Count`.
 - It is never exposed: `a type alias is never exposed: it has no representation of its own`.
 - It takes no premises or determined parameters: `type alias Twice takes no premises or determined parameters`.
-- It names a type only: `Str is a type alias; it stands only where a type is written`.
+- It names a type only: `Bytes is a type alias; it stands only where a type is written`.
 
 ## Check by hand
 

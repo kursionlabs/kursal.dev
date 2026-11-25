@@ -76,10 +76,10 @@ An array `[T; N]` has a length that is part of its type, and at least one elemen
 
 ```kursal
 use std::io::print;
-use std::slice::Slice;
+use std::str::Str;
 
 fn main() {
-    let s: Slice[u8, 'static] = "tab:\there, quote:\" hex:\x41 backslash:\\\n";
+    let s: Str['static] = "tab:\there, quote:\" hex:\x41 backslash:\\\n";
     print(s);
     print("multi
 line\n");
@@ -92,7 +92,7 @@ multi
 line
 ```
 
-A string literal is a `Str['static]`, which is a name for `Slice[u8, 'static]`: a view of bytes that lives for the whole program. kursal has no `char` type and no built-in `String`. Text is bytes. The escapes are `\n \t \r \0 \\ \' \"` and `\xHH` up to `\x7f`. A literal may span lines. The `'static` is a brand, and Part 2 explains them. For now it is what you write when you need to name the type of a literal. Each literal's bytes are followed by one zero byte, so they also read as a C string, and the slice's length is still the literal's own.
+A string literal is a `Str['static]`: a read-only view of bytes that lives for the whole program. kursal has no `char` type and no built-in `String`. Text is bytes. The escapes are `\n \t \r \0 \\ \' \"` and `\xHH` up to `\x7f`. A literal may span lines. The `'static` is a brand, and Part 2 explains them. For now it is what you write when you need to name the type of a literal. `Str` is read-only text, and it has no way to write. A `Slice[u8, 'k]` is the writable counterpart. Each literal's bytes are followed by one zero byte, so they also read as a C string, and the length is still the literal's own.
 
 ## Operators
 

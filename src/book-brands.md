@@ -14,7 +14,7 @@ Linear types say a value is used once. Places say who may change it. Neither say
 ```kursal
 use std::io::print;
 use std::cap::{Brand, fresh};
-use std::slice::Slice;
+use std::str::Str;
 
 // A ticket for one counter. The brand ties each ticket to its counter.
 forall 'k.
@@ -47,8 +47,8 @@ fn close(c: Counter!['k]) -> u32 {
     n
 }
 
-// A string literal is a slice under the brand 'static.
-fn greeting() -> Slice[u8, 'static] {
+// A string literal is a read-only view of bytes under the brand 'static.
+fn greeting() -> Str['static] {
     "hi"
 }
 
@@ -75,7 +75,7 @@ The pieces:
 
 A brand names a domain, such as a region of memory or another resource, so the checker can tell two values apart. It says nothing about how long anything lives.
 
-String literals use the brand `'static`, which is why `Slice[u8, 'static]`, also written `Str['static]`, has appeared since chapter 2. Its witness is `unsafe static_brand()`, with the obligation that what it brands lives forever.
+String literals use the brand `'static`, which is why `Str['static]` has appeared since chapter 2. Its witness is `unsafe static_brand()`, with the obligation that what it brands lives forever.
 
 ## Two brands don't mix
 

@@ -16,7 +16,7 @@ as `forall T.` introduces a type parameter. Brand arguments go in the same brack
 arguments: `Counter!['k]`.
 
 **`'static`.** The predefined brand of things that live for the whole program, such as string
-literals (`Str['static]`, which is `Slice[u8, 'static]`). Its witness comes from `unsafe static_brand()`.
+literals (`Str['static]`). Its witness comes from `unsafe static_brand()`.
 
 **Witness.** A value of type `Brand['k]`. It is `Copy`, takes no bytes and grants nothing by itself.
 A struct holds one to carry a brand.

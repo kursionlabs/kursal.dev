@@ -18,7 +18,7 @@ fn main() {
 }
 ```
 
-`use` brings a name into scope. `std::io::print` is the standard library's way to write a string literal to standard output. Nothing is in scope by default beyond the primitive types and a few core names (`Never`, `Copy`, `Exposed` and `Sized`). Types you might expect to be built in, such as `Option`, `Result`, `Slice` and `Buffer!`, are imported like everything else:
+`use` brings a name into scope. `std::io::print` is the standard library's way to write a string literal to standard output. Nothing is in scope by default beyond the primitive types and a few core names (`Never`, `Copy`, `Exposed` and `Sized`). Types you might expect to be built in, such as `Option`, `Result`, `Str` and `Buffer!`, are imported like everything else:
 
 ```kursal
 use std::option::{Option, Result};
@@ -76,7 +76,7 @@ The entry function has one of three results, each with or without a parameter `a
 use std::io::{Error, print};
 use std::fs::read;
 use std::option::Result;
-use std::slice::StaticRead;
+use std::str::StaticRead;
 
 fn main() -> Result[(), Error] {
     var sr = StaticRead::new();      // a capability to read 'static byte slices

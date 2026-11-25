@@ -139,9 +139,9 @@ The type `!`, also spelled `Never`, belongs to an expression that never produces
 ```kursal
 use std::io::{eprint, print};
 use std::process::exit;
-use std::slice::Slice;
+use std::str::Str;
 
-fn die(msg: Slice[u8, 'static]) -> ! {
+fn die(msg: Str['static]) -> ! {
     eprint(msg);
     exit(2)
 }
