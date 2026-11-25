@@ -73,18 +73,26 @@ A bound such as `Copy[T]` lets the code use `x` more than once. Without it, `T` 
 ```kursal
 fn main() -> Result[(), Error] {
     print("What's your name?\n")?;
-    let line = match read_line()? {
-        Option::Some(line) => line,
-        Option::None => Buffer!::new(),
+    // `stdin` holds standard input until `finish` gives it back, with what
+    // was read ahead past the line. The end of the input is an empty name.
+    var input = stdin()?;
+    let read = &input.read_line();
+    match input.finish() {
+        Ok(ahead) => ahead.destroy(),
+        Err(e) => (),
+    }
+    let line = match read? {
+        Some(line) => line,
+        None => Buffer!::new(),
     };
-    let name = capitalize(line);
-    let greeting = f"Hello, {&name}!\n";
+    var name = capitalize(line);
+    let printed = print(f"Hello, {&name}!\n");
     name.destroy();
-    print(greeting)
+    printed
 }
 ```
 
-Notice `Buffer!` and `{&name}`: an owned buffer, and a lend for formatting. The [greeting walkthrough](/walkthroughs/greeting/) follows exactly this program.
+Notice `Buffer!`, `stdin()` and `{&name}`: an owned buffer, the one reader of standard input, and a lend for formatting. The [greeting walkthrough](/walkthroughs/greeting/) follows exactly this program.
 
 Closures capture the values they mention. Capturing a linear value moves it into the closure, which then becomes linear itself. [`examples/thread_sum`](https://github.com/kursionlabs/kursal/tree/main/examples/thread_sum) uses this to send a distinct owned buffer into each OS thread.
 

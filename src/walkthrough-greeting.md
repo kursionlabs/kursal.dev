@@ -12,26 +12,34 @@ The repository's greeting program reads a line from standard input. Its length i
 ## Read the input
 
 ```kursal
-let line = match read_line()? {
-    Option::Some(line) => line,
-    Option::None => Buffer!::new(),
+var input = stdin()?;
+let read = &input.read_line();
+match input.finish() {
+    Ok(ahead) => ahead.destroy(),
+    Err(e) => (),
+}
+let line = match read? {
+    Some(line) => line,
+    None => Buffer!::new(),
 };
 ```
+
+`stdin()` hands out the one reader of standard input, and `read_line` needs it as a `var` because it is lent. `finish` gives standard input back, along with any bytes the reader fetched past the line, which this program has no use for and frees. The reader is finished before `read?` is checked, so an error can't leave it unconsumed.
 
 An I/O error and end of input mean different things. The `?` returns an I/O error from the enclosing function. On success, the `match` either takes the buffer holding the line or makes an empty one at end of input. After this, both paths have produced exactly one owned value called `line`.
 
 ## Transfer, lend, release
 
 ```kursal
-let name = capitalize(line);
-let greeting = f"Hello, {&name}!\n";
+var name = capitalize(line);
+let printed = print(f"Hello, {&name}!\n");
 name.destroy();
-print(greeting)
+printed
 ```
 
 Passing `line` to `capitalize` **transfers** ownership. That function builds a capitalized copy, releases the original, and returns the new buffer as `name`. Using `line` again here would be a compile error.
 
-Formatting needs to read the bytes, so `&name` inside the format string **lends** the buffer for that one operation. Afterwards the caller owns two buffers and can release them independently. `name.destroy()` **consumes** the name, and passing `greeting` to `print` hands the second allocation to the output routine.
+Formatting needs to read the bytes, so `&name` inside the format string **lends** the buffer for that one operation. Afterwards the caller owns the name and the formatted text and can release them independently. `name.destroy()` **consumes** the name, and `print` takes the formatted buffer and frees it.
 
 Delete the `name.destroy()` line and the compiler rejects the program, because a live linear value remains at return. You don't have to run the program to see the leak. You can read it off the function.
 
