@@ -1,0 +1,99 @@
+name: Build and deploy site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: kursal.dev
+          persist-credentials: false
+
+      # The site is built by Krayon, which is written in kursal, so the job builds the compiler
+      # first. The three repositories sit side by side, as the README describes. They are private:
+      # each token needs read access to its repository.
+      - name: Check out kursal
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: kursionlabs/kursal
+          ref: main
+          path: kursal
+          token: ${{ secrets.KURSAL_REPO_TOKEN || github.token }}
+          persist-credentials: false
+
+      - name: Check out Krayon
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: kursionlabs/krayon
+          ref: main
+          path: krayon
+          token: ${{ secrets.KRAYON_REPO_TOKEN || github.token }}
+          persist-credentials: false
+
+      # Krayon links Kable for its preview server, so Kable has to be beside it too.
+      - name: Check out Kable
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: kursionlabs/kable
+          ref: main
+          path: kable
+          token: ${{ secrets.KABLE_REPO_TOKEN || github.token }}
+          persist-credentials: false
+
+      - name: Install build libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang libuv1-dev libllhttp-dev pkg-config
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+
+      - name: Bootstrap kursal
+        working-directory: kursal
+        run: scripts/bootstrap.sh
+
+      - name: Build Krayon
+        working-directory: krayon
+        run: |
+          mkdir -p bin
+          ../kursal/bin/kursal build krayon -o bin/krayon
+
+      # Krayon fails the build on a broken local link or anchor.
+      - name: Build the site
+        working-directory: kursal.dev
+        run: ../krayon/bin/krayon build .
+
+      - name: Upload the site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: kursal.dev/dist
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
