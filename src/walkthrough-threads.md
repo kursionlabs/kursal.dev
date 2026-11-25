@@ -36,7 +36,7 @@ This particular program runs the closure synchronously and then traps, so the bu
 
 ## Joining is part of the interface
 
-The successful branch produces a linear handle. Joining consumes the handle and yields the worker's result or an error. Here the result is an integer, but the thread API also handles a worker that returns an owned value, and requiring a join gives that value somewhere to go.
+The successful branch produces a linear handle. Joining consumes the handle and yields the worker's result. Here the result is an integer, but the thread API also handles a worker that returns an owned value, and requiring a join gives that value somewhere to go.
 
 Two different questions are being answered here. The compiler checks that the caller transfers the buffer once and accounts for the handle. The library that binds the OS must separately make sure a successful start runs the closure and a failed start returns it intact. The linear interface states the contract clients can rely on. The implementation is where the contract with the host is upheld, and that is the place where `unsafe` obligations live.
 

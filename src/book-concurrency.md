@@ -7,7 +7,7 @@ intro = "Threads are a library. The language's part is what a closure can hold: 
 permalink = "/book/concurrency/"
 +++
 
-`std::thread::spawn(f)` runs a closure on a new operating-system thread. It returns `Result[Thread![Ret], (closure, Error)]`, and `join` on the thread returns `Result[Ret, Error]`. Both are library code with the unsafe parts inside std. The language has no `Send` or `Sync` traits. What makes `spawn` safe is what a closure is able to hold.
+`std::thread::spawn(f)` runs a closure on a new operating-system thread. It returns `Result[Thread![Ret], (closure, Error)]`, and `join` on the thread returns `Ret`, the thread's result itself. Both are library code with the unsafe parts inside std. The language has no `Send` or `Sync` traits. What makes `spawn` safe is what a closure is able to hold.
 
 ## Moving ownership into a thread
 
@@ -36,10 +36,7 @@ fn main() {
             trap()
         },
     };
-    let total = match t.join() {
-        Ok(v) => v,
-        Err(error) => 0,
-    };
+    let total = t.join();
     print(f"{total} {rate}\n");
 }
 ```
@@ -64,7 +61,7 @@ lib.kur:7:9: hits is captured, and a body cannot assign what it captures; assign
     |         ^
 ```
 
-If `spawn` fails, it hands the closure back, unrun, so nothing captured is lost. The program decides what to do. Both examples here call it and `trap()`. There is no `detach`: every thread's result has to reach a `join`, so a linear result cannot be stranded.
+If `spawn` fails, it hands the closure back, unrun, so nothing captured is lost. The program decides what to do. Both examples here call it and `trap()`. There is no `detach`: every thread's result has to reach a `join`, so a linear result cannot be stranded. `join` cannot fail for a thread that `spawn` started and that is joined once, so it returns the result directly. If it ever did fail, it would trap rather than lose the result.
 
 ## Sharing goes through capabilities
 
@@ -98,14 +95,6 @@ fn read_on_thread(node: Shared!['k, 'q], at: Ref[u32, 'k]) -> Thread![(u32, Shar
     }
 }
 
-forall R.
-fn joined(t: Thread![R]) -> R {
-    match t.join() {
-        Ok(v) => v,
-        Err(error) => trap(),
-    }
-}
-
 fn main() {
     var exists 'k. (tag, arena) = Arena!::new(hash_seed());
     let a = &arena.alloc(&tag, 40u32);
@@ -115,8 +104,8 @@ fn main() {
     let exists 'l, 'r. (left, right, join) = root.split();
     let tl = read_on_thread(left, a);
     let tr = read_on_thread(right, b);
-    let (x, left) = joined(tl);
-    let (y, right) = joined(tr);
+    let (x, left) = tl.join();
+    let (y, right) = tr.join();
     // Only with both readers back can the writer, and so the arena's end,
     // come back.
     let tag = resume.resume(join.join(left, right));
@@ -142,6 +131,8 @@ lib.kur:43:34: a closure or foreach body cannot mention the block-local brand 'k
 The helper is generic over `'k` and `'q`, so inside it the brands are parameters and the closure may name them. The caller supplies the real brands.
 
 **`var node = node;` inside the closure.** A closure cannot lend a capture (chapter 12), and `at.read(&node)` lends `node`. Rebinding it as a local `var` inside the closure gives it something to lend.
+
+The repository's [`examples/shared_readers`](https://github.com/kursionlabs/kursal/tree/main/examples/shared_readers) is this program in full, with rejected variants beside it in `examples/bad`: resuming while a reader is out, freeing while one is reading, lending after a spawn, and leaving a thread unjoined.
 
 The writer comes back only after both leaves have been joined and resumed. While the readers are out on their threads there is no writer anywhere in the program, because it was consumed by `share`.
 
