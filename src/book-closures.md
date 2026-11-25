@@ -8,7 +8,7 @@ permalink = "/book/closures/"
 +++
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 fn double(x: u32) -> u32 { x * 2 }
 
@@ -40,7 +40,7 @@ fn main() {
         let y = x * 3;
         y + 1
     }, 2);
-    print_buffer(f"{a} {b} {c} {d} {e}\n");
+    print(f"{a} {b} {c} {d} {e}\n");
 }
 ```
 

@@ -18,7 +18,7 @@ use std::option::{Option, Result};
 A variant is built with its path and a dot-paren, `Option::Some.(n)`, `Result::Err.(e)`. A unit variant has no payload, `Option::None`. In a `match` the cases are bare labels, `Some(n)`, `None`, `Ok(v)`, `Err(e)`, as chapter 4 showed.
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::option::{Option, Result};
 
 enum ParseError {
@@ -52,10 +52,10 @@ fn quarter(n: u32) -> Option[u32] {
 
 fn show(r: Result[u32, ParseError]) {
     match r {
-        Ok(n) => print_buffer(f"ok {n}\n"),
+        Ok(n) => print(f"ok {n}\n"),
         Err(e) => match e {
-            Empty => print_buffer(f"empty\n"),
-            BadDigit(b) => print_buffer(f"bad digit {b}\n"),
+            Empty => print(f"empty\n"),
+            BadDigit(b) => print(f"bad digit {b}\n"),
         },
     };
 }
@@ -65,7 +65,7 @@ fn main() {
     show(two_digits(b'4', b'x'));
     let q = quarter(20).unwrap_or(0);
     let none = quarter(6).is_none();
-    print_buffer(f"{q} {none}\n");
+    print(f"{q} {none}\n");
 }
 ```
 

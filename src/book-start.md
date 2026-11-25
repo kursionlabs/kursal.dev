@@ -73,7 +73,7 @@ The entry function has one of three results, each with or without a parameter `a
 - `fn main() -> Result[(), std::io::Error]` returns success or an error. On an error the program prints it to standard error and exits with status 1.
 
 ```kursal
-use std::io::{Error, print, print_buffer};
+use std::io::{Error, print};
 use std::fs::read;
 use std::option::Result;
 use std::slice::StaticRead;
@@ -81,7 +81,7 @@ use std::slice::StaticRead;
 fn main() -> Result[(), Error] {
     var sr = StaticRead::new();      // a capability to read 'static byte slices
     let contents = read(&sr, "/no/such/file")?;
-    print_buffer(contents)?;
+    print(contents)?;
     print("done\n")
 }
 ```
@@ -95,12 +95,12 @@ error: No such file or directory (error 2)
 `Args` works like this:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::process::Args;
 
 fn main(args: Args) -> i32 {
     let n = args.len();
-    print_buffer(f"{n} argument(s)\n");
+    print(f"{n} argument(s)\n");
     0
 }
 ```
@@ -125,11 +125,11 @@ Every `.kur` file under the source root is a module, named by its path. `src/tex
 
 ```kursal
 //! The root module of the package.
-use std::io::print_buffer;
+use std::io::print;
 use package::text::shout::exclaim;  // the module src/text/shout.kur
 
 fn main() {
-    print_buffer(exclaim(3));
+    print(exclaim(3));
 }
 ```
 
@@ -142,10 +142,10 @@ fn exclaim(n: usize) -> Buffer! {
     var out = Buffer!::new();
     var i = 0usize;
     while i < n {
-        out = out.push_byte(b'!');
+        out = out.write_byte(b'!');
         i = i + 1;
     }
-    out.push_byte(b'\n')
+    out.write_byte(b'\n')
 }
 ```
 

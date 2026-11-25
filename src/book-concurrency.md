@@ -12,7 +12,7 @@ permalink = "/book/concurrency/"
 ## Moving ownership into a thread
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::process::trap;
 use std::thread;
 
@@ -40,7 +40,7 @@ fn main() {
         Ok(v) => v,
         Err(error) => 0,
     };
-    print_buffer(f"{total} {rate}\n");
+    print(f"{total} {rate}\n");
 }
 ```
 
@@ -71,7 +71,7 @@ If `spawn` fails, it hands the closure back, unrun, so nothing captured is lost.
 Two threads reading one arena share it through the tree of readers from chapter 14. Each thread receives one `Shared!` leaf, reads, and hands the leaf back through `join`:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::arena::Arena!;
 use std::cap::Shared!;
 use std::mem::Ref;
@@ -121,7 +121,7 @@ fn main() {
     // come back.
     let tag = resume.resume(join.join(left, right));
     arena.destroy(tag);
-    print_buffer(f"{x + y}\n");
+    print(f"{x + y}\n");
 }
 ```
 

@@ -16,7 +16,7 @@ The structs in this chapter are `exposed` (chapter 11) so that every example can
 ## The forms
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 exposed struct Counter {
     n: u32,
@@ -48,7 +48,7 @@ fn main() {
     var p = Pair.{ left: Counter.{ n: 10 }, right: Counter.{ n: 20 } };
     let l = &p.left.tick();       // lend a field of a var
     let r = &p.right.tick();
-    print_buffer(f"{one} {three} {a.n} {l} {r}\n");
+    print(f"{one} {three} {a.n} {l} {r}\n");
 }
 ```
 
@@ -120,7 +120,7 @@ Assigning to a captured variable fails the same way, with `a is captured, and a 
 A callee may move a value out of a place parameter, as long as a value is back in it before the function returns:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 exposed struct Token! {
     id: u32,
@@ -145,7 +145,7 @@ fn main() {
     let old = swap_token(&slot, Token!.{ id: 2 });
     let { token, uses } = slot;
     let { id } = token;
-    print_buffer(f"old {old}, new {id}, uses {uses}\n");
+    print(f"old {old}, new {id}, uses {uses}\n");
 }
 ```
 
@@ -174,7 +174,7 @@ lib.kur:13:5: demo::take_token: lent value 's' must be restored before return
 Branches may each lend a place, and both sides of `&&` may too. A match can lend what it looks at, and the case's binder is then a place whose changes land in the original:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::option::Option;
 
 exposed struct Counter {
@@ -208,7 +208,7 @@ fn main() {
         Some(c) => c.n,
         None => 0,
     };
-    print_buffer(f"{x} {both} {y} {z} {a.n}\n");
+    print(f"{x} {both} {y} {z} {a.n}\n");
 }
 ```
 
@@ -223,7 +223,7 @@ fn main() {
 `var` takes the same patterns as `let`, and every name it binds is a `var`. Two disjoint fields of one `var` can be lent in the same call. A closure that must change something takes it as a place parameter, written `closure[Env](&_: Counter) -> u32`, and the closure itself is written `|&k| &k.tick()`.
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 exposed struct Counter {
     n: u32,
@@ -263,7 +263,7 @@ fn main() {
     var p = Pair.{ left: Counter.{ n: 1 }, right: Counter.{ n: 2 } };
     let s = add(&p.left, &p.right);
     let t = twice(&a, |&k| &k.tick());
-    print_buffer(f"{a.n} {b.n} {c.n} {d.n} {s} {t}\n");
+    print(f"{a.n} {b.n} {c.n} {d.n} {s} {t}\n");
 }
 ```
 

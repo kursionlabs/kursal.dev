@@ -33,7 +33,7 @@ uint32_t apply_twice(uint32_t (*f)(uint32_t), uint32_t x) { return f(f(x)); }
 ```
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 // Declarations of functions defined in scale.c, which c_sources compiles in.
 extern "C" fn scale_add(x: u32, k: u32) -> u32;
@@ -51,7 +51,7 @@ fn main() {
     let a = unsafe scale_add(4, 10);       // calling an extern is unsafe
     let b = unsafe apply_twice(inc, 5);
     let r = unsafe sqrt(2.25);
-    print_buffer(f"{a} {b} {r}\n");
+    print(f"{a} {b} {r}\n");
 }
 ```
 

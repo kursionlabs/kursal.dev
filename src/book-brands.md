@@ -12,7 +12,7 @@ Linear types say a value is used once. Places say who may change it. Neither say
 ## A ticket for one counter
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::cap::{Brand, fresh};
 use std::slice::Slice;
 
@@ -58,7 +58,7 @@ fn main() {
     punch(&c, ticket);   // a Ticket is Copy; it names the brand, grants nothing else
     let n = close(c);
     let g = greeting();
-    print_buffer(f"{n} {g.len()}\n");
+    print(f"{n} {g.len()}\n");
 }
 ```
 
@@ -111,7 +111,7 @@ A brand also cannot leave the place it was opened. If `open_counter` is called i
 A trait can take a brand like any other parameter. This one records a reading into a sink of the same brand:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::cap::{Brand, fresh};
 
 forall 'k.
@@ -152,7 +152,7 @@ fn main() {
     var m = Meter!.{ total: 0, marker: b };
     record_all(&m, Reading.{ value: 3, marker: b }, Reading.{ value: 4, marker: b });
     let { total, marker } = m;
-    print_buffer(f"{total}\n");
+    print(f"{total}\n");
 }
 ```
 

@@ -12,7 +12,7 @@ The thread example has two byte buffers. A worker sums the bytes in each buffer 
 ## Ownership moves before the worker runs
 
 ```kursal
-let first = Buffer!::new().push_static("hello");
+let first = Buffer!::new().put("hello");
 ```
 
 A buffer owns its allocation. Passing it to `sum_bytes` transfers the obligation to consume it. Wrapping that call in the closure `|| -> u32 { sum_bytes(first) }` moves the buffer into the closure the instant the closure is created. Reading `first` afterwards would be a second use, even if the worker hasn't run a single instruction yet.

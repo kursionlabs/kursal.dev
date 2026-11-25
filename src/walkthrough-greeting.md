@@ -26,12 +26,12 @@ An I/O error and end of input mean different things. The `?` returns an I/O erro
 let name = capitalize(line);
 let greeting = f"Hello, {&name}!\n";
 name.destroy();
-print_buffer(greeting)
+print(greeting)
 ```
 
 Passing `line` to `capitalize` **transfers** ownership. That function builds a capitalized copy, releases the original, and returns the new buffer as `name`. Using `line` again here would be a compile error.
 
-Formatting needs to read the bytes, so `&name` inside the format string **lends** the buffer for that one operation. Afterwards the caller owns two buffers and can release them independently. `name.destroy()` **consumes** the name, and passing `greeting` to `print_buffer` hands the second allocation to the output routine.
+Formatting needs to read the bytes, so `&name` inside the format string **lends** the buffer for that one operation. Afterwards the caller owns two buffers and can release them independently. `name.destroy()` **consumes** the name, and passing `greeting` to `print` hands the second allocation to the output routine.
 
 Delete the `name.destroy()` line and the compiler rejects the program, because a live linear value remains at return. You don't have to run the program to see the leak. You can read it off the function.
 

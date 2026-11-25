@@ -23,7 +23,7 @@ and every call site threads it through, `let (h, before) = tell_threaded(h);`. T
 Write `&` before a parameter name and the caller lends its own value for the duration of the call. What the caller lends has to be a `var`, since a `let` never changes once bound, which is why `main` below binds `h` with `var`:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 struct Handle! {
     id: u64,
@@ -63,7 +63,7 @@ fn main() {
     advance(&h, 2);
     let after = tell(&h);
     let last = close(h);
-    print_buffer(f"before {before}, after {after}, closed at {last}\n");
+    print(f"before {before}, after {after}, closed at {last}\n");
 }
 ```
 

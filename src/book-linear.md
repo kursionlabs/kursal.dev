@@ -32,7 +32,7 @@ Reading a Copy field, as in `t.seat`, does not consume `t`.
 ## On every path
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 // A ticket must be redeemed exactly once.
 struct Ticket! {
@@ -80,7 +80,7 @@ fn main() {
     }
     total = total + redeem_or_refund(current, false);
     total = total + first_row_only(issue(4)) + first_row_only(issue(40));
-    print_buffer(f"{total}\n");
+    print(f"{total}\n");
 }
 ```
 

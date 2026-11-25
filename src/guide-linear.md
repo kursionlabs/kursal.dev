@@ -12,7 +12,7 @@ Change the declaration to `struct Handle!`. The `!` is part of the name, so you 
 Using it up means moving it on (passing it to a function, returning it, or putting it into another value) or taking it apart. So `close` has to destructure the handle instead of reading a field:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 // The `!` is part of the name: a `Handle!` is used exactly once.
 struct Handle! {
@@ -20,14 +20,14 @@ struct Handle! {
 }
 
 fn open(id: u64) -> Handle! {
-    print_buffer(f"open {id}\n");
+    print(f"open {id}\n");
     Handle!.{ id }
 }
 
 // Taking the handle apart is what uses it up.
 fn close(h: Handle!) {
     let { id } = h;
-    print_buffer(f"close {id}\n");
+    print(f"close {id}\n");
 }
 
 fn main() {

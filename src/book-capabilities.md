@@ -22,7 +22,7 @@ Because the capability is linear and the handle is not, copying handles is free 
 `std::arena::Arena!::new(seed)` returns `exists 'k. (Exclusive!['k], Arena!['k])`. `alloc` stores a Copy value and returns a `Ref[T, 'k]`. `copy` and `set` need the writer, and `read` needs any reader. These four are library functions.
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::arena::Arena!;
 use std::process::hash_seed;
 
@@ -42,7 +42,7 @@ fn main() {
     // Only the two leaves of this split rejoin, and only the root resumes.
     let tag = resume.resume(join.join(left, right));
     arena.destroy(tag);
-    print_buffer(f"{sum}\n");
+    print(f"{sum}\n");
 }
 ```
 

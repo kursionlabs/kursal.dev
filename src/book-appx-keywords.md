@@ -83,7 +83,7 @@ A store through a pointer is the statement `unsafe *p = v;`. `*p = v;` without i
 | `=` | assignment, a statement: `x = e;`, `p.f = e;`, `(t.0).1 = e;`, `unsafe *p = e;` |
 | `=>` | a match arm, and the body of a `foreach` type: `foreach F of S => B` |
 | `->` | a result type; the determined parameters in `forall Self -> Out.` and in `Iterator[I -> u32]` |
-| `::` | a path: `std::io::print_buffer`, `Counter::new()`, `Option[u32]::None` |
+| `::` | a path: `std::io::print`, `Counter::new()`, `Option[u32]::None` |
 | `\|` in patterns | the alternatives of a match case: `b'a'..=b'z' \| b'A'..=b'Z' =>` |
 | `\|...\|`, `\|\|` | a closure's parameters |
 | `.{`, `.(` | struct literal and construction (one token each), so `if x {` and `match x {` never read `x {` as a literal |

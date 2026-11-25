@@ -12,7 +12,7 @@ permalink = "/book/traits/"
 A generic item starts with `forall`, which introduces its type parameters, then the item:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 forall T.
 struct Pair {
@@ -35,7 +35,7 @@ fn dup(x: T) -> Pair[T] {
 fn main() {
     let p = swap(Pair.{ first: 1u32, second: 2u32 });
     let d = dup(7u8);
-    print_buffer(f"{p.first} {p.second} {d.second}\n");
+    print(f"{p.first} {p.second} {d.second}\n");
 }
 ```
 
@@ -154,19 +154,19 @@ You can always write the trait's name instead of a dot: `Measure::measure(Rope.{
 A method call through a trait works when the trait is visible where you call it. If the trait lives in another module, import it:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use package::geo::Square;
 
 fn main() {
     let s = Square.{ side: 3 };
-    print_buffer(f"{s.area()}\n");
+    print(f"{s.area()}\n");
 }
 ```
 
 ```text
-lib.kur:6:21: Square has no method area; the trait Area provides it, import it
-  6 |     print_buffer(f"{s.area()}\n");
-    |                     ^
+lib.kur:6:14: Square has no method area; the trait Area provides it, import it
+  6 |     print(f"{s.area()}\n");
+    |              ^
 ```
 
 `Area` is declared next to `Square` in `geo`, but it was not imported here. Write `use package::geo::{Square, Area};` and the call works. Calling it by its full path, `package::geo::Area::area(s)`, also works without the import. The point is that you can decide what `s.area()` means by reading the imports of the file in front of you.

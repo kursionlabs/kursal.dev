@@ -15,7 +15,7 @@ Each chapter introduces a few forms, shows a complete program for them, and show
 
 Most chapters end with a short **check by hand** note: what you would look at to decide, without the compiler, whether the code is accepted. That is the habit the language is built around.
 
-The book covers the language only. Examples use the standard library (`print_buffer`, `Buffer!`, `range` and so on) and say in a line what each piece does, but they do not document it. The full library reference will live at docs.kursal.dev.
+The book covers the language only. Examples use the standard library (`print`, `Buffer!`, `range` and so on; `print(x)` takes any value of a type with a `Printable` instance, and a `Buffer!` printed this way is freed) and say in a line what each piece does, but they do not document it. The full library reference will live at docs.kursal.dev.
 
 kursal has not had a 1.0 yet. Where a feature is likely to change, the chapter says so.
 

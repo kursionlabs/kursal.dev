@@ -22,7 +22,7 @@ kursal splits the pointer from the authority to use it.
 use std::arena::Arena!;
 use std::cap::Exclusive!;
 use std::mem::Ref;
-use std::io::print_buffer;
+use std::io::print;
 use std::option::Option;
 use std::process::hash_seed;
 
@@ -40,14 +40,14 @@ fn walk(&tag: Exclusive!['k], at: Ref[Node['k], 'k], steps: u32) {
     var i = 0u32;
     while i < steps {
         let node = here.copy(&tag);
-        print_buffer(f"{node.id} ");
+        print(f"{node.id} ");
         match node.next {
             Some(n) => { here = n; },
             None => { i = steps; },
         };
         i = i + 1;
     }
-    print_buffer(f"\n");
+    print(f"\n");
 }
 
 fn main() {

@@ -49,7 +49,7 @@ fn main() {
     a.set(&tag, Node.{ id: 10, next: Option::Some.(b) });
     let after = walk_once(&tag, a);
     arena.destroy(tag);
-    print_buffer(f"from a: {from_a}, from b: {from_b}, a after the write: {after}\n");
+    print(f"from a: {from_a}, from b: {from_b}, a after the write: {after}\n");
 }
 
 forall 'k.

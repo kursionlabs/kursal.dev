@@ -14,7 +14,7 @@ Everything so far has been checked. A library like the arena in chapter 14 sits 
 There are no unsafe blocks. `unsafe` prefixes a single operation:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::mem::alloca;
 
 exposed struct Counter {
@@ -46,7 +46,7 @@ fn main() {
     let t = tick(unsafe &*c);
     let addr = unsafe (p as usize);   // a pointer cast is unsafe too
     let nonzero = addr != 0;
-    print_buffer(f"{x} {t} {nonzero}\n");
+    print(f"{x} {t} {nonzero}\n");
 }
 ```
 
@@ -83,7 +83,7 @@ Use the path form.
 An `unsafe fn` is a value too. Naming one is safe and calling it is not:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 unsafe fn halve(x: u32) -> u32 {
     x / 2
@@ -96,7 +96,7 @@ fn apply(f: unsafe fn(u32) -> u32, x: u32) -> u32 {
 
 fn main() {
     let a = apply(halve, 10);
-    print_buffer(f"{a}\n");
+    print(f"{a}\n");
 }
 ```
 
@@ -115,7 +115,7 @@ and so is passing a safe function where an `unsafe fn` type is expected.
 ## Sizes, zero-size types and NonNull
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::mem::{alloca, sizeof};
 use std::ptr::NonNull;
 use std::option::Option;
@@ -149,7 +149,7 @@ fn main() {
         },
         None => 0,
     };
-    print_buffer(f"{a} {b} {c} {d} {e} {n}\n");
+    print(f"{a} {b} {c} {d} {e} {n}\n");
 }
 ```
 
@@ -212,7 +212,7 @@ Everything else about a cast is up to you: it reinterprets bytes, and you promis
 Atomic operations are methods on `*T`, each one an unsafe operation. The ordering is written as a literal `Ordering::` variant. It cannot be passed in a variable:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::mem::alloca;
 use std::atomic::{Ordering, fence};
 
@@ -229,7 +229,7 @@ fn main() {
     // Volatile access: never removed or merged by the C compiler.
     let stored = unsafe w.store_volatile(9u32);
     let v = unsafe w.load_volatile();
-    print_buffer(f"{before} {seen} {won} {now} {v}\n");
+    print(f"{before} {seen} {won} {now} {v}\n");
 }
 ```
 

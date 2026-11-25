@@ -10,7 +10,7 @@ permalink = "/book/iteration/"
 ## for
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::iter::{Iterator, range};
 use std::option::Option;
 
@@ -32,15 +32,15 @@ instance Iterator[Countdown -> u32] {
 fn main() {
     var c = Countdown.{ n: 3 };
     for x in &c {
-        print_buffer(f"{x}...");
+        print(f"{x}...");
     }
-    print_buffer(f"liftoff\n");
+    print(f"liftoff\n");
     var total = 0usize;
     var r = range(1, 5);
     for i in &r {
         total = total + i;
     }
-    print_buffer(f"sum 1..5 = {total}\n");
+    print(f"sum 1..5 = {total}\n");
 }
 ```
 
@@ -68,7 +68,7 @@ The `&it: Countdown` parameter in `next` is a **lent** parameter: the function m
 An f-string splices values into text:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::buffer::Buffer!;
 use std::fmt::{Format, Writer};
 
@@ -85,10 +85,10 @@ instance Format[Point, W] {
 
 fn main() {
     let p = Point.{ x: 3, y: -4 };
-    var name = Buffer!::new().push_static("Ada");   // a linear, owned string
+    var name = Buffer!::new().put("Ada");   // a linear, owned string
     let line = f"{&name} is at {p}; braces: {{}}\n";
     name.destroy();
-    print_buffer(line);
+    print(line);
 }
 ```
 
@@ -98,16 +98,16 @@ Ada is at (3, -4); braces: {}
 
 - An f-string produces a `Buffer!`, an owned byte buffer. It is linear, so it has to be used: print it, pass it on, or `.destroy()` it.
 - Each `{expr}` calls `Format` for the type of the expression, and the expression can be any expression, a call included. `{{` and `}}` are literal braces. There are no width or precision specifiers.
-- The library gives `Format` instances for all the integers, `f32`, `f64`, `bool`, `Slice[u8, 'static]` (string literals), readable byte views, `std::io::Error`, and `Buffer!` (written `{&b}`).
+- A placeholder of type `Str['static]` (a string literal) is written directly as text, without `Format`. The library gives `Format` instances for all the integers, `f32`, `f64`, `bool`, readable byte views, `std::io::Error`, and `Buffer!` (written `{&b}`).
 - A linear value has to be written `{&name}`, which lends it to the formatter and leaves it for you to consume afterwards. Like every lend it needs a `var`, which is why `name` above is one. Splicing it in without the `&` would use it up, and the compiler rejects that: `{name} in an f-string drops a linear value; lend it with {&name}`. A linear value that is not a variable or a field, such as a call's result, gets `a value in an f-string is formatted and dropped, and this one is linear; bind it to a var and lend that`.
 - `f"...".write(out)` writes into any `Writer` instead of making a new buffer. That is how a `Format` instance for your own type writes its text into whichever writer it is given, as above. A form `f"...".write(&cx, out)` also lends the capability in the var `cx` for the duration of the f-string, so a placeholder can read branded bytes. Using `cx` inside a placeholder is an error: `cx is lent to this f-string; it cannot be used inside it`.
 
 If a type has no `Format` instance you get the error you would expect:
 
 ```text
-lib.kur:5:21: no instance of Format[Point, Buffer!]
-  5 |     print_buffer(f"{p}\n");
-    |                     ^
+lib.kur:5:14: no instance of Format[Point, Buffer!]
+  5 |     print(f"{p}\n");
+    |              ^
 ```
 
 ## Check by hand

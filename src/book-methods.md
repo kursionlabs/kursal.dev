@@ -8,7 +8,7 @@ permalink = "/book/methods/"
 +++
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 struct Counter {
     count: u32,
@@ -43,7 +43,7 @@ fn main() {
     &a.tick();
     &a.tick();
     &b.tick();
-    print_buffer(f"{a.get()} {Counter::get(b)} {Counter::DEFAULT_STEP}\n");
+    print(f"{a.get()} {Counter::get(b)} {Counter::DEFAULT_STEP}\n");
 }
 ```
 

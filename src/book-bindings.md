@@ -10,7 +10,7 @@ permalink = "/book/bindings/"
 ## A tour in one program
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::process::trap;
 
 const LIMIT: u32 = 100;
@@ -56,7 +56,7 @@ fn main() {
     let label = if total > 20 { "big" } else { "small" };
     let x = 5u32;
     let x = x * 3;      // shadows the first x
-    print_buffer(f"{total} {label} {x} {smallest_factor(91)} {checked_half(10)}\n");
+    print(f"{total} {label} {x} {smallest_factor(91)} {checked_half(10)}\n");
 }
 ```
 
@@ -86,15 +86,15 @@ There is no `+=` or other compound assignment, so write `count = count + 1`. Fun
 Lending a `let` is an error, even when the call only reads:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::iter::range;
 
 fn main() {
     let r = range(1, 4);
     for i in &r {
-        print_buffer(f"{i} ");
+        print(f"{i} ");
     }
-    print_buffer(f"\n");
+    print(f"\n");
 }
 ```
 
@@ -137,7 +137,7 @@ The only loop keyword is `while`. There is no `loop`, `break` or `continue`, and
 The type `!`, also spelled `Never`, belongs to an expression that never produces a value. `trap()` stops the program, and so does `std::process::exit(status)`. Because such a call never comes back, it fits anywhere a value of any type is expected, including the `else` branch below:
 
 ```kursal
-use std::io::{eprint, print_buffer};
+use std::io::{eprint, print};
 use std::process::exit;
 use std::slice::Slice;
 
@@ -155,8 +155,8 @@ fn parse_digit(b: u8) -> u32 {
 }
 
 fn main() {
-    print_buffer(f"{parse_digit(b'7')}\n");
-    print_buffer(f"{parse_digit(b'x')}\n");
+    print(f"{parse_digit(b'7')}\n");
+    print(f"{parse_digit(b'x')}\n");
 }
 ```
 

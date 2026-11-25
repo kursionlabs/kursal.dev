@@ -11,7 +11,7 @@ permalink = "/book/modules/"
 
 ```kursal
 use std::io::print;              // one name
-use std::io::{eprint, print_buffer};    // several
+use std::io::{eprint, print};    // several
 use std::io::*;                  // everything in the module
 use std::slice::Slice as View;   // under another name
 use package::text as t;          // a module under another name
@@ -118,7 +118,7 @@ path = "../inventory"
 
 ```kursal
 // app/src/lib.kur
-use std::io::print_buffer;
+use std::io::print;
 use inventory::Item;
 use inventory::stock::Stock! as Store!;   // an alias of a linear type keeps the `!`
 
@@ -128,7 +128,7 @@ fn main() {
     s = s.add(Item.{ id: 2, qty: 7 });
     let total = &s.total();
     let entries = s.close();
-    print_buffer(f"{total} units in {entries} entries\n");
+    print(f"{total} units in {entries} entries\n");
 }
 ```
 
@@ -210,7 +210,7 @@ path = "../kursal/lib/std"
 ```
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 extern "C" fn triple(x: u32) -> u32;
 extern "C" fn root(x: f64) -> f64;
@@ -219,7 +219,7 @@ fn main() {
     // A call of a foreign function is an unsafe operation.
     let t = unsafe triple(14);
     let r = unsafe root(2.25);
-    print_buffer(f"{t} {r}\n");
+    print(f"{t} {r}\n");
 }
 ```
 

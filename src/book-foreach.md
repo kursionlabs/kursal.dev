@@ -14,7 +14,7 @@ This chapter is for library authors, and the rules are intricate. Expect them to
 ## Through a pointer
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::mem::alloca;
 
 exposed struct Rec {
@@ -45,7 +45,7 @@ fn main() {
     let { a, b, c } = addresses(p);
     let { a: x, b: y, c: z } = ones(p);
     let n = x + y + z;
-    print_buffer(f"{a - base} {b - base} {c - base} {n}\n");
+    print(f"{a - base} {b - base} {c - base} {n}\n");
 }
 ```
 
@@ -68,7 +68,7 @@ lib.kur:21:5: the shape of *T is not visible here: write `where Exposed[*T]`, or
 By value, the body receives each component once, and the result is a value of a `foreach` type over the same source. Linear components are handed on exactly once:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 exposed struct Token! {
     n: u32,
@@ -93,7 +93,7 @@ fn main() {
     let (w2, t2) = second;
     let { n: n1 } = t1;
     let { n: n2 } = t2;
-    print_buffer(f"{w1} {n1} {w2} {n2}\n");
+    print(f"{w1} {n1} {w2} {n2}\n");
 }
 ```
 

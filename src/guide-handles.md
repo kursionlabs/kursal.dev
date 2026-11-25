@@ -10,7 +10,7 @@ permalink = "/guide/handles/"
 Start with the oldest resource pattern there is. You open something and get a number back. You use the number. You close it. The number can be a file descriptor, a socket, an id in someone else's table.
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 // A handle is a number, as a C file descriptor is.
 struct Handle {
@@ -18,13 +18,13 @@ struct Handle {
 }
 
 fn open(id: u64) -> Handle {
-    print_buffer(f"open {id}\n");
+    print(f"open {id}\n");
     Handle.{ id }
 }
 
 fn close(h: Handle) {
     let id = h.id;
-    print_buffer(f"close {id}\n");
+    print(f"close {id}\n");
 }
 
 fn main() {

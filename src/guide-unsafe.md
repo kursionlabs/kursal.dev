@@ -12,7 +12,7 @@ Everything above has to bottom out somewhere. At the bottom there are raw pointe
 This is adapted from `examples/heap`, with an `unsafe fn` and a `main` added:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use std::option::Option;
 use std::ptr::is_null;
 
@@ -41,8 +41,8 @@ unsafe fn read_u32(p: *u32) -> u32 {
 
 fn main() {
     match round_trip(42) {
-        Some(v) => print_buffer(f"read back {v}\n"),
-        None => print_buffer(f"out of memory\n"),
+        Some(v) => print(f"read back {v}\n"),
+        None => print(f"out of memory\n"),
     };
 }
 ```

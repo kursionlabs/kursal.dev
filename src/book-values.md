@@ -10,7 +10,7 @@ permalink = "/book/values/"
 ## Literals
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 fn main() {
     let a = 0xffu32;
@@ -23,8 +23,8 @@ fn main() {
     let byte = b'A';
     let nl = b'\n';
     let ok = true;
-    print_buffer(f"{a} {b} {c} {d} {e}\n");
-    print_buffer(f"{f} {g} {byte} {nl} {ok}\n");
+    print(f"{a} {b} {c} {d} {e}\n");
+    print(f"{f} {g} {byte} {nl} {ok}\n");
 }
 ```
 
@@ -40,24 +40,24 @@ A bare literal has no default type. `let n = 5;` on its own is an error, `an int
 ## Tuples and arrays
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 fn main() {
     let pair = (3u32, true);
     let triple: (u8, i64, bool) = (1, -2, false);
     let unit = ();
-    print_buffer(f"{pair.0} {pair.1} {triple.1}\n");
+    print(f"{pair.0} {pair.1} {triple.1}\n");
     let nested = ((1u32, 2u32), 3u32);
     let inner = nested.0;
-    print_buffer(f"{inner.1} {nested.1}\n");
+    print(f"{inner.1} {nested.1}\n");
     let xs = [10u32, 20, 30];
     let [first, second, third] = xs;
     let zeros: [u8; 4] = [0, ..];
     let mixed: [u32; 5] = [7, 8, ..];
     let [p, q, r, s, t] = mixed;
-    print_buffer(f"{first} {second} {third} {p} {q} {r} {s} {t}\n");
+    print(f"{first} {second} {third} {p} {q} {r} {s} {t}\n");
     let (x, y) = pair;
-    print_buffer(f"{x} {y}\n");
+    print(f"{x} {y}\n");
 }
 ```
 
@@ -114,7 +114,7 @@ From loosest to tightest:
 Two things differ from C. The bitwise operators bind tighter than comparison, and comparisons do not chain.
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 fn main() {
     let flags = 0b0110u8;
@@ -124,7 +124,7 @@ fn main() {
     let mixed = 2u32 + 3 * 4;          // 14
     let both = 3u32 < 4 && !(2u32 > 5);
     let xor = 0xf0u8 ^ 0xffu8;
-    print_buffer(f"{has_bit} {shifted} {mixed} {both} {xor}\n");
+    print(f"{has_bit} {shifted} {mixed} {both} {xor}\n");
 }
 ```
 
@@ -167,7 +167,7 @@ lib.kur:2:5: type mismatch: u64 and u32
 The same goes for the two sides of a shift. To mix widths, convert with `as`, which works between number types only:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 fn main() {
     let wide = 300u32;
@@ -176,7 +176,7 @@ fn main() {
     let f = 3.99f64 as i32;            // 3: toward zero
     let sat = 1e20f64 as i32;          // saturates
     let back = 7u8 as f64;
-    print_buffer(f"{narrow} {neg} {f} {sat} {back}\n");
+    print(f"{narrow} {neg} {f} {sat} {back}\n");
 }
 ```
 

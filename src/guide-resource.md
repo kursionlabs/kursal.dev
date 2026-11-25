@@ -51,7 +51,7 @@ impl CounterView['r] {
 And the application, which uses no `unsafe` at all:
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 use package::counter::new_counter;
 
 fn main() {
@@ -63,7 +63,7 @@ fn main() {
     let b = view.read(&right);
     let exclusive = resume.resume(join.join(left, right));
     owner.close(exclusive);
-    print_buffer(f"{a} + {b}\n");
+    print(f"{a} + {b}\n");
 }
 ```
 

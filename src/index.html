@@ -86,7 +86,7 @@ description = "kursal is a systems language that compiles to C. Linear types, le
     <div class="mc-row"><code>    <span class="tok-keyword">let</span> a = view.read(&amp;left);<br>    <span class="tok-keyword">let</span> b = view.read(&amp;right);</code><p>Reading needs only a reader. <code>view</code> is the same copyable value in both lines.</p></div>
     <div class="mc-row"><code>    <span class="tok-keyword">let</span> exclusive = resume.resume(join.join(left, right));</code><p>The writer comes back only after both readers are joined.</p></div>
     <div class="mc-row"><code>    owner.close(exclusive);</code><p>Closing wants the write capability back, and uses up the linear owner.</p></div>
-    <div class="mc-row"><code>    print_buffer(f"{a} + {b}\n");<br>}</code><p></p></div>
+    <div class="mc-row"><code>    print(f"{a} + {b}\n");<br>}</code><p></p></div>
   </div>
   <p class="h-out-line"><span>prints</span>32 + 32</p>
   <p>Try to close the counter while the readers are still out and the compiler refuses: the write capability hasn’t come back yet. Try to read through <code>view</code> without a capability and there is nothing to pass. The rules that stop you are all in signatures you can see, and none of them needed a lifetime.</p>

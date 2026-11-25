@@ -80,7 +80,7 @@ fn main() -> Result[(), Error] {
     let name = capitalize(line);
     let greeting = f"Hello, {&name}!\n";
     name.destroy();
-    print_buffer(greeting)
+    print(greeting)
 }
 ```
 

@@ -10,7 +10,7 @@ permalink = "/book/shapes/"
 ## Declaring and building
 
 ```kursal
-use std::io::print_buffer;
+use std::io::print;
 
 struct Point {
     x: i32,
@@ -48,8 +48,8 @@ fn main() {
     let moved = Point.{ x: x + 10, ..rest };
     let len = Meters.(42);
     let shapes = (Shape::Dot, Shape::Circle.(2), Shape::Rect.(3, 4));
-    print_buffer(f"{q.x} {q.y} {moved.x} {moved.y} {len.0}\n");
-    print_buffer(f"{area(shapes.0)} {area(shapes.1)} {area(shapes.2)} {sides(shapes.2)}\n");
+    print(f"{q.x} {q.y} {moved.x} {moved.y} {len.0}\n");
+    print(f"{area(shapes.0)} {area(shapes.1)} {area(shapes.2)} {sides(shapes.2)}\n");
 }
 ```
 
