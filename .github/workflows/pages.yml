@@ -25,15 +25,13 @@ jobs:
           persist-credentials: false
 
       # The site is built by Krayon, which is written in kursal, so the job builds the compiler
-      # first. The three repositories sit side by side, as the README describes. They are private:
-      # each token needs read access to its repository.
+      # first. The three repositories sit side by side, as the README describes.
       - name: Check out kursal
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: kursionlabs/kursal
           ref: main
           path: kursal
-          token: ${{ secrets.KURSAL_REPO_TOKEN || github.token }}
           persist-credentials: false
 
       - name: Check out Krayon
@@ -42,7 +40,6 @@ jobs:
           repository: kursionlabs/krayon
           ref: main
           path: krayon
-          token: ${{ secrets.KRAYON_REPO_TOKEN || github.token }}
           persist-credentials: false
 
       # Krayon links Kable for its preview server, so Kable has to be beside it too.
@@ -52,7 +49,6 @@ jobs:
           repository: kursionlabs/kable
           ref: main
           path: kable
-          token: ${{ secrets.KABLE_REPO_TOKEN || github.token }}
           persist-credentials: false
 
       - name: Install build libraries

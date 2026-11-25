@@ -46,9 +46,5 @@ the site, which takes a few minutes.
 To turn it on:
 
 1. In the repository settings, set Pages to deploy from GitHub Actions.
-2. kursal, Krayon and Kable are private repositories, so add secrets
-   `KURSAL_REPO_TOKEN`, `KRAYON_REPO_TOKEN` and `KABLE_REPO_TOKEN`: tokens
-   with read access to each. Without them the checkout falls back to the
-   workflow's own token, which cannot read other private repositories.
-3. The site links to its pages from the root (`/start/`), so serve it at the
+2. The site links to its pages from the root (`/start/`), so serve it at the
    root of a domain, such as a custom domain for kursal.dev.
