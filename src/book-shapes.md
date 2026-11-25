@@ -138,6 +138,19 @@ digit letter space other
 
 A case binds names or `_`, and nothing more. There are no nested patterns, so `Some(Some(x))` is a syntax error, and no guards. To look inside a payload, match again inside the arm, as chapter 8 does. Writing a lent match, `match &s { ... }`, lets you look at a value without consuming it. Like every lend, it needs `s` to be a `var`. Places in chapter 12 cover it.
 
+## Type aliases
+
+`type Name = Type;` gives a type a second name. An alias is transparent: it **is** the type it stands for, and the two mix freely. It can be generic, as in `forall 'k. type Str = Slice[u8, 'k];`. An `impl` written through an alias is an impl of the expanded type. `type` is a reserved keyword.
+
+An alias has a few rules, each with its own error:
+
+- Every parameter is used: `type alias Tagged does not use its parameter Tag`.
+- No cycles: `type alias List refers to itself through Next`.
+- The `!` is there exactly when the type is linear: `type alias Handles stands for a linear type; name it Handles!`, and `type alias Count! stands for a type that is not linear; name it Count`.
+- It is never exposed: `a type alias is never exposed: it has no representation of its own`.
+- It takes no premises or determined parameters: `type alias Twice takes no premises or determined parameters`.
+- It names a type only: `Str is a type alias; it stands only where a type is written`.
+
 ## Check by hand
 
 Every enum match names all the variants or ends with `_`, and every integer match ends with `_`. Every literal supplies all of a struct's fields.

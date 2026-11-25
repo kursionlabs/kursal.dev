@@ -75,7 +75,7 @@ The pieces:
 
 A brand names a domain, such as a region of memory or another resource, so the checker can tell two values apart. It says nothing about how long anything lives.
 
-String literals use the brand `'static`, which is why `Slice[u8, 'static]` has appeared since chapter 2. Its witness is `unsafe static_brand()`, with the obligation that what it brands lives forever.
+String literals use the brand `'static`, which is why `Slice[u8, 'static]`, also written `Str['static]`, has appeared since chapter 2. Its witness is `unsafe static_brand()`, with the obligation that what it brands lives forever.
 
 ## Two brands don't mix
 

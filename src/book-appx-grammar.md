@@ -41,13 +41,14 @@ TUPLE_INDEX = "." digits ;
 file        = { item } ;
 item        = ( "use" | "export" ) use_tree ";"
             | const
-            | [ forall ] item_body ;       (* forall before use or const: "`forall` comes before a struct, tuple, enum, function, impl, trait or instance" (later) *)
+            | [ forall ] item_body ;       (* forall before use or const: "`forall` comes before a struct, tuple, enum, type alias, function, impl, trait or instance" (later) *)
 forall      = "forall" fparam { "," fparam } [ "->" fparam { "," fparam } ]
               [ "where" premise { "," premise } ] "." ;
 fparam      = NAME | BRAND ;
 premise     = path "[" type_args "]" ;
 
 item_body   = aggregate
+            | "type" NAME "=" type ";"                    (* a type alias; the rules are in chapter 4 *)
             | [ "unsafe" ] fn_decl
             | extern
             | "impl" type "{" { [ forall ] ( const | fn_decl ) } "}"
@@ -192,7 +193,7 @@ Each case below was built, and each is rejected after parsing with the message s
 | an extern's place, zero-size or safe-fn parameter, or its checked-only, enum or zero-size linear result | the rule's message, at the parameter or result |
 | `fn f() -> i32;` outside a trait or extern | `a function needs a body; only a trait method or an extern is a signature` |
 | `trait Show { fn show(self) -> i32 { 0 } }` | `a trait method is a signature; its body belongs in each instance` |
-| `forall T. const X: i32 = 0;` | ``` `forall` comes before a struct, tuple, enum, function, impl, trait or instance ``` |
+| `forall T. const X: i32 = 0;` | ``` `forall` comes before a struct, tuple, enum, type alias, function, impl, trait or instance ``` |
 | `impl A { forall T. const C: i32 = 0; }` | ``` in an impl, `forall` comes before a method ``` |
 | `let x: Option[_] = ...` | `_ stands for a type argument only in an expression, where inference fills it in` |
 | `*p = 1u8;` | ``a store through a raw pointer is written `unsafe *p = v;` `` |

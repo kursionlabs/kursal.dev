@@ -17,6 +17,7 @@ use      export   module   struct   tuple    enum     fn       extern   impl
 trait    instance const    forall   where    as       exposed  unsafe   closure
 exists   foreach  of       in       for      while    if       else     match
 let      var      return   pack     true     false    self     _
+type
 ```
 
 - **`module` is reserved and has no use.** No form of the language contains it. As an item it gives

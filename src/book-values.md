@@ -92,7 +92,7 @@ multi
 line
 ```
 
-A string literal is a `Slice[u8, 'static]`: a view of bytes that lives for the whole program. kursal has no `char` type and no built-in `String`. Text is bytes. The escapes are `\n \t \r \0 \\ \' \"` and `\xHH` up to `\x7f`. A literal may span lines. The `'static` is a brand, and Part 2 explains them. For now it is what you write when you need to name the type of a literal. Each literal's bytes are followed by one zero byte, so they also read as a C string, and the slice's length is still the literal's own.
+A string literal is a `Str['static]`, which is a name for `Slice[u8, 'static]`: a view of bytes that lives for the whole program. kursal has no `char` type and no built-in `String`. Text is bytes. The escapes are `\n \t \r \0 \\ \' \"` and `\xHH` up to `\x7f`. A literal may span lines. The `'static` is a brand, and Part 2 explains them. For now it is what you write when you need to name the type of a literal. Each literal's bytes are followed by one zero byte, so they also read as a C string, and the slice's length is still the literal's own.
 
 ## Operators
 
