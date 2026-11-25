@@ -105,7 +105,7 @@ The second `foreach` maps `tagged`, of type `foreach F of (Token!, Token!) => (F
 
 ## The rules
 
-- **A `foreach` type is flat.** It is the type of a whole value, parameter or result. It is never a field, an element, a pointee, a type argument or another `foreach`'s source. A struct with a `foreach` field is rejected. To keep one, make it a function's whole result.
+- **A `foreach` type is a type like any other.** It can be a parameter or result, a field, an array element, a pointee or a type argument. A declaration that holds a `foreach` over a type parameter is linear, because the parameter might be, so it needs a `!` in its name. A traversal cannot take a `foreach` type as its source: the compiler says `a foreach source cannot be a foreach type`.
 - **`*F` binds each component's pointee**, so the source has to be written with pointer components: `*T`, or a tuple, struct or array of pointers. The compiler checks this where the type is written:
 
   ```kursal
@@ -122,7 +122,9 @@ The second `foreach` maps `tagged`, of type `foreach F of (Token!, Token!) => (F
     8 | fn sizes(r: Rec) -> foreach *F of Rec => usize {
       |                     ^
   ```
-- **A pointer to a sum is no source.** Components of `*Option[u8]` depend on which variant is stored there, and only a read could find out. `foreach x of p` with `p: *Option[u8]` is rejected with `a foreach source cannot be a pointer to a sum`.
+- **A traversal through a pointer to a sum is rejected.** Components of `*Option[u8]` depend on which variant is stored there, and only a read could find out. `foreach x of p` with `p: *Option[u8]` is rejected with `a foreach source cannot be a pointer to a sum`. Writing the type `foreach y of *E => u8` over an enum `E` is fine. It names one row for the pointer itself, and nothing is read through it.
+- **In a written type, `foreach F of *P => B` is one row**, with `F` the pointer itself. Only the pointer pattern, `foreach *F of *P => B`, gives one row per pointee component. A traversal `foreach x of p` over a pointer value still goes through the pointer.
+- **`sizeof` of a `foreach` type needs its source exposed**: `sizeof[foreach F of T => u8]` needs `where Exposed[T]`.
 - **Generic traversal needs `Exposed[*T]`**, and the body is checked once for every `T`, not again where a function is called.
 - **Through a pointer, `foreach` computes addresses only.** Anything done with them, a read or a cast, is its own unsafe operation, as `unsafe (f as usize)` is above.
 - A closure body or a `foreach` body cannot mention a brand that its own block opened (chapter 13).

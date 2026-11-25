@@ -118,7 +118,8 @@ and assembles the results into a value of the same shape.
 
 **foreach type.** The type of what a `foreach` makes: `foreach F of S => B` is one `B` per component
 `F` of `S`, and `foreach *F of S => B` binds each component's pointee when `S` is written with
-pointer components. It is always the type of a whole value, parameter or result, never a field.
+pointer components. It can appear wherever a type can. A declaration that holds one over a type
+parameter is linear.
 
 **unsafe operation.** An operation whose correctness the compiler cannot check: calling an `unsafe fn`
 or an extern, reading or writing through a raw pointer, `alloca`, a bit-reinterpreting cast, lending

@@ -88,7 +88,7 @@ type        = path [ "[" type_args "]" ]                    (* Counter!['k], Opt
             | [ "unsafe" ] "fn" "(" list(slot) ")" "->" type
             | "closure" "[" type "]" "(" list(slot) ")" "->" type
             | "exists" brands type                          (* repeated, shadowing or unused binders: (later) *)
-            | "foreach" [ "*" ] NAME "of" type "=>" type ;  (* not as a component; "*F" over a source
+            | "foreach" [ "*" ] NAME "of" type "=>" type ;  (* "*F" over a source
                                                                without written pointers: (later) *)
 ptype       = type
             | "closure" "(" list(slot) ")" "->" type ;      (* environment left unnamed: parameters only *)
@@ -206,8 +206,6 @@ Each case below was built, and each is rejected after parsing with the message s
 | `Option::Some(x)` as a call | ``` `Option::Some` is a constructor; write `Option::Some.(...)` ``` |
 | `exists 'k, 'k. ...`, a binder that shadows, an unused binder | `an exists type repeats a binder`, `exists binder 'k shadows a brand in scope`, `type formation: existential brand binder is unused` |
 | `foreach *F of Rec => usize` | `foreach *F needs a source written with pointer components` |
-| `foreach *F of *Option[u8] => u8` | `a foreach source cannot be a pointer to a sum` |
-| a struct field of a `foreach` type | `a component is a foreach type, which is only the type of a whole value, parameter or result` |
 | `where Exposed[T, T]` | `Exposed takes 1 type argument, got 2` |
 | `let x! = 1u32;` | `only a linear type's name ends with !` |
 | `let _ = issue(1);` with a linear value | `a pattern cannot discard a linear value` |
