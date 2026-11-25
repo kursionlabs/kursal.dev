@@ -2,7 +2,7 @@
 layout = "page.html"
 section = "book"
 title = "The kursal book"
-eyebrow = "Layer 3 of 3"
+eyebrow = "Book"
 intro = "The whole language, in the order you need it. Part 1 is the everyday language. Part 2 is resources: places, brands, capabilities, unsafe and threads."
 permalink = "/book/"
 +++

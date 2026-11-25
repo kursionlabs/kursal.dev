@@ -2,7 +2,7 @@
 layout = "page.html"
 section = "start"
 title = "Quick start"
-eyebrow = "Layer 1 of 3"
+eyebrow = "Quick start"
 intro = "Build the compiler, run a program, and watch it refuse a bad one."
 permalink = "/start/"
 +++
