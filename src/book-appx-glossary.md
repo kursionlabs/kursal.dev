@@ -106,7 +106,7 @@ never does.
 **Sized.** `Sized[T]` says that `T` has a non-zero size in memory. Generic code needs it for a raw
 read, write or `alloca` at `T`.
 
-**Zero-size type.** A type that takes no bytes: `()`, an empty struct, a brand witness, a capability.
+**Zero-size type.** A type that takes no bytes: `()`, an empty struct, a brand witness, a capability, and an array of any of those, such as `[(); 3]`.
 It has no memory form, so it cannot be read through a pointer or passed to C.
 
 **Never.** The type `!`, of an expression that does not finish, such as a call of `trap()`. A
