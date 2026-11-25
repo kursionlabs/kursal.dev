@@ -136,6 +136,7 @@ fn main() {
 ```kursal
 // src/text/shout.kur
 use std::buffer::Buffer!;
+use std::fmt::Writer;
 
 /// A line of `n` exclamation marks.
 fn exclaim(n: usize) -> Buffer! {
